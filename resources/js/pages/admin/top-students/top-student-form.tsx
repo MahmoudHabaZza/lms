@@ -164,7 +164,7 @@ export default function TopStudentForm({
                                 className="aspect-[4/5] w-full rounded-[22px] object-cover"
                             />
                         ) : (
-                            <div className="flex aspect-[4/5] w-full items-center justify-center rounded-[22px] bg-[linear-gradient(145deg,#fdba74_0%,#f97316_45%,#0f172a_100%)] px-6 text-center text-sm font-semibold text-white/90">
+                            <div className="flex aspect-[4/5] w-full items-center justify-center rounded-[22px] bg-[linear-gradient(145deg,#fdba74_0%,var(--site-primary-color)_45%,#0f172a_100%)] px-6 text-center text-sm font-semibold text-white/90">
                                 أضف صورة للطالب ممسكاً بالشهادة لتظهر هنا
                             </div>
                         )}
@@ -192,3 +192,4 @@ export default function TopStudentForm({
         </form>
     );
 }
+

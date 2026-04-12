@@ -240,7 +240,7 @@ export default function FaqForm({
                                     className="h-56 w-full rounded-[20px] object-cover"
                                 />
                             ) : (
-                                <div className="flex h-56 items-center justify-center rounded-[20px] bg-[linear-gradient(135deg,#fb923c_0%,#fdba74_45%,#0f172a_100%)] px-6 text-center text-sm font-semibold text-white/90">
+                                <div className="flex h-56 items-center justify-center rounded-[20px] bg-[linear-gradient(135deg,var(--site-primary-400)_0%,#fdba74_45%,#0f172a_100%)] px-6 text-center text-sm font-semibold text-white/90">
                                     أضف صورة غلاف ليتم عرضها هنا
                                 </div>
                             )}
@@ -268,3 +268,4 @@ export default function FaqForm({
         </form>
     );
 }
+

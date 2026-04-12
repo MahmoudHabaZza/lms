@@ -193,7 +193,7 @@ export default function Bookings({
             <Head title="الحجوزات" />
 
             <div dir="rtl" lang="ar" className="relative min-h-screen overflow-hidden bg-gradient-to-br from-orange-50 via-white to-blue-50 text-right">
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(248,111,3,0.2),_rgba(255,255,255,0.3)_45%,_rgba(255,255,255,0.7)_100%)]"></div>
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_color-mix(in_srgb,var(--site-primary-color)_20%,transparent),_rgba(255,255,255,0.3)_45%,_rgba(255,255,255,0.7)_100%)]"></div>
                 <section className="relative container mx-auto px-4 pt-32 sm:px-6 lg:px-8">
                     <div className="mx-auto max-w-4xl">
                         <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
@@ -353,3 +353,4 @@ export default function Bookings({
         </MainLayout>
     );
 }
+

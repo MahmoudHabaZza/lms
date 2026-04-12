@@ -1,4 +1,4 @@
-import { Link, useForm } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import type { FormEvent } from 'react';
 import AdminLayout from '../layouts/admin-layout';
 import CourseForm, { type CourseFormData } from './course-form';
@@ -9,6 +9,9 @@ type Props = {
 };
 
 export default function CoursesCreate({ instructors, categories }: Props) {
+    const page = usePage<{ settings?: { primary_color?: string } }>();
+    const primaryColor = page.props.settings?.primary_color?.trim() ?? '';
+
     const { data, setData, post, processing, errors } = useForm<CourseFormData>({
         title: '',
         description: '',
@@ -21,7 +24,7 @@ export default function CoursesCreate({ instructors, categories }: Props) {
         sessions_count: 12,
         sessions_per_week: 1,
         badge: '',
-        accent_color: '#f97316',
+        accent_color: primaryColor,
         sort_order: 0,
         status: true,
         instructor_id: instructors[0]?.id ?? null,
@@ -60,3 +63,4 @@ export default function CoursesCreate({ instructors, categories }: Props) {
         </AdminLayout>
     );
 }
+

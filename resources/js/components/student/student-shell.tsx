@@ -54,7 +54,7 @@ export function StudentShell({ title, subtitle, children }: StudentShellProps) {
     return (
         <div
             dir="rtl"
-            className="min-h-screen bg-[radial-gradient(circle_at_top_right,rgba(251,146,60,0.18),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.14),transparent_32%),linear-gradient(180deg,#fff8ee_0%,#fffdf8_48%,#f7fbff_100%)]"
+            className="min-h-screen bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--site-primary-400)_18%,transparent),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.14),transparent_32%),linear-gradient(180deg,#fff8ee_0%,#fffdf8_48%,#f7fbff_100%)]"
         >
             <Head title={title} />
 

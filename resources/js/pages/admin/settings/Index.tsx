@@ -57,6 +57,14 @@ const fieldLabels: Record<string, string> = {
 
 const fieldHints: Record<string, string> = {
     font_family: 'اختر الخط الأساسي الذي سيظهر في الموقع كله ولوحة الأدمن.',
+    address: 'العنوان الذي سيظهر في الفوتر وصفحة تواصل معنا.',
+    contact_email: 'البريد المعروض للزوار في التوب بار والفوتر وصفحة التواصل.',
+    contact_phone: 'رقم التواصل المعروض للزوار ويمكن استخدامه للاتصال أو واتساب.',
+    facebook_url: 'ضع الرابط الكامل لصفحة فيسبوك.',
+    instagram_url: 'ضع الرابط الكامل لحساب إنستجرام.',
+    linkedin_url: 'ضع الرابط الكامل لصفحة لينكدإن.',
+    whatsapp_number: 'اكتب رقم واتساب بصيغة دولية مثل 2010xxxxxxx.',
+    youtube_url: 'ضع الرابط الكامل لقناة يوتيوب.',
     booking_notification_email: 'كل طلب حجز جديد سيتم إرساله إلى هذا البريد.',
     contact_notification_email: 'كل رسالة جديدة من صفحة تواصل معنا سيتم إرسالها إلى هذا البريد.',
     mail_mailer: 'غالباً استخدم smtp. ويمكنك استخدام log أثناء التجربة.',
@@ -68,6 +76,11 @@ const fieldHints: Record<string, string> = {
     mail_from_address: 'البريد الظاهر كمرسل للرسائل.',
     mail_from_name: 'الاسم الظاهر للمستلم.',
 };
+
+const hiddenSettingKeys = new Set([
+    'homepage_primary_color',
+    'homepage_secondary_color',
+]);
 
 const fontOptions = [
     { value: 'playpen_arabic', label: 'Playpen Sans Arabic' },
@@ -302,7 +315,9 @@ export default function SettingsIndex({ settings }: Props) {
                                     <h2 className="text-lg font-semibold text-slate-800">{groupLabels[group] || group}</h2>
                                 </div>
                                 <div className="grid gap-6 p-6 md:grid-cols-2">
-                                    {groupSettings.map((setting) => {
+                                    {groupSettings
+                                        .filter((setting) => !hiddenSettingKeys.has(setting.key))
+                                        .map((setting) => {
                                         const inputType = getInputType(setting);
                                         const errorKey = `settings.${data.settings.findIndex((item) => item.key === setting.key)}.value`;
 

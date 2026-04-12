@@ -99,7 +99,7 @@ export default function SectionThree({
                         <div className="mt-10 flex flex-wrap justify-center gap-3">
                             <a
                                 href={activeSlide.button_link}
-                                className="fp-banner-btn inline-flex min-w-52 items-center justify-center rounded-xl bg-orange-500 px-10 py-4 text-lg font-semibold text-white transition hover:bg-white hover:text-orange-500 sm:min-w-64 sm:px-14 sm:py-5 sm:text-xl"
+                                className="fp-banner-btn inline-flex min-w-52 items-center justify-center rounded-xl bg-orange-500 px-10 py-4 text-lg font-semibold text-white transition hover:bg-white hover:text-[var(--site-primary-color)] sm:min-w-64 sm:px-14 sm:py-5 sm:text-xl"
                             >
                                 احجز الآن
                             </a>

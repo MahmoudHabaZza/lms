@@ -33,7 +33,7 @@ export function CourseShowcaseCard({
     variant?: 'default' | 'home-compact';
     className?: string;
 }) {
-    const accent = course.accent_color || '#f97316';
+    const accent = course.accent_color || 'var(--site-primary-color)';
     const isGrid = layout === 'grid';
     const isHomeCompact = variant === 'home-compact';
 
@@ -41,7 +41,7 @@ export function CourseShowcaseCard({
         <Link
             href={course.show_url}
             className={cn(
-                'group relative block overflow-hidden rounded-[28px] bg-slate-900 text-right transition-transform duration-400 ease-out hover:-translate-y-1 hover:shadow-[0_20px_60px_-20px_rgba(249,115,22,0.8)]',
+                'group relative block overflow-hidden rounded-[28px] bg-slate-900 text-right transition-transform duration-400 ease-out hover:-translate-y-1 hover:shadow-[0_20px_60px_-20px_color-mix(in_srgb,var(--site-primary-color)_80%,transparent)]',
                 isGrid ? 'min-h-[440px] w-full' : 'h-[460px] w-[300px] shrink-0',
                 className,
             )}
@@ -72,18 +72,18 @@ export function CourseShowcaseCard({
                             {course.title}
                         </h3>
 
-                        <div className="rounded-2xl border border-orange-300 bg-slate-900/75 p-2.5 shadow-[0_10px_26px_-18px_rgba(15,23,42,0.8)] transition-all duration-400 ease-out hover:bg-slate-900/90 hover:shadow-[0_14px_38px_-18px_rgba(249,115,22,0.8)]">
-                            <div className="grid grid-cols-3 gap-1 text-[9px] font-bold text-white/90">
-                                <span className="rounded-full border border-orange-600 bg-gradient-to-b from-orange-500 to-orange-400 px-2 py-1 text-center text-[10px] font-bold whitespace-nowrap text-white">
-                                    <Calendar size={12} className="me-1 inline-block" />
+                        <div className="rounded-2xl border border-orange-300 bg-slate-900/75 p-2.5 shadow-[0_10px_26px_-18px_rgba(15,23,42,0.8)] transition-all duration-400 ease-out hover:bg-slate-900/90 hover:shadow-[0_14px_38px_-18px_color-mix(in_srgb,var(--site-primary-color)_80%,transparent)]">
+                            <div className="flex flex-nowrap items-center justify-between gap-2 text-[9px] font-bold text-white/90">
+                                <span className="flex basis-0 grow items-center justify-center gap-1 rounded-full border border-orange-600 bg-gradient-to-b from-orange-500 to-orange-400 px-2 py-1.5 text-center text-[10px] leading-none whitespace-nowrap text-white">
+                                    <Calendar size={11} className="shrink-0" />
                                     {course.duration_months} شهور
                                 </span>
-                                <span className="rounded-full border border-orange-600 bg-gradient-to-b from-orange-500 to-orange-400 px-2 py-1 text-center text-[10px] font-bold whitespace-nowrap text-white">
-                                    <Layers size={12} className="me-1 inline-block" />
+                                <span className="flex basis-0 grow items-center justify-center gap-1 rounded-full border border-orange-600 bg-gradient-to-b from-orange-500 to-orange-400 px-2 py-1.5 text-center text-[10px] leading-none whitespace-nowrap text-white">
+                                    <Layers size={11} className="shrink-0" />
                                     {course.sessions_count} جلسة
                                 </span>
-                                <span className="rounded-full border border-orange-600 bg-gradient-to-b from-orange-500 to-orange-400 px-2 py-1 text-center text-[10px] font-bold whitespace-nowrap text-white">
-                                    <Repeat size={12} className="me-1 inline-block" />
+                                <span className="flex basis-0 grow items-center justify-center gap-1 rounded-full border border-orange-600 bg-gradient-to-b from-orange-500 to-orange-400 px-2 py-1.5 text-center text-[10px] leading-none whitespace-nowrap text-white">
+                                    <Repeat size={11} className="shrink-0" />
                                     {course.sessions_per_week} أسبوعيًا
                                 </span>
                             </div>
@@ -95,21 +95,21 @@ export function CourseShowcaseCard({
                         </div>
                     </div>
                 ) : (
-                    <div className="rounded-2xl border border-orange-300 bg-slate-900/75 p-3 shadow-[0_10px_26px_-18px_rgba(15,23,42,0.8)] transition-all duration-400 ease-out hover:bg-slate-900/90 hover:shadow-[0_14px_38px_-18px_rgba(249,115,22,0.8)]">
+                    <div className="rounded-2xl border border-orange-300 bg-slate-900/75 p-3 shadow-[0_10px_26px_-18px_rgba(15,23,42,0.8)] transition-all duration-400 ease-out hover:bg-slate-900/90 hover:shadow-[0_14px_38px_-18px_color-mix(in_srgb,var(--site-primary-color)_80%,transparent)]">
                         <h3 className="font-fredoka text-lg font-bold leading-tight text-white">{course.title}</h3>
                         <p className="mt-2 text-xs leading-6 text-white/80">{course.short_description}</p>
 
-                        <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-[10px] font-bold text-white/90">
-                            <span className="rounded-full border border-orange-600 bg-gradient-to-b from-orange-500 to-orange-400 px-3 py-1 text-[11px] font-bold whitespace-nowrap text-white">
-                                <Calendar size={12} className="me-1 inline-block" />
+                        <div className="mt-3 grid grid-cols-3 gap-2 text-[10px] font-bold text-white/90">
+                            <span className="flex min-w-0 items-center justify-center gap-1 rounded-full border border-orange-600 bg-gradient-to-b from-orange-500 to-orange-400 px-2 py-1 text-[10px] font-bold whitespace-nowrap text-white">
+                                <Calendar size={12} className="shrink-0" />
                                 {course.duration_months} شهور
                             </span>
-                            <span className="rounded-full border border-orange-600 bg-gradient-to-b from-orange-500 to-orange-400 px-3 py-1 text-[11px] font-bold whitespace-nowrap text-white">
-                                <Layers size={12} className="me-1 inline-block" />
+                            <span className="flex min-w-0 items-center justify-center gap-1 rounded-full border border-orange-600 bg-gradient-to-b from-orange-500 to-orange-400 px-2 py-1 text-[10px] font-bold whitespace-nowrap text-white">
+                                <Layers size={12} className="shrink-0" />
                                 {course.sessions_count} جلسة
                             </span>
-                            <span className="rounded-full border border-orange-600 bg-gradient-to-b from-orange-500 to-orange-400 px-3 py-1 text-[11px] font-bold whitespace-nowrap text-white">
-                                <Repeat size={12} className="me-1 inline-block" />
+                            <span className="flex min-w-0 items-center justify-center gap-1 rounded-full border border-orange-600 bg-gradient-to-b from-orange-500 to-orange-400 px-2 py-1 text-[10px] font-bold whitespace-nowrap text-white">
+                                <Repeat size={12} className="shrink-0" />
                                 {course.sessions_per_week} أسبوعيًا
                             </span>
                         </div>
@@ -124,3 +124,4 @@ export function CourseShowcaseCard({
         </Link>
     );
 }
+

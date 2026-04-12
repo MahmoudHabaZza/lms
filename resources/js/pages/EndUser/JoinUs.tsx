@@ -194,12 +194,12 @@ export default function JoinUs({ positions = [] }: { positions?: PositionOption[
             <Head title="انضم لنا" />
 
             <div dir="rtl" lang="ar" className="relative min-h-screen overflow-hidden bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_45%,#fff1e6_100%)] text-right">
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(249,115,22,0.18),transparent_42%),radial-gradient(circle_at_bottom_left,rgba(251,146,60,0.14),transparent_38%)]" />
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--site-primary-color)_18%,transparent),transparent_42%),radial-gradient(circle_at_bottom_left,color-mix(in_srgb,var(--site-primary-400)_14%,transparent),transparent_38%)]" />
 
                 <section className="relative container mx-auto px-4 pb-16 pt-32 sm:px-6 lg:px-8">
                     <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
                         <div className="space-y-6">
-                            <div className="rounded-[32px] border border-orange-100 bg-white/90 p-7 shadow-[0_25px_60px_rgba(249,115,22,0.14)] backdrop-blur">
+                            <div className="rounded-[32px] border border-orange-100 bg-white/90 p-7 shadow-[0_25px_60px_color-mix(in_srgb,var(--site-primary-color)_14%,transparent)] backdrop-blur">
                                 <span className="inline-flex rounded-full bg-orange-100 px-4 py-2 text-sm font-bold text-orange-700">فرصة للانضمام إلى فريقنا</span>
                                 <h1 className="mt-4 text-4xl font-black leading-tight text-slate-900 sm:text-5xl">انضم لنا وشارك الأطفال رحلة تعلم البرمجة</h1>
                                 <p className="mt-4 text-base leading-8 text-slate-600">إذا كنت تمتلك شغف التعليم وصناعة تجربة عربية ممتعة للأطفال، يمكنك إرسال طلبك الآن وسنراجع بياناتك بعناية.</p>
@@ -375,3 +375,4 @@ export default function JoinUs({ positions = [] }: { positions?: PositionOption[
         </MainLayout>
     );
 }
+

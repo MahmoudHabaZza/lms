@@ -203,7 +203,7 @@ export default function SlideForm({
                                         className="h-64 w-full object-cover opacity-70"
                                     />
                                 ) : (
-                                    <div className="flex h-64 items-center justify-center bg-[linear-gradient(135deg,#fb923c_0%,#fdba74_35%,#0f172a_100%)] text-sm font-semibold text-white/90">
+                                    <div className="flex h-64 items-center justify-center bg-[linear-gradient(135deg,var(--site-primary-400)_0%,#fdba74_35%,#0f172a_100%)] text-sm font-semibold text-white/90">
                                         أضف صورة خلفية لتظهر المعاينة هنا
                                     </div>
                                 )}
@@ -247,3 +247,4 @@ export default function SlideForm({
         </form>
     );
 }
+

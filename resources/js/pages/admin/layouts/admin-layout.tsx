@@ -143,7 +143,7 @@ export default function AdminLayout({ title, children }: AdminLayoutProps) {
     const authUser = page.props.auth?.user;
     const flash = page.props.flash;
     const appName = page.props.settings?.app_name?.trim() || 'Kid Coder';
-    const primaryColor = page.props.settings?.primary_color?.trim() || '#f97316';
+    const primaryColor = page.props.settings?.primary_color?.trim() || 'var(--site-primary-color)';
     const shellStyle = { ['--admin-brand' as '--admin-brand']: primaryColor } as CSSProperties;
 
     useEffect(() => {
@@ -191,7 +191,7 @@ export default function AdminLayout({ title, children }: AdminLayoutProps) {
                             <div className="flex items-center gap-3">
                                 <div
                                     className="flex h-12 w-12 items-center justify-center rounded-2xl text-sm font-black text-white shadow-lg"
-                                    style={{ background: `linear-gradient(135deg, ${primaryColor}, #fb923c)` }}
+                                    style={{ background: `linear-gradient(135deg, ${primaryColor}, var(--site-primary-400))` }}
                                 >
                                     KC
                                 </div>
@@ -363,3 +363,4 @@ export default function AdminLayout({ title, children }: AdminLayoutProps) {
         </>
     );
 }
+

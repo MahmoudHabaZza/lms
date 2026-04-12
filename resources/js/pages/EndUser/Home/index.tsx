@@ -111,13 +111,15 @@ export default function Home({
 
                         <div className="relative mx-auto w-full max-w-[1500px] px-4 sm:px-8 lg:px-12">
                             <div className="academy-intro-card w-full text-center">
-                                <h2 className="academy-title-group inline-flex w-full items-center justify-center gap-1 font-playpen-arabic text-[clamp(1.8rem,4.9vw,4rem)] font-bold leading-tight text-slate-900">
-                                    <span className="academy-bracket academy-bracket-left text-orange-500" style={{ fontFamily: "'Fira Code', monospace" }}>
-                                        {'<'}/
+                                <h2 className="academy-title-group inline-flex w-full items-center justify-center gap-4 font-playpen-arabic text-[clamp(1.8rem,4.9vw,4rem)] font-bold leading-tight text-slate-900">
+                                    <span className="inline-flex items-center gap-3" aria-hidden="true">
+                                        <span className="h-0.5 w-10 rounded-full bg-gradient-to-r from-transparent via-orange-300 to-orange-500 sm:w-16" />
+                                        <span className="h-4 w-4 rounded-full border-[3px] border-orange-400 bg-white shadow-[0_0_0_6px_color-mix(in_srgb,var(--site-primary-400)_18%,transparent)]" />
                                     </span>
                                     <span>{academySection.title}</span>
-                                    <span className="academy-bracket academy-bracket-right text-orange-500" style={{ fontFamily: "'Fira Code', monospace" }}>
-                                        {'>'}
+                                    <span className="inline-flex items-center gap-3" aria-hidden="true">
+                                        <span className="h-4 w-4 rounded-full border-[3px] border-orange-400 bg-white shadow-[0_0_0_6px_color-mix(in_srgb,var(--site-primary-400)_18%,transparent)]" />
+                                        <span className="h-0.5 w-10 rounded-full bg-gradient-to-l from-transparent via-orange-300 to-orange-500 sm:w-16" />
                                     </span>
                                 </h2>
 
@@ -134,10 +136,11 @@ export default function Home({
                 )}
 
                 <TopStudentsSection topStudents={topStudents} />
-                <StudentFeedbackGallerySection studentFeedbackImages={studentFeedbackImages} />
                 <ExploreMoreSection studentReels={studentReels} />
+                <StudentFeedbackGallerySection studentFeedbackImages={studentFeedbackImages} />
                 <FaqSection faqs={faqs} />
             </div>
         </MainLayout>
     );
 }
+

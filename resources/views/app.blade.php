@@ -63,7 +63,7 @@
     @vite('resources/js/app.tsx')
 
     @php
-        $primaryColor = \App\Models\Setting::get('primary_color', '#f86f03');
+        $primaryColor = \App\Models\Setting::get('primary_color', '#f97316');
         $fontFamily = \App\Models\Setting::get('font_family', 'playpen_arabic');
         $fontMap = [
             'playpen_arabic' => "'Playpen Sans Arabic', cursive",
@@ -75,7 +75,18 @@
     @endphp
     <style>
         :root {
-            --color-color-primary: {{ $primaryColor }};
+            --site-primary-color: {{ $primaryColor }};
+            --site-primary-50: color-mix(in srgb, var(--site-primary-color) 8%, white);
+            --site-primary-100: color-mix(in srgb, var(--site-primary-color) 14%, white);
+            --site-primary-200: color-mix(in srgb, var(--site-primary-color) 24%, white);
+            --site-primary-300: color-mix(in srgb, var(--site-primary-color) 40%, white);
+            --site-primary-400: color-mix(in srgb, var(--site-primary-color) 72%, white);
+            --site-primary-500: var(--site-primary-color);
+            --site-primary-600: color-mix(in srgb, var(--site-primary-color) 88%, black);
+            --site-primary-700: color-mix(in srgb, var(--site-primary-color) 76%, black);
+            --site-primary-800: color-mix(in srgb, var(--site-primary-color) 62%, black);
+            --site-primary-color-strong: color-mix(in srgb, var(--site-primary-color) 88%, black);
+            --color-color-primary: var(--site-primary-color);
             --site-font-family: {!! $selectedFontStack !!};
             --font-sans: var(--site-font-family);
             --font-playpen-arabic: var(--site-font-family);

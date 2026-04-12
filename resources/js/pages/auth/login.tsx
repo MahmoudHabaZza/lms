@@ -28,7 +28,7 @@ export default function StudentLogin({ status }: Props) {
             <MainLayout>
                 <div
                     dir="rtl"
-                    className="min-h-[calc(100vh-160px)] bg-[linear-gradient(135deg,rgba(249,115,22,0.92),rgba(251,146,60,0.88)),url('/assets/EndUser/images/hero-bg.jpg')] bg-cover bg-center py-24"
+                    className="min-h-[calc(100vh-160px)] bg-[linear-gradient(135deg,color-mix(in_srgb,var(--site-primary-color)_92%,transparent),color-mix(in_srgb,var(--site-primary-400)_88%,transparent)),url('/assets/EndUser/images/hero-bg.jpg')] bg-cover bg-center py-24"
                 >
                     <div className="mx-auto max-w-3xl px-4 pt-14">
                         <section className="rounded-[32px] border border-orange-100 bg-white p-8 shadow-2xl sm:p-10">
@@ -116,3 +116,4 @@ export default function StudentLogin({ status }: Props) {
         </>
     );
 }
+

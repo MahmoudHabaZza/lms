@@ -216,11 +216,11 @@ const Navbar: React.FC = () => {
                         <a
                             className="logo-container flex items-center justify-center font-fredoka no-underline transition-all duration-300 group"
                             href="/"   
-                            title="Kid Coder Academy"
+                            title={settings?.site_name ?? 'Kid Coder Academy'}
                         >
                             <img 
                                 src={settings?.site_logo ?? '/assets/EndUser/images/logo.png'}
-                                alt="Kid Coder Academy"
+                                alt={settings?.site_name ?? 'Kid Coder Academy'}
                                 className="logo-animated h-20 w-auto object-contain transform group-hover:scale-110"
                                 onLoad={() => setLogoLoaded(true)}
                             />

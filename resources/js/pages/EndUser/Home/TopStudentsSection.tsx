@@ -139,9 +139,6 @@ export default function TopStudentsSection({
                                                     className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
                                                     loading="lazy"
                                                 />
-                                                <div className="feedback-gallery-zoom-badge absolute left-3 top-3 rounded-full border border-white/40 bg-black/55 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-md">
-                                                    اضغط للتكبير
-                                                </div>
                                             </button>
                                         ) : (
                                             <div className="feedback-gallery-media flex h-[430px] w-[300px] items-center justify-center bg-slate-100 font-semibold text-slate-500 sm:h-[470px] sm:w-[330px] lg:h-[520px] lg:w-[360px]">
@@ -154,12 +151,6 @@ export default function TopStudentsSection({
                                         <div className="absolute right-3 top-3 max-w-[92%] rounded-full border border-white/35 bg-black/55 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur-md">
                                             {student.student_name}
                                         </div>
-
-                                        {student.achievement && (
-                                            <div className="absolute bottom-3 left-3 right-3 rounded-2xl border border-white/25 bg-black/55 p-3 text-sm leading-6 text-white shadow-xl backdrop-blur-md sm:text-base sm:leading-7">
-                                                {student.achievement}
-                                            </div>
-                                        )}
                                     </article>
                                 ))}
                             </div>
@@ -182,7 +173,7 @@ export default function TopStudentsSection({
                         </div>
                     ) : (
                         <div className="mx-auto mt-10 max-w-2xl rounded-3xl border border-dashed border-orange-300 bg-white/80 p-8 text-center text-slate-700">
-                            لا توجد صور طلاب متفوقين مفعلة حالياً.
+                            لا توجد صور طلاب متفوقين مفعلة حاليًا.
                         </div>
                     )}
                 </div>

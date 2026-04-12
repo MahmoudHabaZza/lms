@@ -115,8 +115,16 @@ class SettingController extends Controller
     {
         $value = $value ?? '';
 
-        if (in_array($key, ['admin_email', 'booking_notification_email', 'contact_notification_email', 'mail_username', 'mail_from_address'], true) && $value !== '') {
+        if (in_array($key, ['admin_email', 'booking_notification_email', 'contact_notification_email', 'contact_email', 'mail_username', 'mail_from_address'], true) && $value !== '') {
             validator(['value' => $value], ['value' => ['email']])->validate();
+        }
+
+        if (in_array($key, ['facebook_url', 'instagram_url', 'linkedin_url', 'youtube_url'], true) && $value !== '') {
+            validator(['value' => $value], ['value' => ['url']])->validate();
+        }
+
+        if ($key === 'whatsapp_number' && $value !== '') {
+            validator(['value' => $value], ['value' => ['regex:/^[0-9+\s().-]{8,20}$/']])->validate();
         }
 
         if ($key === 'mail_port' && $value !== '') {
@@ -133,6 +141,10 @@ class SettingController extends Controller
 
         if ($key === 'font_family' && $value !== '') {
             validator(['value' => $value], ['value' => ['in:playpen_arabic,marhey,fredoka,instrument_sans']])->validate();
+        }
+
+        if ($key === 'primary_color' && $value !== '') {
+            validator(['value' => $value], ['value' => ['regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/']])->validate();
         }
     }
 

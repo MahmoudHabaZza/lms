@@ -1,5 +1,5 @@
 import { Head, usePage } from '@inertiajs/react';
-import { Headphones, Loader2, Mail, MapPin, MessageSquareText, Phone, Send, UserRound } from 'lucide-react';
+import { Loader2, Mail, MapPin, MessageSquareText, Phone, Send, Sparkles, UserRound } from 'lucide-react';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
 import MainLayout from './layouts/master';
@@ -27,9 +27,9 @@ export default function Contact() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
-    const contactEmail = settings?.contact_email ?? 'info@example.com';
-    const contactPhone = settings?.contact_phone ?? '+201234567890';
-    const contactAddress = settings?.address ?? 'القاهرة، مصر';
+    const contactEmail = settings?.contact_email?.trim() ?? '';
+    const contactPhone = settings?.contact_phone?.trim() ?? '';
+    const contactAddress = settings?.address?.trim() ?? '';
 
     const handleFieldChange = (name: keyof ContactFormData, value: string) => {
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -148,205 +148,179 @@ export default function Contact() {
         }
     };
 
+    const inputClass = (field: string) =>
+        `w-full rounded-2xl border-2 px-5 py-4 text-base outline-none transition-all duration-300 focus:ring-4 ${
+            errors[field]
+                ? 'border-red-300 bg-red-50/50 focus:border-red-400 focus:ring-red-100'
+                : 'border-slate-200 bg-white hover:border-orange-200 focus:border-orange-400 focus:ring-orange-100'
+        }`;
+
     return (
         <MainLayout>
             <Head title="تواصل معنا" />
 
-            <div dir="rtl" lang="ar" className="relative min-h-screen overflow-hidden bg-gradient-to-br from-orange-50 via-white to-blue-50 text-right">
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(248,111,3,0.2),_rgba(255,255,255,0.3)_45%,_rgba(255,255,255,0.7)_100%)]"></div>
+            <div dir="rtl" lang="ar" className="relative min-h-screen overflow-hidden bg-gradient-to-b from-orange-50 via-white to-amber-50/30 text-right">
+                <div className="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-orange-200/20 blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-amber-200/20 blur-3xl" />
+                <div className="pointer-events-none absolute left-1/2 top-1/3 h-64 w-64 -translate-x-1/2 rounded-full bg-yellow-100/30 blur-3xl" />
 
-                <section className="relative container mx-auto px-4 pt-32 sm:px-6 lg:px-8">
-                    <div className="mx-auto max-w-4xl">
-                        <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
-                            <div className="text-center">
-                                <h1
-                                    className="font-playpen-arabic text-4xl font-extrabold tracking-tight text-[var(--color-color-primary)] sm:text-5xl md:text-6xl"
-                                    aria-label="تواصل معنا بسهولة"
-                                >
-                                    تواصل معنا بسهولة
-                                </h1>
-                                <p className="mx-auto mt-3 max-w-2xl text-base text-slate-600 sm:text-lg">
-                                    لو عندك أي استفسار عن الكورسات أو المواعيد أو طريقة التقديم، ابعت لنا رسالتك وسنرد عليك في أقرب وقت.
-                                </p>
-                            </div>
+                <section className="relative pb-12 pt-28 sm:pt-32">
+                    <div className="container mx-auto px-4 text-center sm:px-6 lg:px-8">
+                        <div className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-5 py-2 text-sm font-bold text-orange-700">
+                            <Sparkles size={16} />
+                            نحب نسمع منك
+                        </div>
+                        <h1 className="mt-5 font-playpen-arabic text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+                            تواصل معنا
+                        </h1>
+                        <p className="mx-auto mt-4 max-w-xl text-lg leading-8 text-slate-500">
+                            عندك سؤال أو استفسار؟ ابعتلنا رسالة وهنرد عليك بأسرع وقت.
+                        </p>
+                    </div>
+                </section>
 
-                            <div className="mt-8 grid gap-4 sm:grid-cols-3">
-                                <div className="rounded-2xl border border-orange-100 bg-orange-50/70 p-4 text-center">
-                                    <Mail className="mx-auto h-7 w-7 text-orange-600" />
-                                    <h2 className="mt-3 text-sm font-black text-slate-900 sm:text-base">البريد الإلكتروني</h2>
-                                    <a href={`mailto:${contactEmail}`} className="mt-2 block text-sm font-medium text-slate-600 hover:text-orange-600">
-                                        {contactEmail}
+                {(contactEmail || contactPhone || contactAddress) && (
+                    <section className="relative mt-4">
+                        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="mx-auto grid max-w-3xl gap-5 sm:grid-cols-3">
+                                {contactEmail && (
+                                    <a
+                                        href={`mailto:${contactEmail}`}
+                                        className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-orange-100 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-orange-300 hover:shadow-lg"
+                                    >
+                                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
+                                            <Mail size={24} />
+                                        </div>
+                                        <h3 className="text-sm font-bold text-slate-800">البريد الإلكتروني</h3>
+                                        <span className="text-sm text-slate-500 transition-colors group-hover:text-orange-600">{contactEmail}</span>
                                     </a>
-                                </div>
+                                )}
 
-                                <div className="rounded-2xl border border-orange-100 bg-orange-50/70 p-4 text-center">
-                                    <Phone className="mx-auto h-7 w-7 text-orange-600" />
-                                    <h2 className="mt-3 text-sm font-black text-slate-900 sm:text-base">رقم التواصل</h2>
-                                    <a href={`tel:${contactPhone}`} dir="ltr" className="mt-2 block text-sm font-medium text-slate-600 hover:text-orange-600">
-                                        {contactPhone}
+                                {contactPhone && (
+                                    <a
+                                        href={`tel:${contactPhone}`}
+                                        className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-sky-100 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-sky-300 hover:shadow-lg"
+                                    >
+                                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400 to-sky-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
+                                            <Phone size={24} />
+                                        </div>
+                                        <h3 className="text-sm font-bold text-slate-800">رقم التواصل</h3>
+                                        <span dir="ltr" className="text-sm text-slate-500 transition-colors group-hover:text-sky-600">{contactPhone}</span>
                                     </a>
-                                </div>
+                                )}
 
-                                <div className="rounded-2xl border border-orange-100 bg-orange-50/70 p-4 text-center">
-                                    <MapPin className="mx-auto h-7 w-7 text-orange-600" />
-                                    <h2 className="mt-3 text-sm font-black text-slate-900 sm:text-base">العنوان</h2>
-                                    <p className="mt-2 text-sm font-medium leading-6 text-slate-600">{contactAddress}</p>
-                                </div>
+                                {contactAddress && (
+                                    <div className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-emerald-100 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg">
+                                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
+                                            <MapPin size={24} />
+                                        </div>
+                                        <h3 className="text-sm font-bold text-slate-800">العنوان</h3>
+                                        <span className="text-sm leading-6 text-slate-500">{contactAddress}</span>
+                                    </div>
+                                )}
                             </div>
+                        </div>
+                    </section>
+                )}
 
-                            <div className="mt-8 border-t border-slate-200 pt-8">
-                                <form onSubmit={handleSubmit} className="space-y-6">
+                <section className="relative py-16">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="mx-auto max-w-3xl">
+                            <div className="rounded-3xl border-2 border-slate-100 bg-white p-8 shadow-xl sm:p-12">
+                                <div className="mb-10 text-center">
+                                    <h2 className="text-2xl font-extrabold text-slate-800 sm:text-3xl">ابعتلنا رسالتك</h2>
+                                    <p className="mt-2 text-sm text-slate-400">الحقول المطلوبة مُعلّمة بـ <span className="text-red-400">*</span></p>
+                                </div>
+
+                                <form onSubmit={handleSubmit} className="space-y-7">
                                     {submitMessage && (
                                         <div
-                                            className={`rounded-2xl border px-5 py-4 text-sm font-semibold sm:text-base lg:text-lg ${
+                                            className={`flex items-center gap-3 rounded-2xl border-2 px-5 py-4 text-sm font-semibold sm:text-base ${
                                                 submitMessage.type === 'success'
                                                     ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
                                                     : 'border-red-200 bg-red-50 text-red-700'
                                             }`}
                                         >
+                                            <span className="text-xl">{submitMessage.type === 'success' ? '✓' : '!'}</span>
                                             {submitMessage.message}
                                         </div>
                                     )}
 
-                                    <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
-                                        <div className="flex items-center gap-3 text-slate-700">
-                                            <Headphones size={20} className="text-orange-600" />
-                                            <p className="text-sm font-semibold sm:text-base">
-                                                الرسالة دي هتتبعت مباشرة على البريد المخصص لرسائل التواصل في إعدادات الموقع.
-                                            </p>
+                                    <div className="grid gap-6 sm:grid-cols-2">
+                                        <div className="space-y-2">
+                                            <label className="flex items-center gap-2 text-sm font-bold text-slate-700">
+                                                <UserRound size={16} className="text-orange-500" />
+                                                الاسم <span className="text-red-400">*</span>
+                                            </label>
+                                            <input type="text" value={formData.name} onChange={(e) => handleFieldChange('name', e.target.value)} placeholder="اكتب اسمك الكامل" className={inputClass('name')} />
+                                            {errors.name && <p className="text-xs font-medium text-red-500">{errors.name}</p>}
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <label className="flex items-center gap-2 text-sm font-bold text-slate-700">
+                                                <Mail size={16} className="text-orange-500" />
+                                                البريد الإلكتروني <span className="text-red-400">*</span>
+                                            </label>
+                                            <input type="email" value={formData.email} onChange={(e) => handleFieldChange('email', e.target.value)} placeholder="example@email.com" dir="ltr" className={inputClass('email')} />
+                                            {errors.email && <p className="text-xs font-medium text-red-500">{errors.email}</p>}
                                         </div>
                                     </div>
 
                                     <div className="grid gap-6 sm:grid-cols-2">
-                                        <div className="space-y-3">
-                                            <label className="flex items-center gap-2 text-sm font-bold text-slate-700 sm:text-base lg:text-lg">
-                                                <UserRound size={18} className="text-orange-600" />
-                                                الاسم
-                                                <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={formData.name}
-                                                onChange={(e) => handleFieldChange('name', e.target.value)}
-                                                placeholder="اكتب الاسم بالكامل"
-                                                className={`w-full rounded-xl border px-4 py-4 text-base outline-none transition-all duration-200 focus:ring-4 ${
-                                                    errors.name
-                                                        ? 'border-red-300 bg-red-50 focus:ring-red-200'
-                                                        : 'border-slate-200 bg-white focus:border-orange-400 focus:ring-orange-100'
-                                                }`}
-                                            />
-                                            {errors.name && <p className="text-sm font-medium text-red-600">{errors.name}</p>}
-                                        </div>
-
-                                        <div className="space-y-3">
-                                            <label className="flex items-center gap-2 text-sm font-bold text-slate-700 sm:text-base lg:text-lg">
-                                                <Mail size={18} className="text-orange-600" />
-                                                البريد الإلكتروني
-                                                <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                type="email"
-                                                value={formData.email}
-                                                onChange={(e) => handleFieldChange('email', e.target.value)}
-                                                placeholder="example@email.com"
-                                                dir="ltr"
-                                                className={`w-full rounded-xl border px-4 py-4 text-base outline-none transition-all duration-200 focus:ring-4 ${
-                                                    errors.email
-                                                        ? 'border-red-300 bg-red-50 focus:ring-red-200'
-                                                        : 'border-slate-200 bg-white focus:border-orange-400 focus:ring-orange-100'
-                                                }`}
-                                            />
-                                            {errors.email && <p className="text-sm font-medium text-red-600">{errors.email}</p>}
-                                        </div>
-                                    </div>
-
-                                    <div className="grid gap-6 sm:grid-cols-2">
-                                        <div className="space-y-3">
-                                            <label className="flex items-center gap-2 text-sm font-bold text-slate-700 sm:text-base lg:text-lg">
-                                                <Phone size={18} className="text-orange-600" />
+                                        <div className="space-y-2">
+                                            <label className="flex items-center gap-2 text-sm font-bold text-slate-700">
+                                                <Phone size={16} className="text-orange-500" />
                                                 رقم الهاتف
-                                                <span className="text-xs font-semibold text-slate-500">(اختياري)</span>
+                                                <span className="text-xs text-slate-400">(اختياري)</span>
                                             </label>
-                                            <input
-                                                type="tel"
-                                                value={formData.phone}
-                                                onChange={(e) => handleFieldChange('phone', e.target.value)}
-                                                placeholder="01XXXXXXXXX"
-                                                dir="ltr"
-                                                className={`w-full rounded-xl border px-4 py-4 text-base outline-none transition-all duration-200 focus:ring-4 ${
-                                                    errors.phone
-                                                        ? 'border-red-300 bg-red-50 focus:ring-red-200'
-                                                        : 'border-slate-200 bg-white focus:border-orange-400 focus:ring-orange-100'
-                                                }`}
-                                            />
-                                            {errors.phone && <p className="text-sm font-medium text-red-600">{errors.phone}</p>}
+                                            <input type="tel" value={formData.phone} onChange={(e) => handleFieldChange('phone', e.target.value)} placeholder="01XXXXXXXXX" dir="ltr" className={inputClass('phone')} />
+                                            {errors.phone && <p className="text-xs font-medium text-red-500">{errors.phone}</p>}
                                         </div>
 
-                                        <div className="space-y-3">
-                                            <label className="flex items-center gap-2 text-sm font-bold text-slate-700 sm:text-base lg:text-lg">
-                                                <Send size={18} className="text-orange-600" />
-                                                موضوع الرسالة
-                                                <span className="text-red-500">*</span>
+                                        <div className="space-y-2">
+                                            <label className="flex items-center gap-2 text-sm font-bold text-slate-700">
+                                                <Send size={16} className="text-orange-500" />
+                                                موضوع الرسالة <span className="text-red-400">*</span>
                                             </label>
-                                            <input
-                                                type="text"
-                                                value={formData.subject}
-                                                onChange={(e) => handleFieldChange('subject', e.target.value)}
-                                                placeholder="مثال: استفسار عن مواعيد الكورسات"
-                                                className={`w-full rounded-xl border px-4 py-4 text-base outline-none transition-all duration-200 focus:ring-4 ${
-                                                    errors.subject
-                                                        ? 'border-red-300 bg-red-50 focus:ring-red-200'
-                                                        : 'border-slate-200 bg-white focus:border-orange-400 focus:ring-orange-100'
-                                                }`}
-                                            />
-                                            {errors.subject && <p className="text-sm font-medium text-red-600">{errors.subject}</p>}
+                                            <input type="text" value={formData.subject} onChange={(e) => handleFieldChange('subject', e.target.value)} placeholder="مثال: استفسار عن الكورسات" className={inputClass('subject')} />
+                                            {errors.subject && <p className="text-xs font-medium text-red-500">{errors.subject}</p>}
                                         </div>
                                     </div>
 
-                                    <div className="space-y-3">
-                                        <label className="flex items-center gap-2 text-sm font-bold text-slate-700 sm:text-base lg:text-lg">
-                                            <MessageSquareText size={18} className="text-orange-600" />
-                                            الرسالة
-                                            <span className="text-red-500">*</span>
+                                    <div className="space-y-2">
+                                        <label className="flex items-center gap-2 text-sm font-bold text-slate-700">
+                                            <MessageSquareText size={16} className="text-orange-500" />
+                                            الرسالة <span className="text-red-400">*</span>
                                         </label>
-                                        <textarea
-                                            value={formData.message}
-                                            onChange={(e) => handleFieldChange('message', e.target.value)}
-                                            rows={6}
-                                            placeholder="اكتب تفاصيل استفسارك هنا..."
-                                            className={`w-full rounded-xl border px-4 py-4 text-base outline-none transition-all duration-200 focus:ring-4 ${
-                                                errors.message
-                                                    ? 'border-red-300 bg-red-50 focus:ring-red-200'
-                                                    : 'border-slate-200 bg-white focus:border-orange-400 focus:ring-orange-100'
-                                            }`}
-                                        />
-                                        {errors.message && <p className="text-sm font-medium text-red-600">{errors.message}</p>}
+                                        <textarea value={formData.message} onChange={(e) => handleFieldChange('message', e.target.value)} rows={5} placeholder="اكتب رسالتك هنا..." className={inputClass('message')} />
+                                        {errors.message && <p className="text-xs font-medium text-red-500">{errors.message}</p>}
                                     </div>
 
-                                    <div className="pt-4">
-                                        <button
-                                            type="submit"
-                                            disabled={isSubmitting}
-                                            className={`inline-flex w-full items-center justify-center gap-3 rounded-2xl px-8 py-5 text-lg font-black text-white transition-all duration-200 ${
-                                                isSubmitting
-                                                    ? 'cursor-not-allowed bg-slate-400'
-                                                    : 'bg-gradient-to-r from-orange-600 to-orange-700 shadow-lg hover:from-orange-700 hover:to-orange-800 hover:shadow-xl active:scale-[0.98]'
-                                            }`}
-                                        >
-                                            {isSubmitting ? (
-                                                <>
-                                                    <Loader2 size={20} className="animate-spin" />
-                                                    جاري إرسال الرسالة...
-                                                </>
-                                            ) : (
-                                                'إرسال الرسالة'
-                                            )}
-                                        </button>
+                                    <button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className={`group inline-flex w-full items-center justify-center gap-3 rounded-2xl px-8 py-5 text-lg font-extrabold text-white shadow-lg transition-all duration-300 ${
+                                            isSubmitting
+                                                ? 'cursor-not-allowed bg-slate-400 shadow-none'
+                                                : 'bg-gradient-to-l from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 hover:shadow-xl hover:shadow-orange-200 active:scale-[0.98]'
+                                        }`}
+                                    >
+                                        {isSubmitting ? (
+                                            <>
+                                                <Loader2 size={22} className="animate-spin" />
+                                                جاري الإرسال...
+                                            </>
+                                        ) : (
+                                            <>
+                                                إرسال الرسالة
+                                                <Send size={20} className="transition-transform duration-300 group-hover:-translate-x-1" />
+                                            </>
+                                        )}
+                                    </button>
 
-                                        <p className="mt-4 text-center text-xs leading-6 text-slate-500 sm:text-sm lg:text-base">
-                                            بالضغط على زر الإرسال، يتم إرسال بياناتك إلى إدارة الأكاديمية للرد على استفسارك في أقرب وقت.
-                                        </p>
-                                    </div>
+                                    <p className="mt-2 text-center text-xs leading-6 text-slate-400">
+                                        بالضغط على إرسال، سيتم توجيه رسالتك لفريق الدعم للرد عليك في أقرب وقت.
+                                    </p>
                                 </form>
                             </div>
                         </div>

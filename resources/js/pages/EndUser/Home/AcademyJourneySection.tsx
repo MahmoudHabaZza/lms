@@ -37,7 +37,7 @@ const journeyPoints: JourneyPoint[] = [
         subtitle: 'إنجاز رسمي بعد كل مستوى',
         icon: BadgeCheck,
         bubble: 'border-orange-500 bg-white text-orange-500',
-        color: '#f97316',
+        color: 'var(--site-primary-color)',
     },
     {
         title: 'حساب خاص لمتابعة أداء الأبناء',
@@ -51,7 +51,7 @@ const journeyPoints: JourneyPoint[] = [
         subtitle: 'كل مستوى ينتهي بإنجاز ممتع',
         icon: Code2,
         bubble: 'border-amber-500 bg-white text-amber-600',
-        color: '#f59e0b',
+        color: 'var(--site-primary-500)',
     },
 ];
 
@@ -84,10 +84,16 @@ export default function AcademyJourneySection() {
                 />
 
                 <div className="relative mx-auto max-w-[1320px] px-4 sm:px-8">
-                    <h3 className="academy-title-group flex items-center justify-center gap-1 text-center font-playpen-arabic text-[clamp(1.9rem,4.3vw,3.6rem)] font-bold leading-tight text-slate-900">
-                        <span className="academy-bracket academy-bracket-left text-orange-500" style={{fontFamily: "'Fira Code', monospace"}}>{'<'}/</span>
+                    <h3 className="academy-title-group flex items-center justify-center gap-4 text-center font-playpen-arabic text-[clamp(1.9rem,4.3vw,3.6rem)] font-bold leading-tight text-slate-900">
+                        <span className="inline-flex items-center gap-3" aria-hidden="true">
+                            <span className="h-0.5 w-10 rounded-full bg-gradient-to-r from-transparent via-orange-300 to-orange-500 sm:w-16" />
+                            <span className="h-4 w-4 rounded-full border-[3px] border-orange-400 bg-white shadow-[0_0_0_6px_color-mix(in_srgb,var(--site-primary-400)_18%,transparent)]" />
+                        </span>
                         <span>رحلة في عالم كيد كودر</span>
-                        <span className="academy-bracket academy-bracket-right text-orange-500" style={{fontFamily: "'Fira Code', monospace"}}>{">"}                        </span>
+                        <span className="inline-flex items-center gap-3" aria-hidden="true">
+                            <span className="h-4 w-4 rounded-full border-[3px] border-orange-400 bg-white shadow-[0_0_0_6px_color-mix(in_srgb,var(--site-primary-400)_18%,transparent)]" />
+                            <span className="h-0.5 w-10 rounded-full bg-gradient-to-l from-transparent via-orange-300 to-orange-500 sm:w-16" />
+                        </span>
                     </h3>
 
                     <div className="mt-3 text-center font-playpen-arabic text-sm text-slate-500">
@@ -108,7 +114,7 @@ export default function AcademyJourneySection() {
                                     onFocus={() => setActivePoint(index)}
                                     className={`relative flex w-full items-center justify-between gap-4 rounded-2xl border bg-white/90 px-5 py-4 text-right backdrop-blur-sm transform-gpu transition-transform duration-300 ease-out ${
                                         isActive
-                                            ? 'scale-105 border-orange-300 shadow-[0_20px_44px_-28px_rgba(249,115,22,0.92)] z-20'
+                                            ? 'scale-105 border-orange-300 shadow-[0_20px_44px_-28px_color-mix(in_srgb,var(--site-primary-color)_92%,transparent)] z-20'
                                             : 'border-white/70 shadow-[0_14px_28px_-24px_rgba(15,23,42,0.55)]'
                                     } ${index % 2 === 1 ? 'sm:translate-y-4' : ''} ${isLastOdd ? 'sm:col-span-2 sm:mx-auto sm:w-[68%] sm:translate-y-0' : ''}`}
                                 onMouseLeave={() => setActivePoint(activePoint === index ? -1 : activePoint)}
@@ -245,7 +251,7 @@ export default function AcademyJourneySection() {
                                         onFocus={() => setActivePoint(index)}
                                         className={`absolute h-[76px] rounded-[20px] border bg-white/90 text-center backdrop-blur-sm transform-gpu transition-all duration-300 ease-out ${
                                             isActive
-                                                ? 'scale-105 border-orange-300 shadow-[0_26px_48px_-30px_rgba(249,115,22,0.85)] z-30'
+                                                ? 'scale-105 border-orange-300 shadow-[0_26px_48px_-30px_color-mix(in_srgb,var(--site-primary-color)_85%,transparent)] z-30'
                                                 : 'border-white/70 shadow-[0_18px_34px_-28px_rgba(15,23,42,0.6)]'
                                         }`}
                                         style={{
@@ -286,3 +292,4 @@ export default function AcademyJourneySection() {
         </div>
     );
 }
+

@@ -1,4 +1,4 @@
-import { Link, useForm } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import type { FormEvent } from 'react';
 import AdminLayout from '../layouts/admin-layout';
 import CourseForm from './course-form';
@@ -8,6 +8,9 @@ export default function ProgrammingCoursesCreate({
 }: {
     instructors: { id: number; name: string }[];
 }) {
+    const page = usePage<{ settings?: { primary_color?: string } }>();
+    const primaryColor = page.props.settings?.primary_color?.trim() ?? '';
+
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         thumbnail: '',
@@ -17,7 +20,7 @@ export default function ProgrammingCoursesCreate({
         sessions_count: 12,
         sessions_per_week: 1,
         badge: '',
-        accent_color: '#f97316',
+        accent_color: primaryColor,
         sort_order: 0,
         status: true,
         instructor_id: null as number | null,
@@ -56,3 +59,4 @@ export default function ProgrammingCoursesCreate({
         </AdminLayout>
     );
 }
+

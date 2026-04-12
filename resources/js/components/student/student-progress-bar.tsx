@@ -14,10 +14,11 @@ export function StudentProgressBar({ value, label }: StudentProgressBarProps) {
             </div>
             <div className="h-3 overflow-hidden rounded-full bg-slate-100">
                 <div
-                    className="h-full rounded-full bg-[linear-gradient(90deg,#f97316_0%,#fb923c_45%,#38bdf8_100%)] transition-[width] duration-700"
+                    className="h-full rounded-full bg-[linear-gradient(90deg,var(--site-primary-color)_0%,var(--site-primary-400)_45%,#38bdf8_100%)] transition-[width] duration-700"
                     style={{ width: `${clamped}%` }}
                 />
             </div>
         </div>
     );
 }
+

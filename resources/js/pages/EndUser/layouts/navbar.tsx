@@ -1,5 +1,6 @@
 ﻿import { Link, router, usePage } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 interface MenuItem {
     label: string;
@@ -7,15 +8,17 @@ interface MenuItem {
     child?: MenuItem[];
 }
 
-const mainMenu: MenuItem[] = [
-    { label: 'سياسة الخصوصية', link: '/pages/privacy-policy' },
-    { label: 'تواصل معنا', link: '/contact' },
-    { label: 'انضم لنا', link: '/join-us' },
-    { label: 'الصفحة الرئيسية', link: '/' },
-];
-
 const Navbar: React.FC = () => {
     const { url, settings, auth } = usePage<any>().props;
+    const loginLabel = settings?.navbar_login_label?.trim() || 'تسجيل الدخول';
+    const bookNowLabel = settings?.navbar_book_now_label?.trim() || 'احجز الآن';
+    const searchPlaceholder = settings?.navbar_search_placeholder?.trim() || 'ابحث...';
+    const searchButtonLabel = settings?.navbar_search_button_label?.trim() || 'بحث';
+    const navHomeLabel = settings?.navbar_menu_home_label?.trim() || 'الصفحة الرئيسية';
+    const navJoinLabel = settings?.navbar_menu_join_label?.trim() || 'انضم لنا';
+    const navFavoritesLabel = settings?.navbar_menu_favorites_label?.trim() || 'المفضلة';
+    const navContactLabel = settings?.navbar_menu_contact_label?.trim() || 'تواصل معنا';
+    const navPrivacyLabel = settings?.navbar_menu_privacy_label?.trim() || 'سياسة الخصوصية';
 
     const [mobileOpen, setMobileOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -68,6 +71,35 @@ const Navbar: React.FC = () => {
             document.body.style.overflow = '';
         };
     }, [isSearchOpen]);
+
+    const handleFavoritesNavigation = async (event: React.MouseEvent<HTMLAnchorElement>) => {
+        const user = auth?.user;
+        if (user) {
+            return;
+        }
+
+        event.preventDefault();
+        const result = await Swal.fire({
+            icon: 'warning',
+            title: 'سجل دخولك أولًا',
+            text: 'لازم تسجل الدخول كطالب علشان تفتح صفحة المفضلة.',
+            confirmButtonText: 'تسجيل الدخول',
+            showCancelButton: true,
+            cancelButtonText: 'إلغاء',
+        });
+
+        if (result.isConfirmed) {
+            window.location.href = '/student/login';
+        }
+    };
+
+    const mainMenu: MenuItem[] = [
+        { label: navPrivacyLabel, link: '/pages/privacy-policy' },
+        { label: navContactLabel, link: '/contact' },
+        { label: navFavoritesLabel, link: '/favorites' },
+        { label: navJoinLabel, link: '/join-us' },
+        { label: navHomeLabel, link: '/' },
+    ];
 
     return (
         <>
@@ -166,7 +198,7 @@ const Navbar: React.FC = () => {
                                         href="/login"
                                         className="rounded-md border border-color-primary bg-white px-4 py-2 font-playpen-arabic text-color-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-color-primary hover:text-white hover:shadow-xl"
                                     >
-                                        تسجيل الدخول
+                                        {loginLabel}
                                     </a>
                                 </li>
                             )}
@@ -175,7 +207,7 @@ const Navbar: React.FC = () => {
                                     href="/bookings"
                                     className="rounded-md border border-color-primary bg-color-primary px-4 py-2 font-playpen-arabic text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-white hover:text-color-primary hover:shadow-xl"
                                 >
-                                    احجز الآن
+                                    {bookNowLabel}
                                 </a>
                             </li>
                         </ul>
@@ -189,6 +221,7 @@ const Navbar: React.FC = () => {
                                                 url === menuItem.link ? 'text-color-primary' : ''
                                             }`}
                                             href={menuItem.link}
+                                            onClick={menuItem.link === '/favorites' ? handleFavoritesNavigation : undefined}
                                         >
                                             {menuItem.label}
                                             {menuItem.child && <i className="far fa-angle-down ml-1"></i>}
@@ -249,7 +282,12 @@ const Navbar: React.FC = () => {
                             <li key={menuItem.link} className="w-full text-center">
                                 <a
                                     href={menuItem.link}
-                                    onClick={() => setMobileOpen(false)}
+                                    onClick={(event) => {
+                                        if (menuItem.link === '/favorites') {
+                                            void handleFavoritesNavigation(event);
+                                        }
+                                        setMobileOpen(false);
+                                    }}
                                     className={`block py-2 text-lg font-semibold capitalize text-gray-900 transition-all duration-300 hover:text-color-primary ${
                                         url === menuItem.link ? 'text-color-primary' : ''
                                     }`}
@@ -300,14 +338,14 @@ const Navbar: React.FC = () => {
                                 className="rounded-md border border-color-primary bg-white px-4 py-2 font-playpen-arabic text-color-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-color-primary hover:text-white hover:shadow-xl"
                                 onClick={() => setMobileOpen(false)}
                             >
-                                تسجيل الدخول
+                                {loginLabel}
                             </a>
                         )}
                         <a
                             href="/bookings"
                             className="rounded-md border border-color-primary bg-color-primary px-4 py-2 font-playpen-arabic text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-white hover:text-color-primary hover:shadow-xl"
                         >
-                            احجز الآن
+                            {bookNowLabel}
                         </a>
                     </div>
                 </div>
@@ -329,7 +367,7 @@ const Navbar: React.FC = () => {
                     </button>
                     <input
                         type="text"
-                        placeholder="Search..."
+                        placeholder={searchPlaceholder}
                         name="search"
                         className="w-full rounded-md border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-color-primary"
                     />
@@ -337,7 +375,7 @@ const Navbar: React.FC = () => {
                         type="submit"
                         className="mt-4 w-full rounded-md bg-color-primary py-2 text-white transition-colors hover:bg-color-primary/90"
                     >
-                        Search
+                        {searchButtonLabel}
                     </button>
                 </form>
             </div>

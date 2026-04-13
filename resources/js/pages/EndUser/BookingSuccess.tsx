@@ -1,11 +1,15 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { CheckCircle2, ArrowLeft } from 'lucide-react';
 import MainLayout from './layouts/master';
 
 export default function BookingSuccess() {
+    const { settings } = usePage<{ settings?: Record<string, string | null | undefined> }>().props;
+    const successTitle = settings?.booking_success_title?.trim() || 'تم إرسال طلب الحجز بنجاح';
+    const successDescription = settings?.booking_success_description?.trim() || 'شكرًا لك! تم استلام طلبك وسيقوم فريقنا بالتواصل معك قريبًا لتأكيد البيانات.';
+    const homeButtonLabel = settings?.booking_success_home_button?.trim() || 'العودة للرئيسية';
     return (
         <MainLayout>
-            <Head title="?? ????? ????????" />
+            <Head title={successTitle} />
 
             <div dir="rtl" lang="ar" className="relative min-h-screen overflow-hidden bg-gradient-to-br from-orange-50 via-white to-blue-50 text-right">
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_color-mix(in_srgb,var(--site-primary-color)_20%,transparent),_rgba(255,255,255,0.3)_45%,_rgba(255,255,255,0.7)_100%)]"></div>
@@ -17,31 +21,16 @@ export default function BookingSuccess() {
                             </div>
 
                             <h1 className="mt-6 font-playpen-arabic text-3xl font-extrabold text-slate-800 sm:text-4xl">
-                                ?? ????? ?????? ????? ?????
+                                {successTitle}
                             </h1>
                             <p className="mx-auto mt-3 max-w-2xl text-base text-slate-600 sm:text-lg">
-                                ????? ??! ?? ?????? ???? ????? ??????? ??? ?????? ?????? ?????? ?????.
+                                {successDescription}
                             </p>
-
-                            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-right">
-                                    <h2 className="text-sm font-bold text-slate-700">?? ?????? ????????</h2>
-                                    <p className="mt-2 text-sm text-slate-600">
-                                        ?????? ?????? ?????? ????? ??????? ??? ?????? ???? ??????? ???????.
-                                    </p>
-                                </div>
-                                <div className="rounded-2xl border border-orange-100 bg-orange-50 p-5 text-right">
-                                    <h2 className="text-sm font-bold text-orange-700">?? ????? ????? ?????</h2>
-                                    <p className="mt-2 text-sm text-orange-700">
-                                        ????? ??????? ???? ??? ?????? ???? ???????? ???? ???? ?? ???? ???.
-                                    </p>
-                                </div>
-                            </div>
 
                             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                                 <Link href="/" className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 transition hover:border-slate-300 sm:w-auto">
                                     <ArrowLeft className="h-4 w-4" />
-                                    ?????? ????????
+                                    {homeButtonLabel}
                                 </Link>
                             </div>
                         </div>

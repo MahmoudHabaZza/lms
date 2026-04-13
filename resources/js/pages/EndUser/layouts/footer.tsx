@@ -32,6 +32,23 @@ export default function Footer() {
     const whatsappNumber = (settings?.whatsapp_number ?? '').replace(/[^0-9]/g, '');
     const whatsappUrl = whatsappNumber ? `https://wa.me/${whatsappNumber}` : '';
     const logo = settings?.site_logo ?? '/assets/EndUser/images/logo.png';
+    const footerDescription = settings?.footer_description?.trim() || 'منصة تعليمية عصرية لتعليم البرمجة للأطفال والمبتدئين بأسلوب ممتع وتفاعلي، مع متابعة دقيقة لمسار التعلم.';
+    const footerNewsletterDescription = settings?.footer_newsletter_description?.trim() || 'حدّث بيانات التواصل والسوشيال من لوحة التحكم لتظهر هنا تلقائيًا.';
+    const footerCopyrightTemplate = settings?.footer_copyright?.trim() || '© {year} {site_name}. جميع الحقوق محفوظة.';
+    const footerCopyright = footerCopyrightTemplate
+        .replaceAll('{year}', String(new Date().getFullYear()))
+        .replaceAll('{site_name}', siteName);
+    const footerQuickLinksTitle = settings?.footer_quick_links_title?.trim() || 'روابط سريعة';
+    const footerHelpLinksTitle = settings?.footer_help_links_title?.trim() || 'المساعدة';
+    const footerStayConnectedTitle = settings?.footer_stay_connected_title?.trim() || 'ابق على تواصل';
+    const footerHomeLabel = settings?.footer_link_home_label?.trim() || 'الرئيسية';
+    const footerPrivacyLabel = settings?.footer_link_privacy_label?.trim() || 'سياسة الخصوصية';
+    const footerBookingsLabel = settings?.footer_link_bookings_label?.trim() || 'احجز الآن';
+    const footerJoinUsLabel = settings?.footer_link_join_us_label?.trim() || 'انضم لنا';
+    const footerContactLabel = settings?.footer_link_contact_label?.trim() || 'تواصل معنا';
+    const footerStudentLoginLabel = settings?.footer_help_student_login_label?.trim() || 'دخول الطالب';
+    const footerAdminLoginLabel = settings?.footer_help_admin_login_label?.trim() || 'دخول الإدارة';
+    const footerSupportLabel = settings?.footer_help_support_label?.trim() || 'الدعم الفني';
 
     return (
         <footer className="footer-v4" dir="rtl" lang="ar">
@@ -46,7 +63,7 @@ export default function Footer() {
                     <div>
                         <p className="footer-v4-tag">{siteName}</p>
                         <h3 className="footer-v4-title">{siteName}</h3>
-                        <p className="footer-v4-desc">منصة تعليمية عصرية لتعليم البرمجة للأطفال والمبتدئين بأسلوب ممتع وتفاعلي، مع متابعة دقيقة لمسار التعلم.</p>
+                        <p className="footer-v4-desc">{footerDescription}</p>
 
                         <div className="footer-v4-contact">
                             {address && (
@@ -72,33 +89,33 @@ export default function Footer() {
                 </div>
 
                 <div className="footer-v4-card">
-                    <h4 className="footer-v4-heading">روابط سريعة</h4>
+                    <h4 className="footer-v4-heading">{footerQuickLinksTitle}</h4>
                     <ul className="footer-v4-links">
-                        <li><a href="/">الرئيسية</a></li>
-                        <li><a href="/pages/privacy-policy">سياسة الخصوصية</a></li>
-                        <li><a href="/bookings">احجز الآن</a></li>
-                        <li><a href="/join-us">انضم لنا</a></li>
-                        <li><a href="/contact">تواصل معنا</a></li>
+                        <li><a href="/">{footerHomeLabel}</a></li>
+                        <li><a href="/pages/privacy-policy">{footerPrivacyLabel}</a></li>
+                        <li><a href="/bookings">{footerBookingsLabel}</a></li>
+                        <li><a href="/join-us">{footerJoinUsLabel}</a></li>
+                        <li><a href="/contact">{footerContactLabel}</a></li>
                     </ul>
                 </div>
 
                 <div className="footer-v4-card">
-                    <h4 className="footer-v4-heading">المساعدة</h4>
+                    <h4 className="footer-v4-heading">{footerHelpLinksTitle}</h4>
                     <ul className="footer-v4-links">
-                        <li><a href="/student/login">دخول الطالب</a></li>
-                        <li><a href="/admin/login">دخول الإدارة</a></li>
-                        <li><a href="/contact">الدعم الفني</a></li>
+                        <li><a href="/student/login">{footerStudentLoginLabel}</a></li>
+                        <li><a href="/admin/login">{footerAdminLoginLabel}</a></li>
+                        <li><a href="/contact">{footerSupportLabel}</a></li>
                     </ul>
                 </div>
 
                 <div className="footer-v4-card footer-v4-newsletter">
-                    <h4 className="footer-v4-heading">ابق على تواصل</h4>
-                    <p className="mt-2 footer-v4-desc">حدّث بيانات التواصل والسوشيال من لوحة التحكم لتظهر هنا تلقائيًا.</p>
+                    <h4 className="footer-v4-heading">{footerStayConnectedTitle}</h4>
+                    <p className="mt-2 footer-v4-desc">{footerNewsletterDescription}</p>
                 </div>
             </div>
 
             <div className="footer-v4-bottom">
-                <p>© 2026 {siteName}. جميع الحقوق محفوظة.</p>
+                <p>{footerCopyright}</p>
 
                 <div className="footer-v4-social">
                     {facebookUrl && (

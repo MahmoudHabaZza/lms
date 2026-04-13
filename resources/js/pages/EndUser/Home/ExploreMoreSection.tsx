@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight, Play, X } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 type StudentReel = {
@@ -11,8 +12,6 @@ type StudentReel = {
     quote: string | null;
 };
 
-const exploreTitle = 'آراء الطلاب وأولياء الأمور';
-
 export default function ExploreMoreSection({
     studentReels = [],
     className = '',
@@ -20,6 +19,10 @@ export default function ExploreMoreSection({
     studentReels?: StudentReel[];
     className?: string;
 }) {
+    const { settings } = usePage<{ settings?: Record<string, string | null> }>().props;
+    const exploreTitle = settings?.home_explore_title || 'آراء الطلاب وأولياء الأمور';
+    const exploreSubtitle = settings?.home_explore_subtitle || 'قصص حقيقية من طلابنا. اضغط على أي بطاقة لمشاهدة الفيديو.';
+
     const [activeReel, setActiveReel] = useState<StudentReel | null>(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
@@ -89,7 +92,7 @@ export default function ExploreMoreSection({
                         <span>{exploreTitle}</span>
                         <span className="academy-bracket academy-bracket-right text-orange-500" style={{fontFamily: "'Fira Code', monospace"}}>{">"}                        </span>
                     </h2>
-                    <p className="mt-3 text-sm text-slate-600 sm:text-base">قصص حقيقية من طلابنا. اضغط على أي بطاقة لمشاهدة الفيديو.</p>
+                    <p className="mt-3 text-sm text-slate-600 sm:text-base">{exploreSubtitle}</p>
                 </div>
 
                 {normalizedReels.length > 0 ? (

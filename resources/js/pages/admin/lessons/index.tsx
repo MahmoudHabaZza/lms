@@ -12,7 +12,9 @@ type Lesson = {
     course_id: number | null;
     course_title?: string | null;
     order?: number | null;
+    video_source?: 'drive' | 'upload' | 'youtube';
     video_url?: string | null;
+    video_path?: string | null;
 };
 
 export default function LessonsIndex({ lessons }: { lessons: PaginatedData<Lesson> }) {
@@ -29,7 +31,7 @@ export default function LessonsIndex({ lessons }: { lessons: PaginatedData<Lesso
                         <div className="text-right">
                             <div className="text-xs font-bold tracking-[0.3em] text-orange-500">المحتوى الدراسي</div>
                             <h1 className="mt-2 text-2xl font-black text-slate-900">إدارة الدروس</h1>
-                            <p className="mt-2 text-sm leading-7 text-slate-600">راجع ترتيب الدروس وروابط الفيديو وربطها بالكورسات الحالية.</p>
+                            <p className="mt-2 text-sm leading-7 text-slate-600">راجع ترتيب الدروس ومصادر الفيديو (Drive/Upload/YouTube) وربطها بالكورسات الحالية.</p>
                         </div>
                         <Link href="/admin/lessons/create" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-orange-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-500">
                             <BookOpenCheck size={18} />
@@ -61,7 +63,13 @@ export default function LessonsIndex({ lessons }: { lessons: PaginatedData<Lesso
                                         <td className="px-4 py-4 font-semibold text-slate-900">{lesson.title}</td>
                                         <td className="px-4 py-4 text-slate-600">{lesson.course_title ?? `#${lesson.course_id ?? '-'}`}</td>
                                         <td className="px-4 py-4 text-slate-600">{lesson.order ?? '-'}</td>
-                                        <td className="px-4 py-4 text-slate-600">{lesson.video_url ? 'متوفر' : 'غير متوفر'}</td>
+                                        <td className="px-4 py-4 text-slate-600">
+                                            {lesson.video_source === 'upload'
+                                                ? (lesson.video_path ? 'رفع فيديو' : 'بدون ملف')
+                                                : lesson.video_source === 'youtube'
+                                                    ? (lesson.video_url ? 'YouTube' : 'بدون رابط')
+                                                    : (lesson.video_url ? 'Drive' : 'بدون رابط')}
+                                        </td>
                                         <td className="px-4 py-4">
                                             <div className="flex items-center justify-start gap-3">
                                                 <Link href={`/admin/lessons/${lesson.id}/edit`} className="inline-flex items-center gap-2 rounded-xl border border-blue-100 bg-blue-50 px-3 py-2 font-medium text-blue-700 transition hover:bg-blue-100">

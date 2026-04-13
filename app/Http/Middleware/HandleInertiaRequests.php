@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Notification;
 use App\Models\Setting;
+use App\Support\DateValue;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -51,7 +52,7 @@ class HandleInertiaRequests extends Middleware
                     'username' => $user->username,
                     'phone_number' => $user->phone_number,
                     'profile_picture' => $user->profile_picture,
-                    'created_at' => $user->created_at?->toIso8601String(),
+                    'created_at' => DateValue::iso8601($user->created_at),
                     'role' => $user->role,
                     'is_admin' => (bool) $user->is_admin,
                     'is_active' => (bool) $user->is_active,

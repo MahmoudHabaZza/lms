@@ -24,7 +24,9 @@ type LessonPageProps = {
             id: number;
             title: string;
             description: string | null;
+            video_source: 'drive' | 'upload' | 'youtube';
             video_url: string | null;
+            embed_url: string | null;
             duration_minutes: number;
         };
         resources: { id: number; title: string; download_url: string }[];
@@ -51,10 +53,18 @@ export default function LessonView() {
                 <div className="space-y-6">
                     <section className="overflow-hidden rounded-[30px] border border-white/70 bg-white shadow-[0_24px_60px_-36px_rgba(15,23,42,0.28)]">
                         <div className="aspect-video bg-[linear-gradient(135deg,#fed7aa_0%,#fef3c7_45%,#bae6fd_100%)]">
-                            {lessonPage.content.video_url ? (
+                            {lessonPage.content.video_source === 'upload' && lessonPage.content.video_url ? (
+                                <video
+                                    className="h-full w-full"
+                                    src={lessonPage.content.video_url}
+                                    controls
+                                    controlsList="nodownload"
+                                    preload="metadata"
+                                />
+                            ) : lessonPage.content.embed_url ? (
                                 <iframe
                                     title={lessonPage.content.title}
-                                    src={lessonPage.content.video_url}
+                                    src={lessonPage.content.embed_url}
                                     className="h-full w-full"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen

@@ -1,5 +1,5 @@
-import { Head, Link } from '@inertiajs/react';
-import { BookOpen, CheckCircle2, Clock3, GraduationCap, Layers3, PlayCircle, Rocket, Star, Target } from 'lucide-react';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { BookOpen, CheckCircle2, Clock3, Layers3, PlayCircle, Rocket, Star, Target } from 'lucide-react';
 import { CourseCurriculum } from '@/components/end-user/course-curriculum';
 import { CourseShowcaseCard } from '@/components/end-user/course-showcase-card';
 import type { PublicCourseCard } from '@/components/end-user/course-showcase-card';
@@ -58,9 +58,18 @@ type CourseDetailsPageProps = {
 };
 
 export default function CourseDetails({ course }: CourseDetailsPageProps) {
+    const { settings } = usePage<{ settings?: Record<string, string | null | undefined> }>().props;
     const learningPoints = course.what_you_will_learn.filter(Boolean);
     const totalLessons = course.curriculum_sections.reduce((sum, s) => sum + s.lessons.length, 0);
     const targetAudience = course.target_audience.filter(Boolean);
+    const ctaLabel = settings?.course_details_cta_label?.trim() || 'احجز مقعدك الآن';
+    const aboutTitle = settings?.course_details_about_title?.trim() || '📖 عن الكورس';
+    const learnTitle = settings?.course_details_learn_title?.trim() || '🎯 ماذا سيتعلم طفلك؟';
+    const audienceTitle = settings?.course_details_audience_title?.trim() || '👨‍👩‍👧‍👦 الكورس ده مناسب لمين؟';
+    const contentTitle = settings?.course_details_content_title?.trim() || '📚 محتوى الكورس';
+    const bannerTitle = settings?.course_details_banner_title?.trim() || 'جاهز تبدأ رحلة التعلم؟';
+    const bannerDescription = settings?.course_details_banner_description?.trim() || 'سجّل ابنك اليوم وابدأ رحلة تعليم البرمجة بأسلوب ممتع وتفاعلي يساعده يكتسب مهارات المستقبل خطوة بخطوة.';
+    const relatedTitle = settings?.course_details_related_title?.trim() || '🌟 كورسات تانية ممكن تعجبك';
 
     return (
         <MainLayout>
@@ -127,32 +136,8 @@ export default function CourseDetails({ course }: CourseDetailsPageProps) {
                                 )}
                             </div>
 
-                            {/* Instructor mini */}
-                            {course.instructor?.name && (
-                                <div className="flex items-center justify-center gap-3 lg:justify-start">
-                                    {course.instructor.image ? (
-                                        <img
-                                            src={course.instructor.image}
-                                            alt={course.instructor.name}
-                                            className="h-10 w-10 rounded-full border-2 border-white/50 object-cover"
-                                        />
-                                    ) : (
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-white">
-                                            <GraduationCap className="size-5" />
-                                        </div>
-                                    )}
-                                    <span className="text-sm font-bold text-white/90">المدرب: {course.instructor.name}</span>
-                                </div>
-                            )}
-
-                            {/* Price + CTA */}
+                            {/* CTA */}
                             <div className="flex flex-wrap items-center justify-center gap-5 pt-3 lg:justify-start">
-                                <div className="flex flex-col items-center lg:items-start">
-                                    <span className="text-sm font-semibold text-white/70">السعر</span>
-                                    <span className="text-3xl font-black text-white drop-shadow">
-                                        {course.pricing.label}
-                                    </span>
-                                </div>
                                 <Button
                                     asChild
                                     className="h-14 rounded-full bg-white px-10 text-lg font-black shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl"
@@ -160,7 +145,7 @@ export default function CourseDetails({ course }: CourseDetailsPageProps) {
                                 >
                                     <Link href={course.cta.url}>
                                         <Rocket className="me-2 size-5" />
-                                        احجز مقعدك الآن
+                                        {ctaLabel}
                                     </Link>
                                 </Button>
                             </div>
@@ -186,9 +171,7 @@ export default function CourseDetails({ course }: CourseDetailsPageProps) {
                 {course.description && (
                     <section className="mx-auto max-w-5xl px-5 py-14">
                         <div className="rounded-3xl border border-slate-100 bg-white p-8 shadow-sm sm:p-10">
-                            <h2 className="mb-6 text-2xl font-extrabold text-slate-800 sm:text-3xl">
-                                📖 عن الكورس
-                            </h2>
+                            <h2 className="mb-6 text-2xl font-extrabold text-slate-800 sm:text-3xl">{aboutTitle}</h2>
                             <p className="text-base leading-8 text-slate-600">
                                 {course.description}
                             </p>
@@ -210,9 +193,7 @@ export default function CourseDetails({ course }: CourseDetailsPageProps) {
                 {learningPoints.length > 0 && (
                     <section className="py-14" style={{ background: 'linear-gradient(to bottom, var(--site-primary-50), white)' }}>
                         <div className="mx-auto max-w-5xl px-5">
-                            <h2 className="mb-8 text-center text-2xl font-extrabold text-slate-800 sm:text-3xl">
-                                🎯 ماذا سيتعلم طفلك؟
-                            </h2>
+                            <h2 className="mb-8 text-center text-2xl font-extrabold text-slate-800 sm:text-3xl">{learnTitle}</h2>
                             <div className="grid gap-4 sm:grid-cols-2">
                                 {learningPoints.map((point, index) => (
                                     <div
@@ -236,9 +217,7 @@ export default function CourseDetails({ course }: CourseDetailsPageProps) {
                 {/* ─── Target Audience ─── */}
                 {targetAudience.length > 0 && (
                     <section className="mx-auto max-w-5xl px-5 py-14">
-                        <h2 className="mb-8 text-center text-2xl font-extrabold text-slate-800 sm:text-3xl">
-                            👨‍👩‍👧‍👦 الكورس ده مناسب لمين؟
-                        </h2>
+                        <h2 className="mb-8 text-center text-2xl font-extrabold text-slate-800 sm:text-3xl">{audienceTitle}</h2>
                         <div className="flex flex-wrap justify-center gap-4">
                             {targetAudience.map((audience) => (
                                 <div
@@ -257,9 +236,7 @@ export default function CourseDetails({ course }: CourseDetailsPageProps) {
                 {course.curriculum_sections.length > 0 && (
                     <section id="course-content" className="bg-white py-14">
                         <div className="mx-auto max-w-5xl px-5">
-                            <h2 className="mb-2 text-center text-2xl font-extrabold text-slate-800 sm:text-3xl">
-                                📚 محتوى الكورس
-                            </h2>
+                            <h2 className="mb-2 text-center text-2xl font-extrabold text-slate-800 sm:text-3xl">{contentTitle}</h2>
                             <p className="mb-8 text-center text-sm text-slate-500">
                                 {course.curriculum_sections.length} قسم • {totalLessons} درس • {course.duration_label}
                             </p>
@@ -268,60 +245,32 @@ export default function CourseDetails({ course }: CourseDetailsPageProps) {
                     </section>
                 )}
 
-                {/* ─── Instructor ─── */}
-                {course.instructor?.name && (
-                    <section className="mx-auto max-w-5xl px-5 py-14">
-                        <h2 className="mb-8 text-center text-2xl font-extrabold text-slate-800 sm:text-3xl">
-                            👨‍🏫 المدرب
-                        </h2>
-                        <div className="flex flex-col items-center gap-6 rounded-3xl border border-slate-100 bg-white p-8 shadow-sm sm:flex-row sm:items-start sm:p-10">
-                            {course.instructor.image ? (
-                                <img
-                                    src={course.instructor.image}
-                                    alt={course.instructor.name}
-                                    className="h-24 w-24 shrink-0 rounded-2xl border-4 object-cover shadow-md"
-                                    style={{ borderColor: 'var(--site-primary-200)' }}
-                                />
-                            ) : (
-                                <div
-                                    className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl text-white shadow-md"
-                                    style={{ background: 'linear-gradient(135deg, var(--site-primary-400), var(--site-primary-600))' }}
-                                >
-                                    <GraduationCap className="size-10" />
-                                </div>
-                            )}
-                            <div className="text-center sm:text-right">
-                                <h3 className="text-xl font-extrabold text-slate-800">{course.instructor.name}</h3>
-                                {course.instructor.bio && (
-                                    <p className="mt-2 text-sm leading-7 text-slate-600">{course.instructor.bio}</p>
-                                )}
-                            </div>
-                        </div>
-                    </section>
-                )}
-
                 {/* ─── CTA Banner ─── */}
-                <section className="py-14">
-                    <div className="mx-auto max-w-3xl px-5">
+                <section className="py-14 sm:py-16">
+                    <div className="mx-auto max-w-none px-5 sm:px-8 lg:px-12">
                         <div
-                            className="flex flex-col items-center gap-6 rounded-3xl p-10 text-center shadow-xl sm:p-12"
-                            style={{ background: 'linear-gradient(to left, var(--site-primary-500), var(--site-primary-600), var(--site-primary-700))' }}
+                            className="relative overflow-hidden rounded-[2rem] px-6 py-12 text-center shadow-[0_24px_70px_rgba(15,23,42,0.22)] sm:px-10 sm:py-14 lg:px-16"
+                            style={{ background: 'linear-gradient(120deg, var(--site-primary-700), var(--site-primary-600), var(--site-primary-500))' }}
                         >
-                            <span className="text-5xl">🚀</span>
-                            <h3 className="text-2xl font-extrabold text-white sm:text-3xl">جاهز تبدأ رحلة التعلم؟</h3>
-                            <p className="max-w-md text-base leading-7 text-white/90">
-                                سجّل ابنك دلوقتي وخليه يبدأ يتعلم البرمجة بطريقة ممتعة وتفاعلية!
-                            </p>
-                            <Button
-                                asChild
-                                className="h-14 rounded-full bg-white px-10 text-lg font-black shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-                                style={{ color: 'var(--site-primary-600)' }}
-                            >
-                                <Link href={course.cta.url}>
-                                    <Rocket className="me-2 size-5" />
-                                    احجز مقعدك الآن
-                                </Link>
-                            </Button>
+                            <div className="pointer-events-none absolute -left-16 top-1/3 h-56 w-56 rounded-full bg-white/10 blur-2xl" />
+                            <div className="pointer-events-none absolute -right-16 -top-12 h-64 w-64 rounded-full bg-white/15 blur-2xl" />
+                            <div className="relative mx-auto flex max-w-4xl flex-col items-center gap-6">
+                                <span className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-4xl backdrop-blur-sm">🚀</span>
+                                <h3 className="text-2xl font-extrabold leading-tight text-white sm:text-3xl lg:text-4xl">{bannerTitle}</h3>
+                                <p className="max-w-2xl text-base leading-8 text-white/90 sm:text-lg">
+                                    {bannerDescription}
+                                </p>
+                                <Button
+                                    asChild
+                                    className="h-14 rounded-full bg-white px-10 text-lg font-black shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                                    style={{ color: 'var(--site-primary-700)' }}
+                                >
+                                    <Link href={course.cta.url}>
+                                        <Rocket className="me-2 size-5" />
+                                        {ctaLabel}
+                                    </Link>
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -330,9 +279,7 @@ export default function CourseDetails({ course }: CourseDetailsPageProps) {
                 {course.related_courses.length > 0 && (
                     <section className="bg-white py-14">
                         <div className="mx-auto max-w-[1500px] px-4 sm:px-8">
-                            <h2 className="mb-8 text-center text-2xl font-extrabold text-slate-800 sm:text-3xl">
-                                🌟 كورسات تانية ممكن تعجبك
-                            </h2>
+                            <h2 className="mb-8 text-center text-2xl font-extrabold text-slate-800 sm:text-3xl">{relatedTitle}</h2>
                             <div
                                 className="scrollbar-hide flex flex-nowrap gap-5 overflow-x-auto scroll-smooth pb-5 pt-1"
                                 dir="ltr"

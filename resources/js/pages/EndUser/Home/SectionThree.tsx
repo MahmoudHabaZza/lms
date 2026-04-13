@@ -1,4 +1,5 @@
 ﻿import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
 type BannerSlide = {
@@ -10,17 +11,6 @@ type BannerSlide = {
     background_image: string | null;
 };
 
-const fallbackSlides: BannerSlide[] = [
-    {
-        id: 0,
-        title: 'أضف أول سلايد من لوحة التحكم',
-        sub_title: 'ادخل على Admin > Banner Slides',
-        description: 'تقدر تتحكم في العنوان والوصف والرابط بسهولة من لوحة الإدارة.',
-        button_link: '/admin/banner-slides',
-        background_image: '/assets/EndUser/images/hero-bg.jpg',
-    },
-];
-
 export default function SectionThree({
     slides = [],
     staticSection = null,
@@ -28,6 +18,18 @@ export default function SectionThree({
     slides?: BannerSlide[];
     staticSection?: { title?: string; description?: string } | null;
 }) {
+    const { settings } = usePage<any>().props;
+    const fallbackSlides: BannerSlide[] = [
+        {
+            id: 0,
+            title: settings?.home_hero_fallback_title?.trim() || 'أضف أول سلايد من لوحة التحكم',
+            sub_title: settings?.home_hero_fallback_subtitle?.trim() || 'ادخل على Admin > Banner Slides',
+            description: settings?.home_hero_fallback_description?.trim() || 'تقدر تتحكم في العنوان والوصف والرابط بسهولة من لوحة الإدارة.',
+            button_link: '/admin/banner-slides',
+            background_image: '/assets/EndUser/images/hero-bg.jpg',
+        },
+    ];
+    const heroCtaLabel = settings?.home_hero_cta_label?.trim() || 'احجز الآن';
     const safeSlides = slides.length > 0 ? slides : fallbackSlides;
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -101,7 +103,7 @@ export default function SectionThree({
                                 href={activeSlide.button_link}
                                 className="fp-banner-btn inline-flex min-w-52 items-center justify-center rounded-xl bg-orange-500 px-10 py-4 text-lg font-semibold text-white transition hover:bg-white hover:text-[var(--site-primary-color)] sm:min-w-64 sm:px-14 sm:py-5 sm:text-xl"
                             >
-                                احجز الآن
+                                {heroCtaLabel}
                             </a>
                         </div>
                     )}

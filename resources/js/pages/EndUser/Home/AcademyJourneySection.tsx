@@ -7,6 +7,7 @@ import {
     Users,
     UserRoundCheck,
 } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 type JourneyPoint = {
@@ -67,7 +68,10 @@ const desktopTreeLayout = [
 ];
 
 export default function AcademyJourneySection() {
+    const { settings } = usePage<any>().props;
     const [activePoint, setActivePoint] = useState(0);
+    const journeyTitle = settings?.home_journey_title?.trim() || 'رحلة في عالم كيد كودر';
+    const journeySubtitle = settings?.home_journey_subtitle?.trim() || 'تجربة تعليمية عملية بتصميم متابعة ذكي وممتع';
 
     return (
         <div className="flex flex-col">
@@ -89,7 +93,7 @@ export default function AcademyJourneySection() {
                             <span className="h-0.5 w-10 rounded-full bg-gradient-to-r from-transparent via-orange-300 to-orange-500 sm:w-16" />
                             <span className="h-4 w-4 rounded-full border-[3px] border-orange-400 bg-white shadow-[0_0_0_6px_color-mix(in_srgb,var(--site-primary-400)_18%,transparent)]" />
                         </span>
-                        <span>رحلة في عالم كيد كودر</span>
+                        <span>{journeyTitle}</span>
                         <span className="inline-flex items-center gap-3" aria-hidden="true">
                             <span className="h-4 w-4 rounded-full border-[3px] border-orange-400 bg-white shadow-[0_0_0_6px_color-mix(in_srgb,var(--site-primary-400)_18%,transparent)]" />
                             <span className="h-0.5 w-10 rounded-full bg-gradient-to-l from-transparent via-orange-300 to-orange-500 sm:w-16" />
@@ -97,7 +101,7 @@ export default function AcademyJourneySection() {
                     </h3>
 
                     <div className="mt-3 text-center font-playpen-arabic text-sm text-slate-500">
-                        تجربة تعليمية عملية بتصميم متابعة ذكي وممتع
+                        {journeySubtitle}
                     </div>
 
                     <div className="mt-7 grid gap-3.5 sm:grid-cols-2 lg:hidden">

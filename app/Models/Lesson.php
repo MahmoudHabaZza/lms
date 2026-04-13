@@ -6,7 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lesson extends Model
 {
-    protected $fillable = ['course_id', 'title', 'description', 'video_url', 'duration_minutes', 'order'];
+    public const VIDEO_SOURCE_DRIVE = 'drive';
+    public const VIDEO_SOURCE_UPLOAD = 'upload';
+    public const VIDEO_SOURCE_YOUTUBE = 'youtube';
+
+    protected $fillable = [
+        'course_id',
+        'title',
+        'description',
+        'video_source',
+        'video_url',
+        'video_path',
+        'duration_minutes',
+        'order',
+    ];
 
     protected $casts = [
         'duration_minutes' => 'integer',

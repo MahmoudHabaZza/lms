@@ -12,9 +12,11 @@ use App\Models\Resource;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\WishlistItem;
+use App\Support\DateValue;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class StudentCourseService
 {
@@ -242,7 +244,9 @@ class StudentCourseService
                 'id' => $lesson->id,
                 'title' => $lesson->title,
                 'description' => $lesson->description,
-                'video_url' => $lesson->video_url,
+                'video_source' => $lesson->video_source ?: Lesson::VIDEO_SOURCE_DRIVE,
+                'video_url' => $this->resolveLessonVideoUrl($lesson),
+                'embed_url' => $this->resolveLessonEmbedUrl($lesson),
                 'duration_minutes' => $lesson->duration_minutes,
                 'order' => $lesson->order,
             ],
@@ -331,8 +335,8 @@ class StudentCourseService
             'description' => $task->description,
             'course' => $task->course ? ['id' => $task->course->id, 'title' => $task->course->title] : null,
             'priority' => $task->priority,
-            'due_date' => $task->due_date?->toIso8601String(),
-            'due_date_label' => $task->due_date?->timezone(config('app.timezone'))->translatedFormat('d M Y - h:i A'),
+            'due_date' => DateValue::iso8601($task->due_date),
+            'due_date_label' => DateValue::localized($task->due_date, 'd M Y - h:i A', config('app.timezone')),
             'allow_resubmission' => (bool) $task->allow_resubmission,
             'task_file_url' => $this->fileUrl($task->file),
             'submission' => $submission ? [
@@ -340,16 +344,16 @@ class StudentCourseService
                 'status' => $submission->status,
                 'score' => $submission->score,
                 'feedback' => $submission->feedback,
-                'submitted_at' => $submission->submitted_at?->toIso8601String(),
-                'submitted_at_label' => $submission->submitted_at?->translatedFormat('d M Y - h:i A'),
+                'submitted_at' => DateValue::iso8601($submission->submitted_at),
+                'submitted_at_label' => DateValue::localized($submission->submitted_at, 'd M Y - h:i A'),
                 'file_url' => $this->fileUrl($submission->submission_file),
                 'submission_text' => $submission->submission_text,
                 'revisions' => $submission->revisions
                     ->sortByDesc('submitted_at')
                     ->map(fn ($revision) => [
                         'id' => $revision->id,
-                        'submitted_at' => $revision->submitted_at?->toIso8601String(),
-                        'submitted_at_label' => $revision->submitted_at?->translatedFormat('d M Y - h:i A'),
+                        'submitted_at' => DateValue::iso8601($revision->submitted_at),
+                        'submitted_at_label' => DateValue::localized($revision->submitted_at, 'd M Y - h:i A'),
                         'file_url' => $this->fileUrl($revision->submission_file),
                         'submission_text' => $revision->submission_text,
                     ])
@@ -371,7 +375,8 @@ class StudentCourseService
         $latestAttempt = $attempts->first();
         $attemptsUsed = $attempts->count();
         $attemptsAllowed = max(1, (int) ($exam->max_attempts ?? 1));
-        $isPublished = $exam->publish_date === null || $exam->publish_date->lte(now());
+        $publishDate = DateValue::asCarbon($exam->publish_date);
+        $isPublished = $publishDate === null || $publishDate->lte(now());
 
         return [
             'id' => $exam->id,
@@ -380,8 +385,8 @@ class StudentCourseService
             'course' => $exam->course ? ['id' => $exam->course->id, 'title' => $exam->course->title] : null,
             'time_limit' => $exam->time_limit,
             'total_marks' => $exam->total_marks,
-            'publish_date' => $exam->publish_date?->toIso8601String(),
-            'publish_date_label' => $exam->publish_date?->translatedFormat('d M Y - h:i A'),
+            'publish_date' => DateValue::iso8601($exam->publish_date),
+            'publish_date_label' => DateValue::localized($exam->publish_date, 'd M Y - h:i A'),
             'attempts_allowed' => $attemptsAllowed,
             'attempts_used' => $attemptsUsed,
             'attempts_remaining' => max($attemptsAllowed - $attemptsUsed, 0),
@@ -396,8 +401,8 @@ class StudentCourseService
                 'status_label' => $this->quizAttemptStatusLabel($latestAttempt->status),
                 'score' => $latestAttempt->score,
                 'is_passed' => $latestAttempt->is_passed,
-                'finished_at' => $latestAttempt->finished_at?->toIso8601String(),
-                'finished_at_label' => $latestAttempt->finished_at?->translatedFormat('d M Y - h:i A'),
+                'finished_at' => DateValue::iso8601($latestAttempt->finished_at),
+                'finished_at_label' => DateValue::localized($latestAttempt->finished_at, 'd M Y - h:i A'),
                 'termination_reason' => $latestAttempt->termination_reason,
                 'termination_reason_label' => $this->quizTerminationReasonLabel($latestAttempt->termination_reason),
             ] : null,
@@ -413,8 +418,8 @@ class StudentCourseService
             'id' => $review->id,
             'rating' => $review->rating,
             'comment' => $review->comment,
-            'created_at' => $review->created_at?->toIso8601String(),
-            'created_at_label' => $review->created_at?->translatedFormat('d M Y'),
+            'created_at' => DateValue::iso8601($review->created_at),
+            'created_at_label' => DateValue::localized($review->created_at, 'd M Y'),
             'student' => [
                 'id' => $review->student?->id,
                 'name' => $review->student?->name,
@@ -461,6 +466,7 @@ class StudentCourseService
                 'duration_minutes' => $lesson->duration_minutes,
                 'order' => $lesson->order,
                 'video_url' => null,
+                'video_source' => $lesson->video_source ?: Lesson::VIDEO_SOURCE_DRIVE,
                 'progress_percent' => 0,
                 'is_completed' => false,
                 'is_locked' => true,
@@ -489,11 +495,13 @@ class StudentCourseService
                 'description' => $lesson->description,
                 'duration_minutes' => $lesson->duration_minutes,
                 'order' => $lesson->order,
-                'video_url' => $lesson->video_url,
+                'video_source' => $lesson->video_source ?: Lesson::VIDEO_SOURCE_DRIVE,
+                'video_url' => $this->resolveLessonVideoUrl($lesson),
+                'embed_url' => $this->resolveLessonEmbedUrl($lesson),
                 'progress_percent' => (int) ($progress?->progress_percent ?? 0),
                 'is_completed' => $isCompleted,
                 'is_locked' => $isLocked,
-                'completed_at' => $progress?->completed_at?->toIso8601String(),
+                'completed_at' => DateValue::iso8601($progress?->completed_at),
                 'show_url' => $isLocked ? null : route('student.lessons.show', $lesson),
                 'resources' => $lesson->resources
                     ->map(fn (Resource $resource) => $this->resourcePayload($resource))
@@ -518,6 +526,72 @@ class StudentCourseService
         }
 
         return Storage::disk('public')->url($path);
+    }
+
+    private function resolveLessonVideoUrl(Lesson $lesson): ?string
+    {
+        $source = $lesson->video_source ?: Lesson::VIDEO_SOURCE_DRIVE;
+
+        if ($source === Lesson::VIDEO_SOURCE_UPLOAD) {
+            return $this->fileUrl($lesson->video_path);
+        }
+
+        return $lesson->video_url;
+    }
+
+    private function resolveLessonEmbedUrl(Lesson $lesson): ?string
+    {
+        $source = $lesson->video_source ?: Lesson::VIDEO_SOURCE_DRIVE;
+        $url = $lesson->video_url;
+
+        if (! $url) {
+            return null;
+        }
+
+        return match ($source) {
+            Lesson::VIDEO_SOURCE_YOUTUBE => $this->normalizeYoutubeEmbedUrl($url),
+            Lesson::VIDEO_SOURCE_DRIVE => $this->normalizeDriveEmbedUrl($url),
+            default => null,
+        };
+    }
+
+    private function normalizeYoutubeEmbedUrl(string $url): string
+    {
+        if (Str::contains($url, 'youtube.com/embed/')) {
+            return $url;
+        }
+
+        $parsed = parse_url($url);
+        if (! is_array($parsed)) {
+            return $url;
+        }
+
+        $host = $parsed['host'] ?? '';
+        $path = $parsed['path'] ?? '';
+        parse_str($parsed['query'] ?? '', $query);
+
+        if (Str::contains($host, 'youtu.be') && $path !== '') {
+            return 'https://www.youtube.com/embed/'.ltrim($path, '/');
+        }
+
+        if (Str::contains($host, 'youtube.com') && isset($query['v']) && $query['v'] !== '') {
+            return 'https://www.youtube.com/embed/'.$query['v'];
+        }
+
+        return $url;
+    }
+
+    private function normalizeDriveEmbedUrl(string $url): string
+    {
+        if (Str::contains($url, '/preview')) {
+            return $url;
+        }
+
+        if (preg_match('/\/file\/d\/([^\/]+)/', $url, $matches) === 1) {
+            return 'https://drive.google.com/file/d/'.$matches[1].'/preview';
+        }
+
+        return $url;
     }
 
     private function courseSummaryPayload(User $student, Course $course, ?bool $isEnrolled = null): array

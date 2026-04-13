@@ -33,6 +33,82 @@ const fieldLabels: Record<string, string> = {
     site_name: 'اسم الموقع',
     font_family: 'خط الموقع',
     site_logo: 'شعار الموقع',
+    whatsapp_default_message: 'رسالة واتساب الافتراضية',
+    home_intro_subtitle: 'العنوان الفرعي في الهوم',
+    home_programming_title: 'عنوان سكشن الكورسات',
+    home_programming_description: 'وصف سكشن الكورسات',
+    home_programming_audience_label: 'شارة الفئة العمرية في سكشن الكورسات',
+    home_course_reels_title: 'عنوان سكشن شرح التراكات',
+    home_course_reels_subtitle: 'وصف سكشن شرح التراكات',
+    home_explore_title: 'عنوان سكشن آراء الطلاب',
+    home_explore_subtitle: 'وصف سكشن آراء الطلاب',
+    footer_description: 'وصف الفوتر الرئيسي',
+    footer_newsletter_description: 'وصف صندوق التواصل في الفوتر',
+    footer_copyright: 'نص حقوق النشر',
+    navbar_login_label: 'نص زر تسجيل الدخول في الهيدر',
+    navbar_book_now_label: 'نص زر احجز الآن في الهيدر',
+    navbar_menu_home_label: 'نص القائمة: الرئيسية',
+    navbar_menu_join_label: 'نص القائمة: انضم لنا',
+    navbar_menu_favorites_label: 'نص القائمة: المفضلة',
+    navbar_menu_contact_label: 'نص القائمة: تواصل معنا',
+    navbar_menu_privacy_label: 'نص القائمة: سياسة الخصوصية',
+    navbar_search_placeholder: 'Placeholder حقل البحث في الهيدر',
+    navbar_search_button_label: 'نص زر البحث في الهيدر',
+    footer_quick_links_title: 'عنوان روابط سريعة في الفوتر',
+    footer_help_links_title: 'عنوان المساعدة في الفوتر',
+    footer_stay_connected_title: 'عنوان ابق على تواصل في الفوتر',
+    footer_link_home_label: 'نص رابط الرئيسية في الفوتر',
+    footer_link_privacy_label: 'نص رابط سياسة الخصوصية في الفوتر',
+    footer_link_bookings_label: 'نص رابط احجز الآن في الفوتر',
+    footer_link_join_us_label: 'نص رابط انضم لنا في الفوتر',
+    footer_link_contact_label: 'نص رابط تواصل معنا في الفوتر',
+    footer_help_student_login_label: 'نص رابط دخول الطالب في الفوتر',
+    footer_help_admin_login_label: 'نص رابط دخول الإدارة في الفوتر',
+    footer_help_support_label: 'نص رابط الدعم الفني في الفوتر',
+    home_journey_title: 'عنوان سكشن رحلة الأكاديمية',
+    home_journey_subtitle: 'وصف سكشن رحلة الأكاديمية',
+    home_top_students_title: 'عنوان سكشن الطلاب المتفوقين',
+    home_top_students_subtitle: 'وصف سكشن الطلاب المتفوقين',
+    home_top_students_empty_text: 'رسالة عدم وجود طلاب متفوقين',
+    home_feedback_gallery_title: 'عنوان سكشن آراء بالصور',
+    home_feedback_gallery_subtitle: 'وصف سكشن آراء بالصور',
+    home_feedback_gallery_empty_text: 'رسالة عدم وجود آراء بالصور',
+    home_faq_title: 'عنوان سكشن FAQ',
+    home_faq_subtitle: 'وصف سكشن FAQ',
+    home_faq_empty_text: 'رسالة عدم وجود FAQ',
+    home_faq_video_unavailable_text: 'رسالة عدم توفر فيديو FAQ',
+    home_hero_fallback_title: 'عنوان البانر الافتراضي',
+    home_hero_fallback_subtitle: 'العنوان الفرعي للبانر الافتراضي',
+    home_hero_fallback_description: 'وصف البانر الافتراضي',
+    home_hero_cta_label: 'نص زر CTA في البانر',
+    course_card_default_audience_label: 'شارة الجمهور الافتراضية لكارت الكورس',
+    course_card_no_image_text: 'رسالة عدم وجود صورة للكورس',
+    course_card_show_details_label: 'نص عرض التفاصيل في كارت الكورس',
+    course_details_cta_label: 'نص زر CTA بصفحة تفاصيل الكورس',
+    course_details_about_title: 'عنوان قسم عن الكورس',
+    course_details_learn_title: 'عنوان قسم ماذا سيتعلم',
+    course_details_audience_title: 'عنوان قسم الجمهور المستهدف',
+    course_details_content_title: 'عنوان قسم محتوى الكورس',
+    course_details_banner_title: 'عنوان بانر الحجز في تفاصيل الكورس',
+    course_details_banner_description: 'وصف بانر الحجز في تفاصيل الكورس',
+    course_details_related_title: 'عنوان الكورسات المشابهة',
+    favorites_title: 'عنوان صفحة المفضلة',
+    favorites_subtitle: 'وصف صفحة المفضلة',
+    favorites_empty_text: 'رسالة عدم وجود عناصر بالمفضلة',
+    contact_page_badge: 'شارة أعلى صفحة تواصل معنا',
+    contact_page_title: 'عنوان صفحة تواصل معنا',
+    contact_page_subtitle: 'وصف صفحة تواصل معنا',
+    contact_form_title: 'عنوان نموذج التواصل',
+    join_us_badge: 'شارة أعلى صفحة انضم لنا',
+    join_us_title: 'عنوان صفحة انضم لنا',
+    join_us_subtitle: 'وصف صفحة انضم لنا',
+    join_us_form_title: 'عنوان نموذج الانضمام',
+    bookings_page_title: 'عنوان صفحة الحجز',
+    bookings_page_subtitle: 'وصف صفحة الحجز',
+    bookings_submit_button_label: 'نص زر إرسال الحجز',
+    booking_success_title: 'عنوان صفحة نجاح الحجز',
+    booking_success_description: 'وصف صفحة نجاح الحجز',
+    booking_success_home_button: 'نص زر العودة من صفحة نجاح الحجز',
     address: 'العنوان',
     contact_email: 'البريد العام',
     contact_phone: 'رقم التواصل',
@@ -64,6 +140,82 @@ const fieldHints: Record<string, string> = {
     instagram_url: 'ضع الرابط الكامل لحساب إنستجرام.',
     linkedin_url: 'ضع الرابط الكامل لصفحة لينكدإن.',
     whatsapp_number: 'اكتب رقم واتساب بصيغة دولية مثل 2010xxxxxxx.',
+    whatsapp_default_message: 'الرسالة التي تُفتح تلقائيًا عند الضغط على زر واتساب. يمكنك استخدام نص تسويقي مناسب للعميل.',
+    home_intro_subtitle: 'العنوان الفرعي الظاهر أسفل عنوان القسم التعريفي في الصفحة الرئيسية.',
+    home_programming_title: 'عنوان سكشن عرض الكورسات في الهوم.',
+    home_programming_description: 'وصف سكشن عرض الكورسات في الهوم.',
+    home_programming_audience_label: 'النص داخل الشارة الصغيرة أعلى سكشن الكورسات (مثال: من 5 إلى 17 سنة).',
+    home_course_reels_title: 'عنوان سكشن شرح التراكات والكورسات.',
+    home_course_reels_subtitle: 'وصف سكشن شرح التراكات والكورسات.',
+    home_explore_title: 'عنوان سكشن آراء الطلاب وأولياء الأمور.',
+    home_explore_subtitle: 'وصف سكشن آراء الطلاب وأولياء الأمور.',
+    footer_description: 'وصف تعريفي رئيسي يظهر بجانب الشعار في الفوتر.',
+    footer_newsletter_description: 'النص التعريفي لصندوق التواصل داخل الفوتر.',
+    footer_copyright: 'يمكنك استخدام {year} للسنة الحالية و {site_name} لاسم الموقع.',
+    navbar_login_label: 'النص الظاهر على زر تسجيل الدخول في الهيدر.',
+    navbar_book_now_label: 'النص الظاهر على زر الحجز الأساسي في الهيدر.',
+    navbar_menu_home_label: 'النص الظاهر لعنصر "الرئيسية" في قائمة الهيدر.',
+    navbar_menu_join_label: 'النص الظاهر لعنصر "انضم لنا" في قائمة الهيدر.',
+    navbar_menu_favorites_label: 'النص الظاهر لعنصر "المفضلة" في قائمة الهيدر.',
+    navbar_menu_contact_label: 'النص الظاهر لعنصر "تواصل معنا" في قائمة الهيدر.',
+    navbar_menu_privacy_label: 'النص الظاهر لعنصر "سياسة الخصوصية" في قائمة الهيدر.',
+    navbar_search_placeholder: 'النص داخل حقل البحث قبل الكتابة.',
+    navbar_search_button_label: 'النص الظاهر على زر تنفيذ البحث.',
+    footer_quick_links_title: 'عنوان عمود الروابط السريعة في الفوتر.',
+    footer_help_links_title: 'عنوان عمود المساعدة في الفوتر.',
+    footer_stay_connected_title: 'عنوان عمود المتابعة والتواصل في الفوتر.',
+    footer_link_home_label: 'النص المعروض لرابط الرئيسية في الفوتر.',
+    footer_link_privacy_label: 'النص المعروض لرابط سياسة الخصوصية في الفوتر.',
+    footer_link_bookings_label: 'النص المعروض لرابط احجز الآن في الفوتر.',
+    footer_link_join_us_label: 'النص المعروض لرابط انضم لنا في الفوتر.',
+    footer_link_contact_label: 'النص المعروض لرابط تواصل معنا في الفوتر.',
+    footer_help_student_login_label: 'النص المعروض لرابط دخول الطالب في قسم المساعدة.',
+    footer_help_admin_login_label: 'النص المعروض لرابط دخول الإدارة في قسم المساعدة.',
+    footer_help_support_label: 'النص المعروض لرابط الدعم الفني في قسم المساعدة.',
+    home_journey_title: 'عنوان سكشن رحلة الأكاديمية في الصفحة الرئيسية.',
+    home_journey_subtitle: 'الوصف المختصر تحت عنوان رحلة الأكاديمية.',
+    home_top_students_title: 'عنوان سكشن صور الطلاب المتفوقين.',
+    home_top_students_subtitle: 'الوصف المختصر لسكشن الطلاب المتفوقين.',
+    home_top_students_empty_text: 'رسالة تظهر عند عدم وجود صور طلاب متفوقين.',
+    home_feedback_gallery_title: 'عنوان سكشن آراء الطلاب وأولياء الأمور (صور).',
+    home_feedback_gallery_subtitle: 'الوصف المختصر لسكشن الآراء بالصور.',
+    home_feedback_gallery_empty_text: 'رسالة تظهر عند عدم وجود آراء مفعلة.',
+    home_faq_title: 'عنوان سكشن الأسئلة الشائعة.',
+    home_faq_subtitle: 'الوصف المختصر لسكشن FAQ.',
+    home_faq_empty_text: 'رسالة تظهر عند عدم وجود أسئلة مفعلة.',
+    home_faq_video_unavailable_text: 'رسالة تظهر إذا كان فيديو إجابة السؤال غير متاح.',
+    home_hero_fallback_title: 'عنوان افتراضي للبانر إذا لا توجد سلايدات.',
+    home_hero_fallback_subtitle: 'عنوان فرعي افتراضي للبانر.',
+    home_hero_fallback_description: 'وصف افتراضي للبانر.',
+    home_hero_cta_label: 'نص زر الحجز/الإجراء داخل البانر الرئيسي.',
+    course_card_default_audience_label: 'النص الافتراضي لبادج الفئة العمرية في كارت الكورس.',
+    course_card_no_image_text: 'نص بديل عند عدم وجود صورة للكورس.',
+    course_card_show_details_label: 'نص زر/رابط عرض التفاصيل داخل كارت الكورس.',
+    course_details_cta_label: 'نص زر CTA الأساسي في صفحة تفاصيل الكورس.',
+    course_details_about_title: 'عنوان قسم "عن الكورس".',
+    course_details_learn_title: 'عنوان قسم "ماذا سيتعلم".',
+    course_details_audience_title: 'عنوان قسم الجمهور المستهدف.',
+    course_details_content_title: 'عنوان قسم محتوى الكورس.',
+    course_details_banner_title: 'عنوان بانر الحجز في آخر صفحة تفاصيل الكورس.',
+    course_details_banner_description: 'وصف بانر الحجز في صفحة تفاصيل الكورس.',
+    course_details_related_title: 'عنوان سكشن الكورسات المقترحة.',
+    favorites_title: 'العنوان الرئيسي لصفحة المفضلة.',
+    favorites_subtitle: 'الوصف المختصر لصفحة المفضلة.',
+    favorites_empty_text: 'الرسالة المعروضة عند عدم وجود كورسات مفضلة.',
+    contact_page_badge: 'نص الشارة الصغيرة أعلى صفحة التواصل.',
+    contact_page_title: 'العنوان الرئيسي لصفحة التواصل.',
+    contact_page_subtitle: 'النص التعريفي أسفل عنوان صفحة التواصل.',
+    contact_form_title: 'عنوان نموذج إرسال الرسالة في صفحة التواصل.',
+    join_us_badge: 'نص الشارة الصغيرة أعلى صفحة انضم لنا.',
+    join_us_title: 'العنوان الرئيسي لصفحة انضم لنا.',
+    join_us_subtitle: 'النص التعريفي أسفل عنوان صفحة انضم لنا.',
+    join_us_form_title: 'عنوان نموذج تقديم طلب الانضمام.',
+    bookings_page_title: 'العنوان الرئيسي في صفحة الحجز.',
+    bookings_page_subtitle: 'الوصف التعريفي أسفل عنوان صفحة الحجز.',
+    bookings_submit_button_label: 'النص الظاهر على زر إرسال طلب الحجز.',
+    booking_success_title: 'العنوان الرئيسي لصفحة نجاح الحجز.',
+    booking_success_description: 'الوصف التعريفي في صفحة نجاح الحجز.',
+    booking_success_home_button: 'نص زر العودة للصفحة الرئيسية بعد الحجز.',
     youtube_url: 'ضع الرابط الكامل لقناة يوتيوب.',
     booking_notification_email: 'كل طلب حجز جديد سيتم إرساله إلى هذا البريد.',
     contact_notification_email: 'كل رسالة جديدة من صفحة تواصل معنا سيتم إرسالها إلى هذا البريد.',
@@ -81,6 +233,18 @@ const hiddenSettingKeys = new Set([
     'homepage_primary_color',
     'homepage_secondary_color',
 ]);
+
+const settingSections: Array<{ id: string; title: string; match: (key: string) => boolean }> = [
+    { id: 'navbar', title: 'الهيدر والتنقل', match: (key) => key.startsWith('navbar_') },
+    { id: 'footer', title: 'الفوتر', match: (key) => key.startsWith('footer_') },
+    { id: 'home', title: 'الصفحة الرئيسية', match: (key) => key.startsWith('home_') },
+    { id: 'course_card', title: 'كروت الكورسات', match: (key) => key.startsWith('course_card_') },
+    { id: 'course_details', title: 'صفحة تفاصيل الكورس', match: (key) => key.startsWith('course_details_') },
+    { id: 'contact', title: 'صفحة تواصل معنا', match: (key) => key.startsWith('contact_') },
+    { id: 'join_us', title: 'صفحة انضم لنا', match: (key) => key.startsWith('join_us_') },
+    { id: 'bookings', title: 'صفحة الحجوزات', match: (key) => key.startsWith('bookings_') || key.startsWith('booking_success_') },
+    { id: 'favorites', title: 'صفحة المفضلة', match: (key) => key.startsWith('favorites_') },
+];
 
 const fontOptions = [
     { value: 'playpen_arabic', label: 'Playpen Sans Arabic' },
@@ -314,86 +478,120 @@ export default function SettingsIndex({ settings }: Props) {
                                     <Icon className="text-slate-500" size={20} />
                                     <h2 className="text-lg font-semibold text-slate-800">{groupLabels[group] || group}</h2>
                                 </div>
-                                <div className="grid gap-6 p-6 md:grid-cols-2">
-                                    {groupSettings
-                                        .filter((setting) => !hiddenSettingKeys.has(setting.key))
-                                        .map((setting) => {
-                                        const inputType = getInputType(setting);
-                                        const errorKey = `settings.${data.settings.findIndex((item) => item.key === setting.key)}.value`;
+                                <div className="space-y-4 p-6">
+                                    {(() => {
+                                        const visibleSettings = groupSettings.filter((setting) => !hiddenSettingKeys.has(setting.key));
+                                        const hasSectionedSettings = group === 'general';
+                                        const sections = hasSectionedSettings
+                                            ? settingSections
+                                                .map((section) => ({
+                                                    ...section,
+                                                    settings: visibleSettings.filter((setting) => section.match(setting.key)),
+                                                }))
+                                                .filter((section) => section.settings.length > 0)
+                                            : [];
+                                        const uncategorized = hasSectionedSettings
+                                            ? visibleSettings.filter((setting) => !settingSections.some((section) => section.match(setting.key)))
+                                            : visibleSettings;
+                                        const blocks = hasSectionedSettings
+                                            ? [
+                                                ...sections.map((section) => ({ title: section.title, settings: section.settings })),
+                                                ...(uncategorized.length > 0 ? [{ title: 'إعدادات أخرى', settings: uncategorized }] : []),
+                                            ]
+                                            : [{ title: '', settings: uncategorized }];
 
-                                        return (
-                                            <div key={setting.key} className="space-y-2">
-                                                <label className="text-sm font-semibold text-slate-700">
-                                                    {fieldLabels[setting.key] || setting.key.replace(/_/g, ' ')}
-                                                </label>
-
-                                                {setting.key === 'font_family' ? (
-                                                    <select
-                                                        value={getValue(setting.key)}
-                                                        onChange={(event) => updateValue(setting.key, event.target.value)}
-                                                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
-                                                    >
-                                                        {fontOptions.map((option) => (
-                                                            <option key={option.value} value={option.value}>
-                                                                {option.label}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                ) : inputType === 'color' ? (
-                                                    <div className="flex gap-3">
-                                                        <input
-                                                            type="color"
-                                                            value={getValue(setting.key)}
-                                                            onChange={(event) => updateValue(setting.key, event.target.value)}
-                                                            className="h-11 w-20 rounded-lg border border-slate-200 p-1"
-                                                        />
-                                                        <input
-                                                            type="text"
-                                                            value={getValue(setting.key)}
-                                                            onChange={(event) => updateValue(setting.key, event.target.value)}
-                                                            className="flex-1 rounded-lg border border-slate-200 px-3 py-2 text-sm"
-                                                        />
-                                                    </div>
-                                                ) : setting.key === 'mail_mailer' ? (
-                                                    <select
-                                                        value={getValue(setting.key)}
-                                                        onChange={(event) => updateValue(setting.key, event.target.value)}
-                                                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
-                                                    >
-                                                        <option value="smtp">smtp</option>
-                                                        <option value="log">log</option>
-                                                        <option value="sendmail">sendmail</option>
-                                                        <option value="array">array</option>
-                                                    </select>
-                                                ) : setting.key === 'mail_encryption' ? (
-                                                    <select
-                                                        value={getValue(setting.key)}
-                                                        onChange={(event) => updateValue(setting.key, event.target.value)}
-                                                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
-                                                    >
-                                                        <option value="">بدون تشفير</option>
-                                                        <option value="tls">tls</option>
-                                                        <option value="ssl">ssl</option>
-                                                    </select>
-                                                ) : (
-                                                    <input
-                                                        type={inputType}
-                                                        value={getValue(setting.key)}
-                                                        onChange={(event) => updateValue(setting.key, event.target.value)}
-                                                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
-                                                    />
+                                        return blocks.map((block) => (
+                                            <div
+                                                key={block.title || group}
+                                                className="rounded-2xl border border-slate-300/90 bg-white p-4 shadow-[0_8px_24px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 sm:p-5"
+                                            >
+                                                {block.title && (
+                                                    <h3 className="mb-4 border-b border-slate-300/80 pb-2 text-sm font-extrabold text-slate-800">
+                                                        {block.title}
+                                                    </h3>
                                                 )}
+                                                <div className="grid gap-6 md:grid-cols-2">
+                                                    {block.settings.map((setting) => {
+                                                        const inputType = getInputType(setting);
+                                                        const errorKey = `settings.${data.settings.findIndex((item) => item.key === setting.key)}.value`;
 
-                                                {fieldHints[setting.key] && (
-                                                    <p className="text-xs leading-6 text-slate-500">{fieldHints[setting.key]}</p>
-                                                )}
+                                                        return (
+                                                            <div key={setting.key} className="space-y-2">
+                                                                <label className="text-sm font-semibold text-slate-700">
+                                                                    {fieldLabels[setting.key] || setting.key.replace(/_/g, ' ')}
+                                                                </label>
 
-                                                {formErrors[errorKey] && (
-                                                    <p className="text-xs text-red-600">{formErrors[errorKey]}</p>
-                                                )}
+                                                                {setting.key === 'font_family' ? (
+                                                                    <select
+                                                                        value={getValue(setting.key)}
+                                                                        onChange={(event) => updateValue(setting.key, event.target.value)}
+                                                                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                                                                    >
+                                                                        {fontOptions.map((option) => (
+                                                                            <option key={option.value} value={option.value}>
+                                                                                {option.label}
+                                                                            </option>
+                                                                        ))}
+                                                                    </select>
+                                                                ) : inputType === 'color' ? (
+                                                                    <div className="flex gap-3">
+                                                                        <input
+                                                                            type="color"
+                                                                            value={getValue(setting.key)}
+                                                                            onChange={(event) => updateValue(setting.key, event.target.value)}
+                                                                            className="h-11 w-20 rounded-lg border border-slate-200 p-1"
+                                                                        />
+                                                                        <input
+                                                                            type="text"
+                                                                            value={getValue(setting.key)}
+                                                                            onChange={(event) => updateValue(setting.key, event.target.value)}
+                                                                            className="flex-1 rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                                                                        />
+                                                                    </div>
+                                                                ) : setting.key === 'mail_mailer' ? (
+                                                                    <select
+                                                                        value={getValue(setting.key)}
+                                                                        onChange={(event) => updateValue(setting.key, event.target.value)}
+                                                                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                                                                    >
+                                                                        <option value="smtp">smtp</option>
+                                                                        <option value="log">log</option>
+                                                                        <option value="sendmail">sendmail</option>
+                                                                        <option value="array">array</option>
+                                                                    </select>
+                                                                ) : setting.key === 'mail_encryption' ? (
+                                                                    <select
+                                                                        value={getValue(setting.key)}
+                                                                        onChange={(event) => updateValue(setting.key, event.target.value)}
+                                                                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                                                                    >
+                                                                        <option value="">بدون تشفير</option>
+                                                                        <option value="tls">tls</option>
+                                                                        <option value="ssl">ssl</option>
+                                                                    </select>
+                                                                ) : (
+                                                                    <input
+                                                                        type={inputType}
+                                                                        value={getValue(setting.key)}
+                                                                        onChange={(event) => updateValue(setting.key, event.target.value)}
+                                                                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                                                                    />
+                                                                )}
+
+                                                                {fieldHints[setting.key] && (
+                                                                    <p className="text-xs leading-6 text-slate-500">{fieldHints[setting.key]}</p>
+                                                                )}
+
+                                                                {formErrors[errorKey] && (
+                                                                    <p className="text-xs text-red-600">{formErrors[errorKey]}</p>
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
                                             </div>
-                                        );
-                                    })}
+                                        ));
+                                    })()}
                                 </div>
                             </div>
                         );

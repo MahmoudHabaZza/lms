@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\TopStudentController;
 use App\Http\Controllers\EndUser\BookingController;
 use App\Http\Controllers\EndUser\ContactController;
 use App\Http\Controllers\EndUser\CourseController as EndUserCourseController;
+use App\Http\Controllers\EndUser\FavoriteController as EndUserFavoriteController;
 use App\Http\Controllers\EndUser\HomeController;
 use App\Http\Controllers\EndUser\InstructorApplicationController;
 use App\Http\Controllers\Student\FavoriteController as StudentFavoriteController;
@@ -56,6 +57,7 @@ Route::middleware('guest')->prefix('student')->name('student.')->group(function 
 
 Route::post('/logout', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');
 Route::post('/student/logout', [\App\Http\Controllers\Student\Auth\StudentAuthenticatedSessionController::class, 'destroy'])->name('student.logout');
+Route::middleware(['auth', 'is_student'])->get('/favorites', [EndUserFavoriteController::class, 'index'])->name('favorites.index');
 
 Route::middleware(['auth', 'is_student'])->prefix('student')->name('student.')->group(function () {
     Route::get('dashboard', [\App\Http\Controllers\Student\DashboardController::class, 'index'])->name('dashboard');
@@ -100,8 +102,6 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
     Route::resource('top-students', TopStudentController::class)->middleware('has_permission:manage-top-students')->except('show');
     Route::resource('student-feedback-images', StudentFeedbackImageController::class)->middleware('has_permission:manage-student-feedback-images')->except('show');
     Route::resource('faqs', FaqController::class)->middleware('has_permission:manage-faqs')->except('show');
-    Route::resource('cities', \App\Http\Controllers\Admin\CityController::class)->middleware('has_permission:manage-cities')->except('show');
-    Route::resource('schools', \App\Http\Controllers\Admin\SchoolController::class)->middleware('has_permission:manage-schools')->except('show');
     Route::resource('lessons', \App\Http\Controllers\Admin\LessonController::class)->middleware('has_permission:manage-lessons')->except('show');
     Route::resource('resources', \App\Http\Controllers\Admin\ResourceController::class)->middleware('has_permission:manage-resources')->except('show');
     Route::resource('enrollments', \App\Http\Controllers\Admin\EnrollmentController::class)->middleware('has_permission:manage-enrollments')->except('show');

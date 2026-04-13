@@ -5,7 +5,9 @@ type LessonFormData = {
     course_id: number | null;
     title: string;
     description: string;
+    video_source: 'drive' | 'upload' | 'youtube';
     video_url: string;
+    video_file: File | null;
     duration_minutes: number | null;
     order: number | null;
 };
@@ -23,9 +25,10 @@ type Props = {
     processing: boolean;
     onSubmit: (e: FormEvent<HTMLFormElement>) => void;
     submitLabel: string;
+    currentVideoPath?: string | null;
 };
 
-export default function LessonForm({ data, setData, errors, courses, processing, onSubmit, submitLabel }: Props) {
+export default function LessonForm({ data, setData, errors, courses, processing, onSubmit, submitLabel, currentVideoPath }: Props) {
     return (
         <form onSubmit={onSubmit} className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="space-y-6 rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
@@ -64,14 +67,63 @@ export default function LessonForm({ data, setData, errors, courses, processing,
                 <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
                     <div className="text-right">
                         <div className="text-xs font-bold tracking-[0.3em] text-orange-500">الإعدادات</div>
-                        <h3 className="mt-2 text-lg font-bold text-slate-900">رابط وترتيب</h3>
+                        <h3 className="mt-2 text-lg font-bold text-slate-900">مصدر الفيديو والترتيب</h3>
                     </div>
 
                     <div className="mt-5 space-y-5">
                         <div>
-                            <label className="mb-2 block text-right text-sm font-semibold text-slate-700">رابط الفيديو (Drive)</label>
-                            <input dir="ltr" value={data.video_url} onChange={(event) => setData('video_url', event.target.value)} placeholder="https://drive.google.com/..." className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100" />
-                            <InputError message={errors.video_url} className="mt-2" />
+                            <label className="mb-2 block text-right text-sm font-semibold text-slate-700">مصدر الفيديو</label>
+                            <div className="grid gap-3 sm:grid-cols-3">
+                                <label className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-300">
+                                    <input type="radio" name="video_source" checked={data.video_source === 'drive'} onChange={() => setData('video_source', 'drive')} />
+                                    Google Drive
+                                </label>
+                                <label className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-300">
+                                    <input type="radio" name="video_source" checked={data.video_source === 'upload'} onChange={() => setData('video_source', 'upload')} />
+                                    رفع فيديو
+                                </label>
+                                <label className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-300">
+                                    <input type="radio" name="video_source" checked={data.video_source === 'youtube'} onChange={() => setData('video_source', 'youtube')} />
+                                    YouTube
+                                </label>
+                            </div>
+                            <InputError message={errors.video_source} className="mt-2" />
+                        </div>
+
+                        {data.video_source === 'upload' ? (
+                            <div>
+                                <label className="mb-2 block text-right text-sm font-semibold text-slate-700">ملف الفيديو</label>
+                                <input
+                                    type="file"
+                                    accept="video/mp4,video/webm,video/quicktime"
+                                    onChange={(event) => setData('video_file', event.target.files?.[0] ?? null)}
+                                    className="w-full rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm"
+                                />
+                                {currentVideoPath && !data.video_file && (
+                                    <p className="mt-2 text-right text-xs text-slate-500">الملف الحالي متوفر على السيرفر.</p>
+                                )}
+                                <InputError message={errors.video_file} className="mt-2" />
+                            </div>
+                        ) : (
+                            <div>
+                                <label className="mb-2 block text-right text-sm font-semibold text-slate-700">
+                                    {data.video_source === 'youtube' ? 'رابط YouTube' : 'رابط Google Drive'}
+                                </label>
+                                <input
+                                    dir="ltr"
+                                    value={data.video_url}
+                                    onChange={(event) => setData('video_url', event.target.value)}
+                                    placeholder={data.video_source === 'youtube' ? 'https://www.youtube.com/watch?v=...' : 'https://drive.google.com/...'}
+                                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100"
+                                />
+                                <InputError message={errors.video_url} className="mt-2" />
+                            </div>
+                        )}
+
+                        <div>
+                            <p className="rounded-2xl border border-orange-100 bg-orange-50 px-4 py-3 text-right text-xs leading-6 text-orange-800">
+                                اختر المصدر المناسب لكل عميل: Drive لروابط الملفات، Upload لرفع الفيديو مباشرة، YouTube للروابط الخارجية.
+                            </p>
                         </div>
 
                         <div className="grid gap-5 sm:grid-cols-2">

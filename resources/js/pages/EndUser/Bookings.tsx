@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { Building2, Globe2, Loader2, MapPin, Phone, UserRound } from 'lucide-react';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
@@ -45,10 +45,14 @@ export default function Bookings({
     countries?: CountryOption[];
     preselectedCourseId?: number | null;
 }) {
+    const { settings } = usePage<{ settings?: Record<string, string | null | undefined> }>().props;
     const [formData, setFormData] = useState<BookingFormData>(() => createInitialForm(preselectedCourseId));
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+    const bookingsPageTitle = settings?.bookings_page_title?.trim() || 'تعلم مع المرح';
+    const bookingsPageSubtitle = settings?.bookings_page_subtitle?.trim() || 'ابدأ رحلة طفلك في البرمجة مع تجربة تعليمية ممتعة، آمنة، ومصممة بعناية للطفل العربي.';
+    const bookingsSubmitButtonLabel = settings?.bookings_submit_button_label?.trim() || 'إرسال طلب الحجز';
 
     const handleFieldChange = (name: keyof BookingFormData, value: string | boolean) => {
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -190,7 +194,7 @@ export default function Bookings({
 
     return (
         <MainLayout>
-            <Head title="الحجوزات" />
+            <Head title={bookingsPageTitle} />
 
             <div dir="rtl" lang="ar" className="relative min-h-screen overflow-hidden bg-gradient-to-br from-orange-50 via-white to-blue-50 text-right">
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_color-mix(in_srgb,var(--site-primary-color)_20%,transparent),_rgba(255,255,255,0.3)_45%,_rgba(255,255,255,0.7)_100%)]"></div>
@@ -198,11 +202,11 @@ export default function Bookings({
                     <div className="mx-auto max-w-4xl">
                         <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
                             <div className="text-center">
-                                <h1 className="font-playpen-arabic text-4xl font-extrabold tracking-tight text-[var(--color-color-primary)] sm:text-5xl md:text-6xl" aria-label="تعلم مع المرح">
-                                    تعلم مع المرح
+                                <h1 className="font-playpen-arabic text-4xl font-extrabold tracking-tight text-[var(--color-color-primary)] sm:text-5xl md:text-6xl" aria-label={bookingsPageTitle}>
+                                    {bookingsPageTitle}
                                 </h1>
                                 <p className="mx-auto mt-3 max-w-2xl text-base text-slate-600 sm:text-lg">
-                                    ابدأ رحلة طفلك في البرمجة مع تجربة تعليمية ممتعة، آمنة، ومصممة بعناية للطفل العربي.
+                                    {bookingsPageSubtitle}
                                 </p>
                             </div>
 
@@ -339,7 +343,7 @@ export default function Bookings({
                                                     جاري إرسال الطلب...
                                                 </>
                                             ) : (
-                                                'إرسال طلب الحجز'
+                                                bookingsSubmitButtonLabel
                                             )}
                                         </button>
                                         <p className="mt-4 text-center text-xs leading-6 text-slate-500 sm:text-sm lg:text-base">بالضغط على زر الإرسال، أنت توافق على سياسة الخصوصية وشروط الاستخدام الخاصة بأكاديمية كيد كودر.</p>

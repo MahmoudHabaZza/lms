@@ -12,6 +12,7 @@ use App\Models\StudentFeedbackImage;
 use App\Models\StudentReel;
 use App\Models\TopStudent;
 use App\Support\EndUserCoursePresenter;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -23,8 +24,9 @@ class HomeController extends Controller
     ) {
     }
 
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $viewer = $request->user();
         $slides = BannerSlide::query()
             ->where('status', true)
             ->orderBy('sort_order')
@@ -49,6 +51,9 @@ class HomeController extends Controller
             ->with([
                 'instructor:id,name,profile_picture,avatar',
                 'category:id,name',
+                'wishlistItems' => fn ($query) => $viewer && $viewer->isStudent()
+                    ? $query->where('student_id', $viewer->id)
+                    : $query->whereRaw('1 = 0'),
             ])
             ->where('status', true)
             ->orderBy('sort_order')
@@ -67,7 +72,7 @@ class HomeController extends Controller
                 'category_id',
                 'instructor_id',
             ])
-            ->map(fn (Course $course): array => $this->coursePresenter->summary($course));
+            ->map(fn (Course $course): array => $this->coursePresenter->summary($course, $viewer));
         $studentReels = StudentReel::query()
             ->where('status', true)
             ->orderBy('sort_order')

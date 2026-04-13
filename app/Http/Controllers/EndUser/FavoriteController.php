@@ -9,36 +9,28 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class CourseController extends Controller
+class FavoriteController extends Controller
 {
     public function __construct(
         private readonly EndUserCoursePresenter $coursePresenter,
     ) {
     }
 
-    public function show(Request $request, Course $course): Response
+    public function index(Request $request): Response
     {
-        abort_unless((bool) $course->status, 404);
         $viewer = $request->user();
+        abort_unless($viewer && $viewer->isStudent(), 403);
 
-        $relatedCourses = Course::query()
+        $courses = Course::query()
             ->with([
                 'instructor:id,name,profile_picture,avatar',
                 'category:id,name',
-                'wishlistItems' => fn ($query) => $viewer && $viewer->isStudent()
-                    ? $query->where('student_id', $viewer->id)
-                    : $query->whereRaw('1 = 0'),
+                'wishlistItems' => fn ($query) => $query->where('student_id', $viewer->id),
             ])
             ->where('status', true)
-            ->whereKeyNot($course->id)
-            ->when(
-                $course->category_id,
-                fn ($query) => $query->where('category_id', $course->category_id),
-                fn ($query) => $query->orderBy('sort_order')->orderBy('id')
-            )
+            ->whereHas('wishlistItems', fn ($query) => $query->where('student_id', $viewer->id))
             ->orderBy('sort_order')
             ->orderBy('id')
-            ->limit(4)
             ->get([
                 'id',
                 'title',
@@ -52,10 +44,13 @@ class CourseController extends Controller
                 'accent_color',
                 'category_id',
                 'instructor_id',
-            ]);
+            ])
+            ->map(fn (Course $course): array => $this->coursePresenter->summary($course, $viewer))
+            ->values()
+            ->all();
 
-        return Inertia::render('EndUser/CourseDetails', [
-            'course' => $this->coursePresenter->details($course, $relatedCourses, $viewer),
+        return Inertia::render('EndUser/Favorites', [
+            'favorites' => $courses,
         ]);
     }
 }

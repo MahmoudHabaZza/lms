@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Certificate;
+use App\Support\DateValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -23,8 +24,8 @@ class CertificateController extends Controller
                 'id' => $certificate->id,
                 'course_name' => $certificate->exam?->course?->title,
                 'exam_title' => $certificate->exam?->title,
-                'issued_at' => $certificate->issued_at?->toIso8601String(),
-                'issued_at_label' => $certificate->issued_at?->translatedFormat('d M Y'),
+                'issued_at' => DateValue::iso8601($certificate->issued_at),
+                'issued_at_label' => DateValue::localized($certificate->issued_at, 'd M Y'),
                 'certificate_code' => $certificate->certificate_code,
                 'verification_code' => $certificate->verification_code,
                 'image_url' => filled($certificate->image) ? Storage::disk('public')->url($certificate->image) : null,

@@ -9,6 +9,7 @@ use App\Models\Notification;
 use App\Models\StudentExamAttempt;
 use App\Models\TaskSubmission;
 use App\Models\User;
+use App\Support\DateValue;
 
 class StudentDashboardService
 {
@@ -55,7 +56,7 @@ class StudentDashboardService
                         'title' => 'أكملت درسًا جديدًا',
                         'description' => $progress->lesson?->title,
                         'meta' => $progress->lesson?->course?->title,
-                        'happened_at' => $progress->completed_at?->toIso8601String(),
+                        'happened_at' => DateValue::iso8601($progress->completed_at),
                     ])
             )
             ->merge(
@@ -71,7 +72,7 @@ class StudentDashboardService
                         'title' => 'تم تسليم مهمة',
                         'description' => $submission->task?->title,
                         'meta' => $submission->task?->course?->title,
-                        'happened_at' => $submission->submitted_at?->toIso8601String(),
+                        'happened_at' => DateValue::iso8601($submission->submitted_at),
                     ])
             )
             ->merge(
@@ -88,7 +89,7 @@ class StudentDashboardService
                         'title' => $attempt->is_passed ? 'نجحت في اختبار' : 'أنهيت اختبارًا',
                         'description' => $attempt->exam?->title,
                         'meta' => $attempt->exam?->course?->title,
-                        'happened_at' => $attempt->finished_at?->toIso8601String(),
+                        'happened_at' => DateValue::iso8601($attempt->finished_at),
                     ])
             )
             ->merge(
@@ -104,7 +105,7 @@ class StudentDashboardService
                         'title' => 'حصلت على شهادة',
                         'description' => $certificate->exam?->title,
                         'meta' => $certificate->exam?->course?->title,
-                        'happened_at' => $certificate->issued_at?->toIso8601String(),
+                        'happened_at' => DateValue::iso8601($certificate->issued_at),
                     ])
             )
             ->sortByDesc('happened_at')
@@ -124,8 +125,8 @@ class StudentDashboardService
                 'id' => $exam->id,
                 'title' => $exam->title,
                 'course' => $exam->course?->title,
-                'publish_date' => $exam->publish_date?->toIso8601String(),
-                'publish_date_label' => $exam->publish_date?->translatedFormat('d M Y - h:i A'),
+                'publish_date' => DateValue::iso8601($exam->publish_date),
+                'publish_date_label' => DateValue::localized($exam->publish_date, 'd M Y - h:i A'),
                 'show_url' => route('student.quizzes.show', $exam),
             ])
             ->values()
@@ -142,7 +143,7 @@ class StudentDashboardService
                 'message' => $notification->message,
                 'type' => $notification->type,
                 'is_read' => $notification->is_read,
-                'created_at_label' => $notification->created_at?->translatedFormat('d M Y - h:i A'),
+                'created_at_label' => DateValue::localized($notification->created_at, 'd M Y - h:i A'),
                 'mark_read_url' => route('student.notifications.read', $notification),
             ])
             ->values()

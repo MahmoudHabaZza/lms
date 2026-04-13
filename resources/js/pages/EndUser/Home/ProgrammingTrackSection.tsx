@@ -1,17 +1,19 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 import { CourseShowcaseCard } from '@/components/end-user/course-showcase-card';
 import type { PublicCourseCard } from '@/components/end-user/course-showcase-card';
-
-const sectionTitle = 'كورسات البرمجة';
-const sectionDescription = 'جميع كورسات البرمجة متاحة الآن ضمن فئة موحدة من 5 إلى 17 سنة، مع عرض كل الكورسات في مكان واحد بدون تقسيمات فرعية.';
-const audienceLabel = 'من 5 إلى 17 سنة';
 
 export default function ProgrammingTrackSection({
     courses = [],
 }: {
     courses?: PublicCourseCard[];
 }) {
+    const { settings } = usePage<{ settings?: Record<string, string | null> }>().props;
+    const sectionTitle = settings?.home_programming_title || 'كورسات البرمجة';
+    const sectionDescription = settings?.home_programming_description || 'جميع كورسات البرمجة متاحة الآن ضمن فئة موحدة من 5 إلى 17 سنة، مع عرض كل الكورسات في مكان واحد بدون تقسيمات فرعية.';
+    const audienceLabel = settings?.home_programming_audience_label || 'من 5 إلى 17 سنة';
+
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [activeIndex, setActiveIndex] = useState(0);
 

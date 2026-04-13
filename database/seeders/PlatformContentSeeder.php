@@ -2,13 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\City;
 use Database\Factories\AcademySectionFactory;
 use Database\Factories\BannerSlideFactory;
-use Database\Factories\CityFactory;
 use Database\Factories\FaqFactory;
 use Database\Factories\InstructorApplicationFactory;
-use Database\Factories\SchoolFactory;
 use Database\Factories\SettingFactory;
 use Database\Factories\SiteSettingFactory;
 use Database\Seeders\Concerns\SeedsInChunks;
@@ -38,31 +35,6 @@ class PlatformContentSeeder extends Seeder
             ArabicSeedSupport::siteSettings(),
             ['created_at' => $now, 'updated_at' => $now]
         ));
-
-        $cities = collect(ArabicSeedSupport::cities())
-            ->map(fn (array $city) => array_merge(CityFactory::new()->raw(), [
-                'name' => $city['name'],
-                'slug' => $city['slug'],
-                'created_at' => $now,
-                'updated_at' => $now,
-            ]))
-            ->all();
-        $this->insertInChunks('cities', $cities);
-
-        $cityIds = City::query()->pluck('id', 'slug');
-        $schools = [];
-        foreach (ArabicSeedSupport::cities() as $city) {
-            foreach ($city['schools'] as $schoolName) {
-                $schools[] = array_merge(SchoolFactory::new()->raw(), [
-                    'city_id' => $cityIds[$city['slug']],
-                    'name' => $schoolName,
-                    'address' => 'حي '.str_replace('ال', '', $city['name']).' التعليمي',
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ]);
-            }
-        }
-        $this->insertInChunks('schools', $schools);
 
         $sections = collect(ArabicSeedSupport::academySections())
             ->map(fn (array $section) => array_merge(AcademySectionFactory::new()->raw(), $section, ['created_at' => $now, 'updated_at' => $now]))

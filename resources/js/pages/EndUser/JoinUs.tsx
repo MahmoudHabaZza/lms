@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { BriefcaseBusiness, FileText, Loader2, Mail, MessageSquareText, Phone, UserRound } from 'lucide-react';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
@@ -30,11 +30,16 @@ const initialForm: JoinUsFormData = {
 };
 
 export default function JoinUs({ positions = [] }: { positions?: PositionOption[] }) {
+    const { settings } = usePage<{ settings?: Record<string, string | null | undefined> }>().props;
     const [formData, setFormData] = useState<JoinUsFormData>(initialForm);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
     const [fileInputKey, setFileInputKey] = useState(0);
+    const joinUsBadge = settings?.join_us_badge?.trim() || 'فرصة للانضمام إلى فريقنا';
+    const joinUsTitle = settings?.join_us_title?.trim() || 'انضم لنا وشارك الأطفال رحلة تعلم البرمجة';
+    const joinUsSubtitle = settings?.join_us_subtitle?.trim() || 'إذا كنت تمتلك شغف التعليم وصناعة تجربة عربية ممتعة للأطفال، يمكنك إرسال طلبك الآن وسنراجع بياناتك بعناية.';
+    const joinUsFormTitle = settings?.join_us_form_title?.trim() || 'أرسل طلب الانضمام';
 
     const clearFieldError = (field: keyof JoinUsFormData) => {
         if (!errors[field]) {
@@ -191,7 +196,7 @@ export default function JoinUs({ positions = [] }: { positions?: PositionOption[
 
     return (
         <MainLayout>
-            <Head title="انضم لنا" />
+            <Head title={joinUsTitle} />
 
             <div dir="rtl" lang="ar" className="relative min-h-screen overflow-hidden bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_45%,#fff1e6_100%)] text-right">
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--site-primary-color)_18%,transparent),transparent_42%),radial-gradient(circle_at_bottom_left,color-mix(in_srgb,var(--site-primary-400)_14%,transparent),transparent_38%)]" />
@@ -200,9 +205,9 @@ export default function JoinUs({ positions = [] }: { positions?: PositionOption[
                     <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
                         <div className="space-y-6">
                             <div className="rounded-[32px] border border-orange-100 bg-white/90 p-7 shadow-[0_25px_60px_color-mix(in_srgb,var(--site-primary-color)_14%,transparent)] backdrop-blur">
-                                <span className="inline-flex rounded-full bg-orange-100 px-4 py-2 text-sm font-bold text-orange-700">فرصة للانضمام إلى فريقنا</span>
-                                <h1 className="mt-4 text-4xl font-black leading-tight text-slate-900 sm:text-5xl">انضم لنا وشارك الأطفال رحلة تعلم البرمجة</h1>
-                                <p className="mt-4 text-base leading-8 text-slate-600">إذا كنت تمتلك شغف التعليم وصناعة تجربة عربية ممتعة للأطفال، يمكنك إرسال طلبك الآن وسنراجع بياناتك بعناية.</p>
+                                <span className="inline-flex rounded-full bg-orange-100 px-4 py-2 text-sm font-bold text-orange-700">{joinUsBadge}</span>
+                                <h1 className="mt-4 text-4xl font-black leading-tight text-slate-900 sm:text-5xl">{joinUsTitle}</h1>
+                                <p className="mt-4 text-base leading-8 text-slate-600">{joinUsSubtitle}</p>
                             </div>
 
                             <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
@@ -226,7 +231,7 @@ export default function JoinUs({ positions = [] }: { positions?: PositionOption[
 
                         <div className="rounded-[32px] border border-slate-200 bg-white/95 p-6 shadow-[0_30px_80px_rgba(15,23,42,0.12)] sm:p-8">
                             <div className="mb-8">
-                                <h2 className="text-2xl font-black text-slate-900">أرسل طلب الانضمام</h2>
+                                <h2 className="text-2xl font-black text-slate-900">{joinUsFormTitle}</h2>
                                 <p className="mt-2 text-sm leading-7 text-slate-500">املأ البيانات التالية بدقة، وسنقوم بالتواصل معك إذا كان هناك تطابق مع احتياجات الفريق.</p>
                             </div>
 

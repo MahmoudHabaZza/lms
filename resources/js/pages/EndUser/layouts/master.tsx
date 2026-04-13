@@ -11,13 +11,13 @@ interface MainLayoutProps {
 export default function MainLayout({ children }: MainLayoutProps) {
     const { settings } = usePage<any>().props;
     const whatsappNumber = settings?.whatsapp_number ? String(settings.whatsapp_number).replace(/[^0-9]/g, '') : '';
-    const whatsappMessage = encodeURIComponent('مرحبًا أريد استشارة عن كورسات الأكاديمية');
+    const whatsappMessage = encodeURIComponent(settings?.whatsapp_default_message || 'مرحبًا أريد استشارة عن كورسات الأكاديمية');
 
     return (
         <>
             <Topbar />
             <Navbar />
-            <main className="pt-[calc(var(--topbar-offset, 40px)+80px)] pb-0">{children}</main>
+            <main className="pt-[calc(var(--topbar-offset,40px)+90px)] pb-0">{children}</main>
             <Footer />
 
             {whatsappNumber && (

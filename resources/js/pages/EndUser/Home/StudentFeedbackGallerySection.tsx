@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 
 type StudentFeedbackImage = {
@@ -8,9 +9,6 @@ type StudentFeedbackImage = {
     image: string | null;
 };
 
-const galleryTitle = 'كلمات نفتخر بها';
-const galleryDescription = 'لقطات حقيقية من آراء أولياء الأمور والطلاب عن تجربتهم داخل الأكاديمية.';
-
 export default function StudentFeedbackGallerySection({
     studentFeedbackImages = [],
     className = '',
@@ -18,10 +16,14 @@ export default function StudentFeedbackGallerySection({
     studentFeedbackImages?: StudentFeedbackImage[];
     className?: string;
 }) {
+    const { settings } = usePage<any>().props;
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const [selectedImage, setSelectedImage] = useState<StudentFeedbackImage | null>(null);
+    const galleryTitle = settings?.home_feedback_gallery_title?.trim() || 'كلمات نفتخر بها';
+    const galleryDescription = settings?.home_feedback_gallery_subtitle?.trim() || 'لقطات حقيقية من آراء أولياء الأمور والطلاب عن تجربتهم داخل الأكاديمية.';
+    const emptyText = settings?.home_feedback_gallery_empty_text?.trim() || 'لا توجد صور آراء مفعلة حاليًا.';
 
     const goTo = (index: number) => {
         const container = scrollContainerRef.current;
@@ -172,7 +174,7 @@ export default function StudentFeedbackGallerySection({
                         </div>
                     ) : (
                         <div className="mx-auto mt-10 max-w-2xl rounded-3xl border border-dashed border-orange-300 bg-white/80 p-8 text-center text-slate-700">
-                            لا توجد صور آراء مفعلة حاليًا.
+                            {emptyText}
                         </div>
                     )}
                 </div>

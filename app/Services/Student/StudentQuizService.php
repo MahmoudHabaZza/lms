@@ -8,6 +8,7 @@ use App\Models\Question;
 use App\Models\StudentAnswer;
 use App\Models\StudentExamAttempt;
 use App\Models\User;
+use App\Support\DateValue;
 use App\Services\Certificates\CertificateGeneratorService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Collection;
@@ -54,7 +55,8 @@ class StudentQuizService
             ->where('student_id', $student->id)
             ->where('exam_id', $exam->id)
             ->count();
-        $isPublished = $exam->publish_date === null || $exam->publish_date->lte(now());
+        $publishDate = DateValue::asCarbon($exam->publish_date);
+        $isPublished = $publishDate === null || $publishDate->lte(now());
         $latestFinishedAttempt = $history->first();
 
         return [
@@ -70,7 +72,7 @@ class StudentQuizService
                 'attempts_allowed' => $attemptsAllowed,
                 'attempts_used' => min($attemptsUsed, $attemptsAllowed),
                 'attempts_remaining' => max($attemptsAllowed - $attemptsUsed, 0),
-                'publish_date' => $exam->publish_date?->toIso8601String(),
+                'publish_date' => DateValue::iso8601($exam->publish_date),
                 'is_published' => $isPublished,
                 'is_available' => $isPublished && $exam->questions->isNotEmpty(),
                 'question_count' => $exam->questions->count(),
@@ -83,8 +85,8 @@ class StudentQuizService
                 'score' => $latestFinishedAttempt->score,
                 'is_passed' => $latestFinishedAttempt->is_passed,
                 'attempt_number' => $latestFinishedAttempt->attempt_number,
-                'finished_at' => $latestFinishedAttempt->finished_at?->toIso8601String(),
-                'finished_at_label' => $latestFinishedAttempt->finished_at?->translatedFormat('d M Y - h:i A'),
+                'finished_at' => DateValue::iso8601($latestFinishedAttempt->finished_at),
+                'finished_at_label' => DateValue::localized($latestFinishedAttempt->finished_at, 'd M Y - h:i A'),
                 'termination_reason' => $latestFinishedAttempt->termination_reason,
                 'termination_reason_label' => $this->terminationReasonLabel($latestFinishedAttempt->termination_reason),
             ] : null,
@@ -96,8 +98,8 @@ class StudentQuizService
                 'is_passed' => $attempt->is_passed,
                 'attempt_number' => $attempt->attempt_number,
                 'time_taken_seconds' => $attempt->time_taken_seconds,
-                'finished_at' => $attempt->finished_at?->toIso8601String(),
-                'finished_at_label' => $attempt->finished_at?->translatedFormat('d M Y - h:i A'),
+                'finished_at' => DateValue::iso8601($attempt->finished_at),
+                'finished_at_label' => DateValue::localized($attempt->finished_at, 'd M Y - h:i A'),
                 'termination_reason' => $attempt->termination_reason,
                 'termination_reason_label' => $this->terminationReasonLabel($attempt->termination_reason),
             ])->values()->all(),
@@ -165,7 +167,8 @@ class StudentQuizService
             ]);
 
         $submittedAt = now();
-        $timeTakenSeconds = max(0, $attempt->started_at?->diffInSeconds($submittedAt) ?? 0);
+        $startedAt = DateValue::asCarbon($attempt->started_at);
+        $timeTakenSeconds = max(0, $startedAt?->diffInSeconds($submittedAt) ?? 0);
         if ($attempt->exam->time_limit) {
             $timeTakenSeconds = min($timeTakenSeconds, $attempt->exam->time_limit * 60);
         }
@@ -245,7 +248,8 @@ class StudentQuizService
             return $activeAttempt->fresh(['exam.questions']);
         }
 
-        $isPublished = $exam->publish_date === null || $exam->publish_date->lte(now());
+        $publishDate = DateValue::asCarbon($exam->publish_date);
+        $isPublished = $publishDate === null || $publishDate->lte(now());
         if (! $isPublished || $exam->questions->isEmpty()) {
             return null;
         }
@@ -286,8 +290,9 @@ class StudentQuizService
         $attempt->loadMissing('exam.questions');
 
         $orderedQuestions = $this->orderedQuestions($attempt);
-        $deadlineAt = $attempt->exam->time_limit
-            ? $attempt->started_at?->copy()->addMinutes($attempt->exam->time_limit)
+        $attemptStartedAt = DateValue::asCarbon($attempt->started_at);
+        $deadlineAt = $attempt->exam->time_limit && $attemptStartedAt
+            ? $attemptStartedAt->copy()->addMinutes($attempt->exam->time_limit)
             : null;
         $timeRemaining = $deadlineAt ? now()->diffInSeconds($deadlineAt, false) : null;
 
@@ -295,8 +300,8 @@ class StudentQuizService
             'id' => $attempt->id,
             'status' => $attempt->status,
             'attempt_number' => $attempt->attempt_number,
-            'started_at' => $attempt->started_at?->toIso8601String(),
-            'deadline_at' => $deadlineAt?->toIso8601String(),
+            'started_at' => DateValue::iso8601($attempt->started_at),
+            'deadline_at' => DateValue::iso8601($deadlineAt),
             'time_remaining_seconds' => $timeRemaining === null ? null : max($timeRemaining, 0),
             'tab_switch_count' => $attempt->tab_switch_count,
             'questions' => $orderedQuestions->map(fn (Question $question) => [
@@ -334,7 +339,13 @@ class StudentQuizService
             return false;
         }
 
-        return $attempt->started_at->copy()->addMinutes($attempt->exam->time_limit)->lte(now());
+        $startedAt = DateValue::asCarbon($attempt->started_at);
+
+        if ($startedAt === null) {
+            return false;
+        }
+
+        return $startedAt->copy()->addMinutes($attempt->exam->time_limit)->lte(now());
     }
 
     private function ensureAttemptOwnership(User $student, StudentExamAttempt $attempt): void

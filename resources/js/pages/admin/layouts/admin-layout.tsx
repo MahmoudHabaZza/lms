@@ -5,7 +5,6 @@ import {
     BookOpen,
     BookOpenCheck,
     Braces,
-    Building2,
     ClipboardCheck,
     Clapperboard,
     CircleHelp,
@@ -16,7 +15,6 @@ import {
     Layers3,
     LogOut,
     Mail,
-    MapPin,
     Menu,
     Rocket,
     Settings,
@@ -81,13 +79,6 @@ const navSections: NavSection[] = [
             { title: 'الطلاب المتفوقون', href: '/admin/top-students', icon: Award },
             { title: 'آراء الطلاب', href: '/admin/student-feedback-images', icon: Images },
             { title: 'الأسئلة الشائعة', href: '/admin/faqs', icon: CircleHelp },
-        ],
-    },
-    {
-        title: 'الفروع والمواقع',
-        items: [
-            { title: 'المدن', href: '/admin/cities', icon: MapPin },
-            { title: 'المدارس', href: '/admin/schools', icon: Building2 },
         ],
     },
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
+use App\Support\DateValue;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -23,8 +24,8 @@ class NotificationController extends Controller
                 'message' => $notification->message,
                 'type' => $notification->type,
                 'is_read' => $notification->is_read,
-                'created_at' => $notification->created_at?->toIso8601String(),
-                'created_at_label' => $notification->created_at?->translatedFormat('d M Y - h:i A'),
+                'created_at' => DateValue::iso8601($notification->created_at),
+                'created_at_label' => DateValue::localized($notification->created_at, 'd M Y - h:i A'),
             ])
             ->values()
             ->all();

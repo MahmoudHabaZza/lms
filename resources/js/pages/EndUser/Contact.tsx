@@ -30,6 +30,10 @@ export default function Contact() {
     const contactEmail = settings?.contact_email?.trim() ?? '';
     const contactPhone = settings?.contact_phone?.trim() ?? '';
     const contactAddress = settings?.address?.trim() ?? '';
+    const contactPageBadge = settings?.contact_page_badge?.trim() || 'نحب نسمع منك';
+    const contactPageTitle = settings?.contact_page_title?.trim() || 'تواصل معنا';
+    const contactPageSubtitle = settings?.contact_page_subtitle?.trim() || 'عندك سؤال أو استفسار؟ ابعتلنا رسالة وهنرد عليك بأسرع وقت.';
+    const contactFormTitle = settings?.contact_form_title?.trim() || 'ابعتلنا رسالتك';
 
     const handleFieldChange = (name: keyof ContactFormData, value: string) => {
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -157,7 +161,7 @@ export default function Contact() {
 
     return (
         <MainLayout>
-            <Head title="تواصل معنا" />
+            <Head title={contactPageTitle} />
 
             <div dir="rtl" lang="ar" className="relative min-h-screen overflow-hidden bg-gradient-to-b from-orange-50 via-white to-amber-50/30 text-right">
                 <div className="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-orange-200/20 blur-3xl" />
@@ -168,13 +172,13 @@ export default function Contact() {
                     <div className="container mx-auto px-4 text-center sm:px-6 lg:px-8">
                         <div className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-5 py-2 text-sm font-bold text-orange-700">
                             <Sparkles size={16} />
-                            نحب نسمع منك
+                            {contactPageBadge}
                         </div>
                         <h1 className="mt-5 font-playpen-arabic text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-                            تواصل معنا
+                            {contactPageTitle}
                         </h1>
                         <p className="mx-auto mt-4 max-w-xl text-lg leading-8 text-slate-500">
-                            عندك سؤال أو استفسار؟ ابعتلنا رسالة وهنرد عليك بأسرع وقت.
+                            {contactPageSubtitle}
                         </p>
                     </div>
                 </section>
@@ -228,7 +232,7 @@ export default function Contact() {
                         <div className="mx-auto max-w-3xl">
                             <div className="rounded-3xl border-2 border-slate-100 bg-white p-8 shadow-xl sm:p-12">
                                 <div className="mb-10 text-center">
-                                    <h2 className="text-2xl font-extrabold text-slate-800 sm:text-3xl">ابعتلنا رسالتك</h2>
+                                    <h2 className="text-2xl font-extrabold text-slate-800 sm:text-3xl">{contactFormTitle}</h2>
                                     <p className="mt-2 text-sm text-slate-400">الحقول المطلوبة مُعلّمة بـ <span className="text-red-400">*</span></p>
                                 </div>
 

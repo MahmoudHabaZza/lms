@@ -22,6 +22,7 @@ use App\Models\WishlistItem;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 trait SerializesTeachifyApiData
 {
@@ -79,15 +80,74 @@ trait SerializesTeachifyApiData
 
     protected function lessonData(Lesson $lesson): array
     {
+        $videoSource = $lesson->video_source ?: 'drive';
+        $videoUrl = $videoSource === 'upload'
+            ? $this->absoluteUrl($lesson->video_path)
+            : $lesson->video_url;
+
         return [
             'id' => $lesson->id,
             'course' => $lesson->course_id,
             'title' => $lesson->title,
             'description' => $lesson->description,
-            'video_url' => $lesson->video_url,
+            'video_source' => $videoSource,
+            'video_url' => $videoUrl,
+            'video_embed_url' => $this->lessonEmbedUrl($videoSource, $lesson->video_url),
             'duration_minutes' => (int) $lesson->duration_minutes,
             'order' => (int) $lesson->order,
         ];
+    }
+
+    private function lessonEmbedUrl(string $videoSource, ?string $videoUrl): ?string
+    {
+        if (! $videoUrl) {
+            return null;
+        }
+
+        return match ($videoSource) {
+            'youtube' => $this->normalizeYoutubeEmbedUrl($videoUrl),
+            'drive' => $this->normalizeDriveEmbedUrl($videoUrl),
+            default => null,
+        };
+    }
+
+    private function normalizeYoutubeEmbedUrl(string $url): string
+    {
+        if (Str::contains($url, 'youtube.com/embed/')) {
+            return $url;
+        }
+
+        $parsed = parse_url($url);
+        if (! is_array($parsed)) {
+            return $url;
+        }
+
+        $host = $parsed['host'] ?? '';
+        $path = $parsed['path'] ?? '';
+        parse_str($parsed['query'] ?? '', $query);
+
+        if (Str::contains($host, 'youtu.be') && $path !== '') {
+            return 'https://www.youtube.com/embed/'.ltrim($path, '/');
+        }
+
+        if (Str::contains($host, 'youtube.com') && isset($query['v']) && $query['v'] !== '') {
+            return 'https://www.youtube.com/embed/'.$query['v'];
+        }
+
+        return $url;
+    }
+
+    private function normalizeDriveEmbedUrl(string $url): string
+    {
+        if (Str::contains($url, '/preview')) {
+            return $url;
+        }
+
+        if (preg_match('/\/file\/d\/([^\/]+)/', $url, $matches) === 1) {
+            return 'https://drive.google.com/file/d/'.$matches[1].'/preview';
+        }
+
+        return $url;
     }
 
     protected function resourceData(Resource $resource, ?Request $request = null): array

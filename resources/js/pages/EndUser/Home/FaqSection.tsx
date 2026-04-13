@@ -1,4 +1,5 @@
 import { ChevronDown } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
 
 type FaqItem = {
@@ -10,11 +11,13 @@ type FaqItem = {
     video_cover_image: string | null;
 };
 
-const sectionTitle = 'الأسئلة الشائعة';
-const sectionSubtitle = 'كل إجابة بصياغة واضحة وسريعة تساعدك في اتخاذ القرار.';
-
 export default function FaqSection({ faqs = [] }: { faqs?: FaqItem[] }) {
+    const { settings } = usePage<any>().props;
     const [openId, setOpenId] = useState<number | null>(faqs[0]?.id ?? null);
+    const sectionTitle = settings?.home_faq_title?.trim() || 'الأسئلة الشائعة';
+    const sectionSubtitle = settings?.home_faq_subtitle?.trim() || 'كل إجابة بصياغة واضحة وسريعة تساعدك في اتخاذ القرار.';
+    const emptyText = settings?.home_faq_empty_text?.trim() || 'لا توجد أسئلة شائعة مفعلة حاليًا.';
+    const videoUnavailableText = settings?.home_faq_video_unavailable_text?.trim() || 'فيديو الإجابة غير متاح حاليًا.';
 
     const normalizedFaqs = useMemo(() => faqs.filter((faq) => faq.question), [faqs]);
 
@@ -101,14 +104,14 @@ export default function FaqSection({ faqs = [] }: { faqs?: FaqItem[] }) {
                                                                 />
                                                             </div>
                                                             <div className="explore-modal-info">
-                                                                <p className="text-xs font-semibold uppercase tracking-wider text-orange-300">Ù…Ù‚Ø·Ø¹ Ø§Ù„Ø³Ø¤Ø§Ù„</p>
+                                                                <p className="text-xs font-semibold uppercase tracking-wider text-orange-300">مقطع السؤال</p>
                                                                 <h3 className="mt-1 text-lg font-bold text-white">{faq.question}</h3>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 ) : (
                                                     <div className="rounded-xl border border-dashed border-orange-200 bg-orange-50/70 p-4 text-sm text-slate-600">
-                                                        ÙÙŠØ¯ÙŠÙˆ Ø§Ù„Ø¥Ø¬Ø§Ø¨Ø© ØºÙŠØ± Ù…ØªØ§Ø­ Ø­Ø§Ù„ÙŠØ§.
+                                                        {videoUnavailableText}
                                                     </div>
                                                 )
                                             ) : (
@@ -124,7 +127,7 @@ export default function FaqSection({ faqs = [] }: { faqs?: FaqItem[] }) {
                     </div>
                 ) : (
                     <div className="mx-auto mt-10 max-w-2xl rounded-3xl border border-dashed border-orange-200 bg-white/80 p-8 text-center text-slate-600">
-                        Ù„Ø§ ØªÙˆØ¬Ø¯ Ø£Ø³Ø¦Ù„Ø© Ø´Ø§Ø¦Ø¹Ø© Ù…ÙØ¹Ù„Ø© Ø­Ø§Ù„ÙŠØ§.
+                        {emptyText}
                     </div>
                 )}
             </div>

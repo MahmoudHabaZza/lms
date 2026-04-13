@@ -4,6 +4,8 @@ namespace App\Support;
 
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\User;
+use App\Models\WishlistItem;
 use Illuminate\Support\Facades\Storage;
 
 class EndUserCoursePresenter
@@ -11,12 +13,17 @@ class EndUserCoursePresenter
     /**
      * @return array<string, mixed>
      */
-    public function summary(Course $course): array
+    public function summary(Course $course, ?User $viewer = null): array
     {
         $course->loadMissing([
             'instructor:id,name,profile_picture,avatar',
             'category:id,name',
         ]);
+
+        $isStudentViewer = $viewer && $viewer->isStudent();
+        $isFavorited = $isStudentViewer
+            ? $this->isFavoritedBy($course, $viewer)
+            : false;
 
         return [
             'id' => $course->id,
@@ -31,6 +38,8 @@ class EndUserCoursePresenter
             'accent_color' => $course->accent_color ?: '#f97316',
             'show_url' => route('courses.show', $course),
             'booking_url' => route('bookings.index', ['course' => $course->id]),
+            'is_favorited' => $isFavorited,
+            'favorite_url' => $isStudentViewer ? route('student.courses.favorite', $course) : null,
         ];
     }
 
@@ -38,7 +47,7 @@ class EndUserCoursePresenter
      * @param  iterable<Course>  $relatedCourses
      * @return array<string, mixed>
      */
-    public function details(Course $course, iterable $relatedCourses = []): array
+    public function details(Course $course, iterable $relatedCourses = [], ?User $viewer = null): array
     {
         $course->loadMissing([
             'instructor:id,name,profile_picture,avatar',
@@ -61,7 +70,7 @@ class EndUserCoursePresenter
             ->all();
 
         return [
-            ...$this->summary($course),
+            ...$this->summary($course, $viewer),
             'description' => $course->description,
             'description_points' => $this->descriptionPoints($course),
             'category' => $course->category?->name,
@@ -103,7 +112,7 @@ class EndUserCoursePresenter
                 'url' => route('bookings.index', ['course' => $course->id]),
             ],
             'related_courses' => collect($relatedCourses)
-                ->map(fn (Course $relatedCourse): array => $this->summary($relatedCourse))
+                ->map(fn (Course $relatedCourse): array => $this->summary($relatedCourse, $viewer))
                 ->values()
                 ->all(),
         ];
@@ -231,5 +240,18 @@ class EndUserCoursePresenter
         }
 
         return Storage::disk('public')->url($value);
+    }
+
+    private function isFavoritedBy(Course $course, User $viewer): bool
+    {
+        if ($course->relationLoaded('wishlistItems')) {
+            return $course->wishlistItems
+                ->contains(fn ($item) => (int) $item->student_id === (int) $viewer->id);
+        }
+
+        return WishlistItem::query()
+            ->where('student_id', $viewer->id)
+            ->where('course_id', $course->id)
+            ->exists();
     }
 }

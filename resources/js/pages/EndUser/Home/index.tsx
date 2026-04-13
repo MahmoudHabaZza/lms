@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import type { PublicCourseCard } from '@/components/end-user/course-showcase-card';
 import MainLayout from '../layouts/master';
 import AcademyJourneySection from './AcademyJourneySection';
@@ -93,11 +93,14 @@ export default function Home({
     studentFeedbackImages = [],
     faqs = [],
 }: HomeProps) {
+    const { settings } = usePage<{ settings?: Record<string, string | null> }>().props;
+    const homeIntroSubtitle = settings?.home_intro_subtitle || 'أكاديمية برمجة للأطفال والناشئين';
+
     return (
         <MainLayout>
             <Head title="كيد كودر | برمجة الأطفال" />
 
-            <div className="pt-[120px]">
+            <div>
                 <SectionThree slides={bannerSlides} staticSection={academySection} />
                 <AcademyJourneySection />
                 <ProgrammingTrackSection courses={courses} />
@@ -124,7 +127,7 @@ export default function Home({
                                 </h2>
 
                                 <p className="mt-4 font-playpen-arabic text-base font-semibold text-orange-600 sm:text-lg">
-                                    أكاديمية برمجة للأطفال والناشئين
+                                    {homeIntroSubtitle}
                                 </p>
 
                                 <p className="mx-auto mt-5 max-w-6xl text-sm leading-8 text-slate-700 sm:text-base sm:leading-8 lg:text-xl lg:leading-10">

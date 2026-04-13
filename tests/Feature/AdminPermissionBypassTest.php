@@ -18,6 +18,6 @@ class AdminPermissionBypassTest extends TestCase
 
         $this->actingAs($admin);
 
-        $this->get('/admin/cities')->assertOk();
+        $this->get('/admin/courses')->assertOk();
     }
 }

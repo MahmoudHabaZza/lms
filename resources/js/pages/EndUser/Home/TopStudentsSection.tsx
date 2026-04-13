@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 
 type TopStudent = {
@@ -8,9 +9,6 @@ type TopStudent = {
     image: string | null;
 };
 
-const galleryTitle = 'طلابنا المتفوقين';
-const galleryDescription = 'لقطات حقيقية من طلابنا المتميزين أثناء استلام الشهادات والاحتفاء بإنجازاتهم داخل الأكاديمية.';
-
 export default function TopStudentsSection({
     topStudents = [],
     className = '',
@@ -18,10 +16,14 @@ export default function TopStudentsSection({
     topStudents?: TopStudent[];
     className?: string;
 }) {
+    const { settings } = usePage<any>().props;
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState<TopStudent | null>(null);
+    const galleryTitle = settings?.home_top_students_title?.trim() || 'طلابنا المتفوقين';
+    const galleryDescription = settings?.home_top_students_subtitle?.trim() || 'لقطات حقيقية من طلابنا المتميزين أثناء استلام الشهادات والاحتفاء بإنجازاتهم داخل الأكاديمية.';
+    const emptyText = settings?.home_top_students_empty_text?.trim() || 'لا توجد صور طلاب متفوقين مفعلة حاليًا.';
 
     const goTo = (index: number) => {
         const container = scrollContainerRef.current;
@@ -173,7 +175,7 @@ export default function TopStudentsSection({
                         </div>
                     ) : (
                         <div className="mx-auto mt-10 max-w-2xl rounded-3xl border border-dashed border-orange-300 bg-white/80 p-8 text-center text-slate-700">
-                            لا توجد صور طلاب متفوقين مفعلة حاليًا.
+                            {emptyText}
                         </div>
                     )}
                 </div>

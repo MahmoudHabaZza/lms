@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight, Play, X } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 type CourseReel = {
@@ -15,9 +16,6 @@ type CourseReel = {
     video_url: string | null;
 };
 
-const sectionTitle = 'شرح التراكات والكورسات';
-const sectionSubtitle = 'شوف فيديو لكل كورس مع نبذة سريعة وتراك المسار.';
-
 export default function CourseReelsSection({
     courseReels = [],
     className = '',
@@ -25,6 +23,10 @@ export default function CourseReelsSection({
     courseReels?: CourseReel[];
     className?: string;
 }) {
+    const { settings } = usePage<{ settings?: Record<string, string | null> }>().props;
+    const sectionTitle = settings?.home_course_reels_title || 'شرح التراكات والكورسات';
+    const sectionSubtitle = settings?.home_course_reels_subtitle || 'شوف فيديو لكل كورس مع نبذة سريعة وتراك المسار.';
+
     const [activeReel, setActiveReel] = useState<CourseReel | null>(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
@@ -129,7 +131,10 @@ export default function CourseReelsSection({
                                         <div className="absolute inset-x-0 bottom-0 h-22 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
                                         <div className="absolute inset-0 flex items-center justify-center px-4">
-                                            <div className="relative rounded-2xl bg-orange-500/30 p-4 text-center backdrop-blur-sm shadow-lg transition duration-400 ease-out group-hover:scale-105 group-hover:bg-orange-500/45">
+                                            <div
+                                                className="relative rounded-2xl p-4 text-center backdrop-blur-sm shadow-lg transition duration-400 ease-out group-hover:scale-105"
+                                                style={{ backgroundColor: 'color-mix(in srgb, var(--site-primary-500) 35%, transparent)' }}
+                                            >
                                                 <h3 className="text-lg font-black uppercase tracking-wide text-white drop-shadow-lg md:text-xl">
                                                     {reel.course_title}
                                                 </h3>
@@ -137,7 +142,8 @@ export default function CourseReelsSection({
                                                 <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2">
                                                     <button
                                                         type="button"
-                                                        className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-orange-500/95 text-white shadow-lg transition hover:scale-110"
+                                                        className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white shadow-lg transition hover:scale-110"
+                                                        style={{ backgroundColor: 'var(--site-primary-500)' }}
                                                         onClick={(e) => { e.stopPropagation(); setActiveReel(reel); }}
                                                         aria-label="Play course reel"
                                                     >

@@ -28,8 +28,10 @@ export default function Scripts() {
 
     const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
     // These React/Inertia pages use modern Tailwind layouts and should not be
-    // mutated by the legacy theme scripts after load.
-    const excludeLegacyOn = ['/bookings', '/booking', '/join-us', '/contact'];
+    // mutated by the legacy theme scripts after load. `main.js` in particular
+    // initializes Isotope on every `.grid`, which breaks Tailwind grid layouts
+    // on pages like course details after the initial render.
+    const excludeLegacyOn = ['/bookings', '/booking', '/join-us', '/contact', '/courses'];
     const shouldExcludeLegacy = excludeLegacyOn.some(p => pathname.startsWith(p));
 
     // If on an excluded route, filter out scripts known to mutate layout

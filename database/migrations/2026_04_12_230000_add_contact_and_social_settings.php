@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Setting;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -32,6 +33,8 @@ return new class extends Migration
                 $setting + ['created_at' => $now, 'updated_at' => $now],
             );
         }
+
+        Setting::clearCache();
     }
 
     public function down(): void
@@ -53,5 +56,7 @@ return new class extends Migration
                 'whatsapp_number',
             ])
             ->delete();
+
+        Setting::clearCache();
     }
 };

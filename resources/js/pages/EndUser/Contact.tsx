@@ -188,7 +188,7 @@ export default function Contact() {
                                         href={`mailto:${contactEmail}`}
                                         className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-orange-100 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-orange-300 hover:shadow-lg"
                                     >
-                                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
+                                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-md transition-transform duration-300 group-hover:scale-110" style={{ background: 'linear-gradient(to bottom right, var(--site-primary-400), var(--site-primary-600))' }}>
                                             <Mail size={24} />
                                         </div>
                                         <h3 className="text-sm font-bold text-slate-800">البريد الإلكتروني</h3>
@@ -201,7 +201,7 @@ export default function Contact() {
                                         href={`tel:${contactPhone}`}
                                         className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-sky-100 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-sky-300 hover:shadow-lg"
                                     >
-                                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400 to-sky-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
+                                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-md transition-transform duration-300 group-hover:scale-110" style={{ background: 'linear-gradient(to bottom right, #38bdf8, #0284c7)' }}>
                                             <Phone size={24} />
                                         </div>
                                         <h3 className="text-sm font-bold text-slate-800">رقم التواصل</h3>
@@ -211,7 +211,7 @@ export default function Contact() {
 
                                 {contactAddress && (
                                     <div className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-emerald-100 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg">
-                                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
+                                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-md transition-transform duration-300 group-hover:scale-110" style={{ background: 'linear-gradient(to bottom right, #34d399, #059669)' }}>
                                             <MapPin size={24} />
                                         </div>
                                         <h3 className="text-sm font-bold text-slate-800">العنوان</h3>
@@ -302,8 +302,9 @@ export default function Contact() {
                                         className={`group inline-flex w-full items-center justify-center gap-3 rounded-2xl px-8 py-5 text-lg font-extrabold text-white shadow-lg transition-all duration-300 ${
                                             isSubmitting
                                                 ? 'cursor-not-allowed bg-slate-400 shadow-none'
-                                                : 'bg-gradient-to-l from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 hover:shadow-xl hover:shadow-orange-200 active:scale-[0.98]'
+                                                : 'hover:shadow-xl hover:shadow-orange-200 active:scale-[0.98]'
                                         }`}
+                                        style={!isSubmitting ? { background: 'linear-gradient(to left, var(--site-primary-color), var(--site-primary-600))' } : undefined}
                                     >
                                         {isSubmitting ? (
                                             <>

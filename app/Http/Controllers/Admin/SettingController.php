@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class SettingController extends Controller
@@ -177,16 +178,18 @@ class SettingController extends Controller
                 return response()->json(['success' => false, 'message' => 'الملف غير صحيح'], 422);
             }
 
-            $filename = 'logo_'.time().'.'.$file->getClientOriginalExtension();
-            $destination = public_path('assets/EndUser/images');
+            $existingLogo = Setting::get('site_logo');
+            if (is_string($existingLogo) && str_starts_with($existingLogo, '/storage/')) {
+                $existingRelativePath = ltrim(substr($existingLogo, strlen('/storage/')), '/');
 
-            if (! file_exists($destination)) {
-                mkdir($destination, 0755, true);
+                if ($existingRelativePath !== '') {
+                    Storage::disk('public')->delete($existingRelativePath);
+                }
             }
 
-            $file->move($destination, $filename);
-
-            $path = '/assets/EndUser/images/'.$filename;
+            $filename = 'logo_'.time().'.'.$file->getClientOriginalExtension();
+            Storage::disk('public')->putFileAs('logos', $file, $filename);
+            $path = Storage::disk('public')->url('logos/'.$filename);
 
             Setting::updateOrCreate(
                 ['key' => 'site_logo'],

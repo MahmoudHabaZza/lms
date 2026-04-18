@@ -1,4 +1,4 @@
-﻿import { useForm, usePage } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { Check, Mail, Palette, Save, Settings, Share2, Upload } from 'lucide-react';
 import React, { useMemo, useState } from 'react';
 import AdminLayout from '../layouts/admin-layout';
@@ -109,6 +109,10 @@ const fieldLabels: Record<string, string> = {
     booking_success_title: 'عنوان صفحة نجاح الحجز',
     booking_success_description: 'وصف صفحة نجاح الحجز',
     booking_success_home_button: 'نص زر العودة من صفحة نجاح الحجز',
+    privacy_policy_badge: 'شارة صفحة سياسة الخصوصية',
+    privacy_policy_title: 'عنوان صفحة سياسة الخصوصية',
+    privacy_policy_subtitle: 'وصف صفحة سياسة الخصوصية',
+    privacy_policy_content: 'محتوى صفحة سياسة الخصوصية',
     address: 'العنوان',
     contact_email: 'البريد العام',
     contact_phone: 'رقم التواصل',
@@ -216,6 +220,10 @@ const fieldHints: Record<string, string> = {
     booking_success_title: 'العنوان الرئيسي لصفحة نجاح الحجز.',
     booking_success_description: 'الوصف التعريفي في صفحة نجاح الحجز.',
     booking_success_home_button: 'نص زر العودة للصفحة الرئيسية بعد الحجز.',
+    privacy_policy_badge: 'الشارة أعلى عنوان سياسة الخصوصية.',
+    privacy_policy_title: 'العنوان الرئيسي لصفحة سياسة الخصوصية.',
+    privacy_policy_subtitle: 'الرسالة التوضيحية أسفل عنوان سياسة الخصوصية.',
+    privacy_policy_content: 'محتوى سياسة الخصوصية الذي سيظهر للزوار (يمكنك إدخال أكواد HTML لتنسيق المحتوى).',
     youtube_url: 'ضع الرابط الكامل لقناة يوتيوب.',
     booking_notification_email: 'كل طلب حجز جديد سيتم إرساله إلى هذا البريد.',
     contact_notification_email: 'كل رسالة جديدة من صفحة تواصل معنا سيتم إرسالها إلى هذا البريد.',
@@ -244,6 +252,7 @@ const settingSections: Array<{ id: string; title: string; match: (key: string) =
     { id: 'join_us', title: 'صفحة انضم لنا', match: (key) => key.startsWith('join_us_') },
     { id: 'bookings', title: 'صفحة الحجوزات', match: (key) => key.startsWith('bookings_') || key.startsWith('booking_success_') },
     { id: 'favorites', title: 'صفحة المفضلة', match: (key) => key.startsWith('favorites_') },
+    { id: 'privacy', title: 'صفحة سياسة الخصوصية', match: (key) => key.startsWith('privacy_policy_') },
 ];
 
 const fontOptions = [
@@ -569,6 +578,13 @@ export default function SettingsIndex({ settings }: Props) {
                                                                         <option value="tls">tls</option>
                                                                         <option value="ssl">ssl</option>
                                                                     </select>
+                                                                ) : setting.type === 'text' ? (
+                                                                    <textarea
+                                                                        rows={5}
+                                                                        value={getValue(setting.key)}
+                                                                        onChange={(event) => updateValue(setting.key, event.target.value)}
+                                                                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                                                                    />
                                                                 ) : (
                                                                     <input
                                                                         type={inputType}

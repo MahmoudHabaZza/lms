@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
@@ -18,20 +20,20 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        $data = $request->only(['name', 'email']);
-
-        $validator = Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,'.$user->id,
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
+            'profile_picture' => ['nullable', 'image', 'max:2048'],
         ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
 
         if ($request->hasFile('profile_picture')) {
             $file = $request->file('profile_picture');
             $path = $file->store('avatars', 'public');
+
+            if ($user->profile_picture && ! str_starts_with($user->profile_picture, 'http')) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+
             $user->profile_picture = $path;
         }
 
@@ -47,13 +49,9 @@ class ProfileController extends Controller
         $user = $request->user();
 
         $request->validate([
-            'current_password' => 'required',
-            'password' => 'required|min:8|confirmed',
+            'current_password' => ['required', 'current_password:api'],
+            'password' => ['required', 'confirmed', Password::min(8)],
         ]);
-
-        if (! Hash::check($request->input('current_password'), $user->password)) {
-            return response()->json(['message' => 'Current password is incorrect'], 422);
-        }
 
         $user->password = Hash::make($request->input('password'));
         $user->save();

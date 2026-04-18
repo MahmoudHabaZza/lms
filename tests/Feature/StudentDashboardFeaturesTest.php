@@ -5,7 +5,9 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Lesson;
 use App\Models\Notification;
+use App\Models\Resource;
 use App\Models\Review;
 use App\Models\Task;
 use App\Models\User;
@@ -110,6 +112,32 @@ class StudentDashboardFeaturesTest extends TestCase
             'id' => $notification->id,
             'is_read' => true,
         ]);
+    }
+
+    public function test_student_dashboard_loads_lesson_resources_without_lazy_loading_violations(): void
+    {
+        [$student, $course] = $this->createEnrolledStudentWithCourse();
+
+        $lesson = Lesson::query()->create([
+            'course_id' => $course->id,
+            'title' => 'الدرس الأول',
+            'description' => 'مقدمة سريعة',
+            'video_source' => Lesson::VIDEO_SOURCE_YOUTUBE,
+            'video_url' => 'https://www.youtube.com/watch?v=UB1O30fR-EE',
+            'duration_minutes' => 15,
+            'order' => 1,
+        ]);
+
+        Resource::query()->create([
+            'course_id' => $course->id,
+            'lesson_id' => $lesson->id,
+            'title' => 'ملف الدرس',
+            'file' => 'resources/lesson-one.pdf',
+        ]);
+
+        $this->actingAs($student)
+            ->get(route('student.dashboard'))
+            ->assertOk();
     }
 
     private function createEnrolledStudentWithCourse(): array

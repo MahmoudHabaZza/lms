@@ -15,7 +15,6 @@ class SettingController extends Controller
     public function index()
     {
         $this->ensureWebsiteContentSettings();
-        Setting::clearCache();
 
         return Inertia::render('admin/settings/Index', [
             'settings' => Setting::grouped(),
@@ -31,8 +30,13 @@ class SettingController extends Controller
                 'settings.*.value' => 'nullable|string',
             ]);
 
+            $settings = Setting::query()
+                ->whereIn('key', collect($validated['settings'])->pluck('key'))
+                ->get()
+                ->keyBy('key');
+
             foreach ($validated['settings'] as $settingData) {
-                $setting = Setting::query()->where('key', $settingData['key'])->first();
+                $setting = $settings->get($settingData['key']);
 
                 if (! $setting) {
                     continue;
@@ -239,6 +243,10 @@ class SettingController extends Controller
             'home_top_students_title' => ['value' => 'طلابنا المتفوقين', 'type' => 'string', 'group' => 'general'],
             'home_top_students_subtitle' => ['value' => 'لقطات حقيقية من طلابنا المتميزين أثناء استلام الشهادات والاحتفاء بإنجازاتهم داخل الأكاديمية.', 'type' => 'text', 'group' => 'general'],
             'home_top_students_empty_text' => ['value' => 'لا توجد صور طلاب متفوقين مفعلة حاليًا.', 'type' => 'string', 'group' => 'general'],
+            'privacy_policy_badge' => ['value' => 'نحن نهتم بخصوصيتك', 'type' => 'string', 'group' => 'general'],
+            'privacy_policy_title' => ['value' => 'سياسة الخصوصية', 'type' => 'string', 'group' => 'general'],
+            'privacy_policy_subtitle' => ['value' => 'تعرف على كيفية جمع واستخدام وحماية بياناتك الشخصية عند استخدامك لمنصتنا.', 'type' => 'string', 'group' => 'general'],
+            'privacy_policy_content' => ['value' => '', 'type' => 'text', 'group' => 'general'],
             'home_feedback_gallery_title' => ['value' => 'كلمات نفتخر بها', 'type' => 'string', 'group' => 'general'],
             'home_feedback_gallery_subtitle' => ['value' => 'لقطات حقيقية من آراء أولياء الأمور والطلاب عن تجربتهم داخل الأكاديمية.', 'type' => 'text', 'group' => 'general'],
             'home_feedback_gallery_empty_text' => ['value' => 'لا توجد صور آراء مفعلة حاليًا.', 'type' => 'string', 'group' => 'general'],
@@ -280,25 +288,34 @@ class SettingController extends Controller
             'booking_success_home_button' => ['value' => 'العودة للرئيسية', 'type' => 'string', 'group' => 'general'],
         ];
 
-        $createdAny = false;
+        $existingKeys = Setting::query()
+            ->whereIn('key', array_keys($defaults))
+            ->pluck('key')
+            ->all();
 
-        foreach ($defaults as $key => $setting) {
-            $existing = Setting::query()->where('key', $key)->exists();
-            if ($existing) {
-                continue;
-            }
+        $missing = array_diff_key($defaults, array_flip($existingKeys));
 
-            Setting::query()->create([
-                'key' => $key,
-                'value' => $setting['value'],
-                'type' => $setting['type'],
-                'group' => $setting['group'],
-            ]);
-
-            $createdAny = true;
+        if ($missing === []) {
+            return;
         }
 
-        if ($createdAny) {
+        $timestamp = now();
+
+        Setting::query()->insert(
+            collect($missing)
+                ->map(fn (array $setting, string $key) => [
+                    'key' => $key,
+                    'value' => $setting['value'],
+                    'type' => $setting['type'],
+                    'group' => $setting['group'],
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
+                ])
+                ->values()
+                ->all()
+        );
+
+        if (! empty($missing)) {
             Setting::clearCache();
         }
     }

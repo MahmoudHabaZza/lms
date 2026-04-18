@@ -1,4 +1,4 @@
-import { usePage } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Youtube } from 'lucide-react';
 
 type FooterSettings = {
@@ -6,6 +6,20 @@ type FooterSettings = {
     address?: string | null;
     contact_email?: string | null;
     contact_phone?: string | null;
+    footer_description?: string | null;
+    footer_newsletter_description?: string | null;
+    footer_copyright?: string | null;
+    footer_quick_links_title?: string | null;
+    footer_help_links_title?: string | null;
+    footer_stay_connected_title?: string | null;
+    footer_link_home_label?: string | null;
+    footer_link_privacy_label?: string | null;
+    footer_link_bookings_label?: string | null;
+    footer_link_join_us_label?: string | null;
+    footer_link_contact_label?: string | null;
+    footer_help_student_login_label?: string | null;
+    footer_help_admin_login_label?: string | null;
+    footer_help_support_label?: string | null;
     facebook_url?: string | null;
     instagram_url?: string | null;
     linkedin_url?: string | null;
@@ -91,11 +105,11 @@ export default function Footer() {
                 <div className="footer-v4-card">
                     <h4 className="footer-v4-heading">{footerQuickLinksTitle}</h4>
                     <ul className="footer-v4-links">
-                        <li><a href="/">{footerHomeLabel}</a></li>
-                        <li><a href="/pages/privacy-policy">{footerPrivacyLabel}</a></li>
-                        <li><a href="/bookings">{footerBookingsLabel}</a></li>
-                        <li><a href="/join-us">{footerJoinUsLabel}</a></li>
-                        <li><a href="/contact">{footerContactLabel}</a></li>
+                        <li><Link href="/">{footerHomeLabel}</Link></li>
+                        <li><Link href="/privacy-policy">{footerPrivacyLabel}</Link></li>
+                        <li><Link href="/bookings">{footerBookingsLabel}</Link></li>
+                        <li><Link href="/join-us">{footerJoinUsLabel}</Link></li>
+                        <li><Link href="/contact">{footerContactLabel}</Link></li>
                     </ul>
                 </div>
 

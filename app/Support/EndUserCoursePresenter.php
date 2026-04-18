@@ -205,7 +205,9 @@ class EndUserCoursePresenter
 
     private function durationLabel(Course $course): string
     {
-        $minutes = (int) ($course->total_duration_minutes ?: $course->lessons()->sum('duration_minutes'));
+        $minutes = (int) ($course->total_duration_minutes ?: ($course->relationLoaded('lessons')
+            ? $course->lessons->sum('duration_minutes')
+            : $course->lessons()->sum('duration_minutes')));
 
         if ($minutes > 0) {
             $hours = intdiv($minutes, 60);

@@ -46,11 +46,13 @@ export default function StudentLogin({ status }: Props) {
                                     </div>
                                 )}
 
-                                <form onSubmit={submit} className="mt-8 space-y-5">
+                                <form onSubmit={submit} className="mt-8 space-y-5 text-right">
                                     <div>
-                                        <label htmlFor="login" className="mb-2 flex items-center justify-end gap-2 text-sm font-bold text-slate-700">
-                                            <span>اسم المستخدم أو البريد الإلكتروني</span>
-                                            <UserRound className="h-4 w-4 text-orange-500" />
+                                        <label htmlFor="login" className="mb-2 block text-right text-sm font-bold text-slate-700">
+                                            <span className="inline-flex items-center gap-2">
+                                                <UserRound className="h-4 w-4 text-orange-500" />
+                                                <span>اسم المستخدم أو البريد الإلكتروني</span>
+                                            </span>
                                         </label>
                                         <input
                                             id="login"
@@ -65,9 +67,11 @@ export default function StudentLogin({ status }: Props) {
                                     </div>
 
                                     <div>
-                                        <label htmlFor="password" className="mb-2 flex items-center justify-end gap-2 text-sm font-bold text-slate-700">
-                                            <span>كلمة المرور</span>
-                                            <Lock className="h-4 w-4 text-orange-500" />
+                                        <label htmlFor="password" className="mb-2 block text-right text-sm font-bold text-slate-700">
+                                            <span className="inline-flex items-center gap-2">
+                                                <Lock className="h-4 w-4 text-orange-500" />
+                                                <span>كلمة المرور</span>
+                                            </span>
                                         </label>
                                         <div className="relative">
                                             <button

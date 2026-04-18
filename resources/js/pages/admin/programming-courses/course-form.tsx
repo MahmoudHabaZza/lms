@@ -1,7 +1,7 @@
 import type { FormEvent } from 'react';
 import InputError from '@/components/input-error';
 
-type ProgrammingCourseFormData = {
+export type ProgrammingCourseFormData = {
     title: string;
     age_group: string;
     thumbnail: string;
@@ -22,21 +22,8 @@ type ProgrammingCourseFormData = {
 
 type ProgrammingCourseFormProps = {
     data: ProgrammingCourseFormData;
-    setData: {
-        (key: 'title', value: string): void;
-        (key: 'age_group', value: string): void;
-        (key: 'thumbnail', value: string): void;
-        (key: 'short_description', value: string): void;
-        (key: 'learning_outcome', value: string): void;
-        (key: 'duration_months', value: number): void;
-        (key: 'sessions_count', value: number): void;
-        (key: 'sessions_per_week', value: number): void;
-        (key: 'badge', value: string): void;
-        (key: 'accent_color', value: string): void;
-        (key: 'sort_order', value: number): void;
-        (key: 'status', value: boolean): void;
-    };
-    ageGroups: string[];
+    setData: <K extends keyof ProgrammingCourseFormData>(key: K, value: ProgrammingCourseFormData[K]) => void;
+    ageGroups?: string[];
     instructors?: { id: number; name: string }[];
     categories?: { id: number; name: string }[];
     errors: Partial<Record<keyof ProgrammingCourseFormData, string>>;
@@ -56,6 +43,8 @@ export default function CourseForm({
     instructors,
     categories,
 }: ProgrammingCourseFormProps) {
+    const availableAgeGroups = ageGroups?.length ? ageGroups : ['5-17'];
+
     return (
         <form onSubmit={onSubmit} className="space-y-5 rounded-xl border p-6">
             <div className="grid gap-5 sm:grid-cols-2">
@@ -83,7 +72,7 @@ export default function CourseForm({
                         onChange={(e) => setData('age_group', e.target.value)}
                         className="w-full rounded-md border px-3 py-2"
                     >
-                        {ageGroups.map((group) => (
+                        {availableAgeGroups.map((group) => (
                             <option key={group} value={group}>
                                 {group}
                             </option>

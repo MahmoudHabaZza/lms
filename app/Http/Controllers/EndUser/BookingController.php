@@ -36,13 +36,13 @@ class BookingController extends Controller
         $countryCodes = collect($this->countries())->pluck('code')->all();
 
         $validated = $request->validate([
-            'fullName' => ['required', 'string', 'max:255', 'regex:/^[\x{0600}-\x{06FF}\s]+$/u'],
+            'fullName' => ['required', 'string', 'max:255', 'regex:/^[\p{Arabic}\p{Latin}\s]+$/u'],
             'age' => ['required', 'integer', 'min:5', 'max:17'],
             'whatsappNumber' => ['required', 'string', 'min:10', 'max:15', 'regex:/^\d{10,15}$/'],
             'country' => ['required', 'string', Rule::in($countryCodes)],
             'city' => ['required', 'string', 'max:120'],
             'school' => ['required', 'string', 'max:150'],
-            'courseId' => ['required', 'exists:courses,id'],
+            'courseId' => ['required', Rule::exists('courses', 'id')->where('status', true)],
             'isOnline' => ['required', 'boolean'],
         ], [
             'country.required' => 'يرجى اختيار الدولة.',

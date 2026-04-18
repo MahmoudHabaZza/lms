@@ -94,7 +94,7 @@ const Navbar: React.FC = () => {
     };
 
     const mainMenu: MenuItem[] = [
-        { label: navPrivacyLabel, link: '/pages/privacy-policy' },
+        { label: navPrivacyLabel, link: '/privacy-policy' },
         { label: navContactLabel, link: '/contact' },
         { label: navFavoritesLabel, link: '/favorites' },
         { label: navJoinLabel, link: '/join-us' },

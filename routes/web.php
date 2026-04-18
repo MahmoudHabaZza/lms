@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AcademySectionController;
+use App\Http\Controllers\Admin\CourseEnrollmentRedirectController;
 use App\Http\Controllers\Admin\Auth\AdminAuthenticatedSessionController;
 use App\Http\Controllers\Admin\BannerSlideController;
 use App\Http\Controllers\Admin\CourseController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Admin\StudentFeedbackImageController;
 use App\Http\Controllers\Admin\StudentReelController;
 use App\Http\Controllers\Admin\TopStudentController;
+use App\Http\Controllers\DashboardRedirectController;
 use App\Http\Controllers\EndUser\BookingController;
 use App\Http\Controllers\EndUser\ContactController;
 use App\Http\Controllers\EndUser\CourseController as EndUserCourseController;
@@ -21,29 +23,19 @@ use App\Http\Controllers\EndUser\InstructorApplicationController;
 use App\Http\Controllers\Student\FavoriteController as StudentFavoriteController;
 use App\Http\Controllers\Student\EnrollmentController as StudentEnrollmentController;
 use App\Http\Controllers\Student\StudentController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/login', function () {
-    return redirect()->route('student.login');
-})->name('login');
-Route::get('/dashboard', function (Request $request) {
-    if ($request->user()?->is_admin) {
-        return redirect()->route('admin.dashboard');
-    }
-
-    return redirect()->route('student.dashboard');
-})->middleware('auth')->name('dashboard');
+Route::get('/dashboard', DashboardRedirectController::class)->middleware('auth')->name('dashboard');
 Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
-Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+Route::post('/bookings', [BookingController::class, 'store'])->middleware('throttle:10,1')->name('bookings.store');
 Route::get('/bookings/success', [BookingController::class, 'success'])->name('bookings.success');
 Route::get('/courses/{course}', [EndUserCourseController::class, 'show'])->name('courses.show');
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:8,1')->name('contact.store');
+Route::inertia('/privacy-policy', 'EndUser/PrivacyPolicy')->name('privacy-policy');
 Route::get('/join-us', [InstructorApplicationController::class, 'create'])->name('join-us.create');
-Route::post('/join-us', [InstructorApplicationController::class, 'store'])->name('join-us.store');
+Route::post('/join-us', [InstructorApplicationController::class, 'store'])->middleware('throttle:5,10')->name('join-us.store');
 
 Route::middleware('guest')->prefix('admin')->name('admin.')->group(function () {
     Route::get('login', [AdminAuthenticatedSessionController::class, 'create'])->name('login');
@@ -105,9 +97,9 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
     Route::resource('lessons', \App\Http\Controllers\Admin\LessonController::class)->middleware('has_permission:manage-lessons')->except('show');
     Route::resource('resources', \App\Http\Controllers\Admin\ResourceController::class)->middleware('has_permission:manage-resources')->except('show');
     Route::resource('enrollments', \App\Http\Controllers\Admin\EnrollmentController::class)->middleware('has_permission:manage-enrollments')->except('show');
-    Route::get('course-enrollments', fn () => to_route('admin.enrollments.index'))->middleware('has_permission:manage-course-enrollments')->name('course-enrollments.index');
-    Route::get('course-enrollments/create', fn () => to_route('admin.enrollments.create'))->middleware('has_permission:manage-course-enrollments')->name('course-enrollments.create');
-    Route::get('course-enrollments/{courseEnrollment}/edit', fn ($courseEnrollment) => to_route('admin.enrollments.edit', $courseEnrollment))->middleware('has_permission:manage-course-enrollments')->name('course-enrollments.edit');
+    Route::get('course-enrollments', [CourseEnrollmentRedirectController::class, 'index'])->middleware('has_permission:manage-course-enrollments')->name('course-enrollments.index');
+    Route::get('course-enrollments/create', [CourseEnrollmentRedirectController::class, 'create'])->middleware('has_permission:manage-course-enrollments')->name('course-enrollments.create');
+    Route::get('course-enrollments/{courseEnrollment}/edit', [CourseEnrollmentRedirectController::class, 'edit'])->middleware('has_permission:manage-course-enrollments')->name('course-enrollments.edit');
     Route::resource('wishlist-items', \App\Http\Controllers\Admin\WishlistItemController::class)->middleware('has_permission:manage-wishlist-items')->except('show');
     Route::resource('tasks', \App\Http\Controllers\Admin\TaskController::class)->middleware('has_permission:manage-tasks')->except('show');
     Route::resource('task-submissions', \App\Http\Controllers\Admin\TaskSubmissionController::class)->middleware('has_permission:manage-task-submissions')->except('show');

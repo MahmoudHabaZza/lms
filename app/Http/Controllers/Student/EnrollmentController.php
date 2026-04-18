@@ -15,6 +15,7 @@ class EnrollmentController extends Controller
         $user = $request->user();
 
         abort_unless($user && $user->isStudent(), 403);
+        abort_unless((bool) $course->status, 404);
 
         $alreadyEnrolled = Enrollment::query()
             ->where('student_id', $user->id)

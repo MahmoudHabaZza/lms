@@ -360,7 +360,12 @@ export default function JoinUs({ positions = [] }: { positions?: PositionOption[
                                     <button
                                         type="submit"
                                         disabled={isSubmitting}
-                                        className={`inline-flex w-full items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-black text-white transition ${isSubmitting ? 'cursor-not-allowed bg-slate-400' : 'bg-gradient-to-r from-orange-600 to-orange-700 shadow-lg hover:from-orange-700 hover:to-orange-800 hover:shadow-xl'}`}
+                                        className={`group inline-flex w-full items-center justify-center gap-3 rounded-2xl px-8 py-5 text-lg font-extrabold text-white shadow-lg transition-all duration-300 ${
+                                            isSubmitting
+                                                ? 'cursor-not-allowed bg-slate-400 shadow-none'
+                                                : 'hover:shadow-xl hover:shadow-orange-200 active:scale-[0.98]'
+                                        }`}
+                                        style={!isSubmitting ? { background: 'linear-gradient(to left, var(--site-primary-color), var(--site-primary-600))' } : undefined}
                                     >
                                         {isSubmitting ? (
                                             <>
@@ -380,4 +385,3 @@ export default function JoinUs({ positions = [] }: { positions?: PositionOption[
         </MainLayout>
     );
 }
-

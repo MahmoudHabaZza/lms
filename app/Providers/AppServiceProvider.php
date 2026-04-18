@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Setting;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -57,6 +58,9 @@ class AppServiceProvider extends ServiceProvider
             app()->isProduction(),
         );
 
+        // Prevent performance issues (N+1) by disabling lazy loading during development
+        Model::preventLazyLoading(! app()->isProduction());
+
         Password::defaults(fn (): ?Password => app()->isProduction()
             ? Password::min(12)
                 ->mixedCase()
@@ -70,7 +74,16 @@ class AppServiceProvider extends ServiceProvider
 
     protected function configureMailSettings(): void
     {
-        if (! Schema::hasTable('settings')) {
+        // Avoid making database queries on CLI (unless running workers) or if it's not installed yet
+        if (app()->runningInConsole() && !app()->runningUnitTests()) {
+            return;
+        }
+
+        try {
+            if (!app()->isProduction() && !Schema::hasTable('settings')) {
+                return;
+            }
+        } catch (\Throwable $e) {
             return;
         }
 

@@ -1,4 +1,5 @@
 import { usePage } from '@inertiajs/react';
+import { MessageCircleMore } from 'lucide-react';
 import Footer from './footer';
 import Navbar from './navbar';
 import Scripts from './scripts';
@@ -11,7 +12,7 @@ interface MainLayoutProps {
 export default function MainLayout({ children }: MainLayoutProps) {
     const { settings } = usePage<any>().props;
     const whatsappNumber = settings?.whatsapp_number ? String(settings.whatsapp_number).replace(/[^0-9]/g, '') : '';
-    const whatsappMessage = encodeURIComponent(settings?.whatsapp_default_message || 'مرحبًا أريد استشارة عن كورسات الأكاديمية');
+    const whatsappMessage = encodeURIComponent(settings?.whatsapp_default_message || 'Ù…Ø±Ø­Ø¨Ù‹Ø§ Ø£Ø±ÙŠØ¯ Ø§Ø³ØªØ´Ø§Ø±Ø© Ø¹Ù† ÙƒÙˆØ±Ø³Ø§Øª Ø§Ù„Ø£ÙƒØ§Ø¯ÙŠÙ…ÙŠØ©');
 
     return (
         <>
@@ -25,15 +26,10 @@ export default function MainLayout({ children }: MainLayoutProps) {
                     href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="fixed bottom-5 right-4 z-50 inline-flex h-24 w-24 items-center justify-center"
-                    aria-label="تواصل عبر واتساب"
+                    className="fixed bottom-5 right-4 z-50 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_20px_40px_-18px_rgba(37,211,102,0.85)] transition hover:scale-105"
+                    aria-label="ØªÙˆØ§ØµÙ„ Ø¹Ø¨Ø± ÙˆØ§ØªØ³Ø§Ø¨"
                 >
-                    <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-                        alt="WhatsApp"
-                        className="h-20 w-20"
-                        style={{ objectFit: 'contain' }}
-                    />
+                    <MessageCircleMore size={32} strokeWidth={2.4} />
                 </a>
             )}
 

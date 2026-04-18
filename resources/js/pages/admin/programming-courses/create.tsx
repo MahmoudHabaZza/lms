@@ -1,7 +1,7 @@
 import { Link, useForm, usePage } from '@inertiajs/react';
 import type { FormEvent } from 'react';
 import AdminLayout from '../layouts/admin-layout';
-import CourseForm from './course-form';
+import CourseForm, { type ProgrammingCourseFormData } from './course-form';
 
 export default function ProgrammingCoursesCreate({
     instructors,
@@ -11,8 +11,9 @@ export default function ProgrammingCoursesCreate({
     const page = usePage<{ settings?: { primary_color?: string } }>();
     const primaryColor = page.props.settings?.primary_color?.trim() ?? '';
 
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm<ProgrammingCourseFormData>({
         title: '',
+        age_group: '5-17',
         thumbnail: '',
         short_description: '',
         learning_outcome: '',

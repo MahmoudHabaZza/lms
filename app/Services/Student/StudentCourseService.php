@@ -15,6 +15,7 @@ use App\Models\WishlistItem;
 use App\Support\DateValue;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -28,7 +29,7 @@ class StudentCourseService
                 'category:id,name',
                 'instructor:id,name',
                 'wishlistItems' => fn ($query) => $query->where('student_id', $student->id),
-                'lessons' => fn ($query) => $query->orderBy('order')->orderBy('id'),
+                'lessons' => fn ($query) => $query->with('resources')->orderBy('order')->orderBy('id'),
                 'resources',
                 'tasks' => fn ($query) => $query->orderBy('due_date')->orderBy('id'),
                 'tasks.submissions' => fn ($query) => $query->where('student_id', $student->id),
@@ -64,6 +65,7 @@ class StudentCourseService
     {
         $enrolledCourses = $this->enrolledCourses($student);
         $catalogCourses = $this->discoverableCourses($student);
+        $progressSnapshots = $this->courseProgressSnapshots($student, $enrolledCourses);
         $enrolledIds = $enrolledCourses->pluck('id')->map(fn ($id) => (int) $id)->all();
 
         $availableCourses = $catalogCourses
@@ -84,14 +86,8 @@ class StudentCourseService
                     ->where('is_completed', true)
                     ->count(),
             ],
-            'enrolled' => $enrolledCourses
-                ->map(fn (Course $course) => $this->courseSummaryPayload($student, $course, true))
-                ->values()
-                ->all(),
-            'available' => $availableCourses
-                ->map(fn (Course $course) => $this->courseSummaryPayload($student, $course, false))
-                ->values()
-                ->all(),
+            'enrolled' => $this->courseSummaryCollection($student, $enrolledCourses, true, $progressSnapshots),
+            'available' => $this->courseSummaryCollection($student, $availableCourses, false),
             'favorites' => $favoriteCourses
                 ->map(fn (Course $course) => $this->courseSummaryPayload($student, $course))
                 ->values()
@@ -128,10 +124,10 @@ class StudentCourseService
 
     public function coursesIndexPayload(User $student): array
     {
-        return $this->enrolledCourses($student)
-            ->map(fn (Course $course) => $this->courseSummaryPayload($student, $course, true))
-            ->values()
-            ->all();
+        $courses = $this->enrolledCourses($student);
+        $progressSnapshots = $this->courseProgressSnapshots($student, $courses);
+
+        return $this->courseSummaryCollection($student, $courses, true, $progressSnapshots);
     }
 
     public function courseCardPayload(User $student, Course $course): array
@@ -169,12 +165,12 @@ class StudentCourseService
             ->where('course_id', $course->id)
             ->where('student_id', $student->id)
             ->first();
-        $reviewsCount = Review::query()
+        $reviewsStats = Review::query()
             ->where('course_id', $course->id)
-            ->count();
-        $averageRating = round((float) (Review::query()
-            ->where('course_id', $course->id)
-            ->avg('rating') ?? 0), 1);
+            ->selectRaw('COUNT(*) as aggregate_count, AVG(rating) as aggregate_rating')
+            ->first();
+        $reviewsCount = (int) ($reviewsStats?->aggregate_count ?? 0);
+        $averageRating = round((float) ($reviewsStats?->aggregate_rating ?? 0), 1);
 
         return [
             ...$this->courseSummaryPayload($student, $course, $isEnrolled),
@@ -454,9 +450,13 @@ class StudentCourseService
 
     public function lessonPayloads(User $student, Course $course, bool $hasAccess = true): array
     {
-        $course->loadMissing([
-            'lessons' => fn ($query) => $query->with('resources')->orderBy('order')->orderBy('id'),
-        ]);
+        if ($course->relationLoaded('lessons')) {
+            $course->lessons->loadMissing('resources');
+        } else {
+            $course->load([
+                'lessons' => fn ($query) => $query->with('resources')->orderBy('order')->orderBy('id'),
+            ]);
+        }
 
         if (! $hasAccess) {
             return $course->lessons->map(fn (Lesson $lesson) => [
@@ -594,18 +594,20 @@ class StudentCourseService
         return $url;
     }
 
-    private function courseSummaryPayload(User $student, Course $course, ?bool $isEnrolled = null): array
+    private function courseSummaryPayload(User $student, Course $course, ?bool $isEnrolled = null, ?array $progressSnapshot = null): array
     {
         $isEnrolled ??= $this->isEnrolled($course, $student);
-        $progress = $isEnrolled ? $this->courseProgress($student, $course) : [
-            'completed_lessons' => 0,
-            'total_lessons' => $this->courseLessonsCount($course),
-            'percentage' => 0,
-        ];
+        $progress = $isEnrolled
+            ? ($progressSnapshot['progress'] ?? $this->courseProgress($student, $course))
+            : [
+                'completed_lessons' => 0,
+                'total_lessons' => $this->courseLessonsCount($course),
+                'percentage' => 0,
+            ];
 
         $nextLesson = $isEnrolled
-            ? collect($this->lessonPayloads($student, $course))
-                ->first(fn (array $lesson) => ! $lesson['is_completed'] && ! $lesson['is_locked'])
+            ? ($progressSnapshot['next_lesson_id'] ?? collect($this->lessonPayloads($student, $course))
+                ->first(fn (array $lesson) => ! $lesson['is_completed'] && ! $lesson['is_locked'])['id'] ?? null)
             : null;
 
         return [
@@ -622,13 +624,100 @@ class StudentCourseService
             'tasks_count' => $this->courseTasksCount($course),
             'quizzes_count' => $this->courseQuizzesCount($course),
             'progress' => $progress,
-            'next_lesson_id' => $nextLesson['id'] ?? null,
+            'next_lesson_id' => $nextLesson,
             'is_enrolled' => $isEnrolled,
             'is_favorited' => $this->isFavorited($course, $student),
             'show_url' => route('student.courses.show', $course),
             'enroll_url' => $isEnrolled ? null : route('student.courses.enroll', $course),
             'favorite_url' => route('student.courses.favorite', $course),
         ];
+    }
+
+    /**
+     * @param  iterable<Course>  $courses
+     * @return array<int, array<string, mixed>>
+     */
+    private function courseSummaryCollection(User $student, iterable $courses, bool $isEnrolled, ?SupportCollection $progressSnapshots = null): array
+    {
+        return collect($courses)
+            ->map(fn (Course $course) => $this->courseSummaryPayload(
+                $student,
+                $course,
+                $isEnrolled,
+                $progressSnapshots?->get($course->id)
+            ))
+            ->values()
+            ->all();
+    }
+
+    /**
+     * @param  Collection<int, Course>  $courses
+     */
+    private function courseProgressSnapshots(User $student, Collection $courses): SupportCollection
+    {
+        if ($courses->isEmpty()) {
+            return collect();
+        }
+
+        $lessonIds = $courses
+            ->flatMap(fn (Course $course) => $course->lessons->pluck('id'))
+            ->filter()
+            ->values();
+
+        if ($lessonIds->isEmpty()) {
+            return $courses->mapWithKeys(fn (Course $course) => [
+                $course->id => [
+                    'progress' => [
+                        'completed_lessons' => 0,
+                        'total_lessons' => 0,
+                        'percentage' => 0,
+                    ],
+                    'next_lesson_id' => null,
+                ],
+            ]);
+        }
+
+        $progressEntries = LessonProgress::query()
+            ->where('student_id', $student->id)
+            ->whereIn('lesson_id', $lessonIds)
+            ->get(['lesson_id', 'progress_percent', 'is_completed', 'completed_at'])
+            ->keyBy('lesson_id');
+
+        return $courses->mapWithKeys(function (Course $course) use ($progressEntries) {
+            $completedBefore = true;
+            $completedLessons = 0;
+            $nextLessonId = null;
+            $lessons = $course->lessons->sortBy([['order', 'asc'], ['id', 'asc']])->values();
+
+            foreach ($lessons as $lesson) {
+                $progress = $progressEntries->get($lesson->id);
+                $isCompleted = (bool) ($progress?->is_completed ?? false);
+                $isLocked = ! $completedBefore;
+
+                if ($isCompleted) {
+                    $completedLessons++;
+                }
+
+                if ($nextLessonId === null && ! $isCompleted && ! $isLocked) {
+                    $nextLessonId = $lesson->id;
+                }
+
+                $completedBefore = $completedBefore && $isCompleted;
+            }
+
+            $totalLessons = $lessons->count();
+
+            return [
+                $course->id => [
+                    'progress' => [
+                        'completed_lessons' => $completedLessons,
+                        'total_lessons' => $totalLessons,
+                        'percentage' => $totalLessons > 0 ? (int) round(($completedLessons / $totalLessons) * 100) : 0,
+                    ],
+                    'next_lesson_id' => $nextLessonId,
+                ],
+            ];
+        });
     }
 
     private function isEnrolled(Course $course, User $student): bool

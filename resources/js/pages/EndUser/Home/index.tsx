@@ -9,6 +9,7 @@ import ProgrammingTrackSection from './ProgrammingTrackSection';
 import SectionThree from './SectionThree';
 import StudentFeedbackGallerySection from './StudentFeedbackGallerySection';
 import TopStudentsSection from './TopStudentsSection';
+import SchoolsSection from './SchoolsSection';
 
 type BannerSlide = {
     id: number;
@@ -104,7 +105,9 @@ export default function Home({
                 <SectionThree slides={bannerSlides} staticSection={academySection} />
                 <AcademyJourneySection />
                 <ProgrammingTrackSection courses={courses} />
-                <CourseReelsSection courseReels={courseReels} />
+                <CourseReelsSection courseReels={courseReels} className="!pb-0 !sm:pb-0" />
+
+                <SchoolsSection />
 
                 {academySection && (
                     <section className="relative overflow-hidden bg-gradient-to-b from-[#fff6ea] via-white to-[#f8fbff] py-16 sm:py-20" dir="rtl">

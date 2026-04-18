@@ -11,8 +11,10 @@ use App\Models\Faq;
 use App\Models\StudentFeedbackImage;
 use App\Models\StudentReel;
 use App\Models\TopStudent;
+use App\Models\User;
 use App\Support\EndUserCoursePresenter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -27,6 +29,18 @@ class HomeController extends Controller
     public function index(Request $request): Response
     {
         $viewer = $request->user();
+        $payload = $viewer
+            ? $this->buildPayload($viewer)
+            : Cache::remember('end-user.home.guest.v1', now()->addMinutes(10), fn () => $this->buildPayload());
+
+        return Inertia::render('EndUser/Home/index', $payload);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildPayload(?User $viewer = null): array
+    {
         $slides = BannerSlide::query()
             ->where('status', true)
             ->orderBy('sort_order')
@@ -157,11 +171,11 @@ class HomeController extends Controller
         ];
 
         $courseReels = CourseReel::query()
-            ->with('course')
+            ->with('course:id,title,short_description,thumbnail,badge,accent_color')
             ->where('status', true)
             ->orderBy('sort_order')
             ->orderBy('id')
-            ->get()
+            ->get(['id', 'course_id', 'title', 'description', 'cover_image', 'video_path', 'video_url'])
             ->map(function (CourseReel $reel) use ($instructorImages): array {
                 $courseItem = $reel->course;
 
@@ -205,7 +219,7 @@ class HomeController extends Controller
                 ->values();
         }
 
-        return Inertia::render('EndUser/Home/index', [
+        return [
             'bannerSlides' => $slides,
             'academySection' => $academySection,
             'courses' => $courses,
@@ -214,7 +228,7 @@ class HomeController extends Controller
             'topStudents' => $topStudents,
             'studentFeedbackImages' => $studentFeedbackImages,
             'faqs' => $faqs,
-        ]);
+        ];
     }
 
     private function resolveMediaUrl(?string $value): ?string

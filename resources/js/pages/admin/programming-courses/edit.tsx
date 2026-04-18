@@ -1,24 +1,10 @@
 import { Link, useForm } from '@inertiajs/react';
 import type { FormEvent } from 'react';
 import AdminLayout from '../layouts/admin-layout';
-import CourseForm from './course-form';
+import CourseForm, { type ProgrammingCourseFormData } from './course-form';
 
-type ProgrammingCourse = {
+type ProgrammingCourse = ProgrammingCourseFormData & {
     id: number;
-    title: string;
-    thumbnail: string | null;
-    short_description: string;
-    learning_outcome: string | null;
-    duration_months: number;
-    sessions_count: number;
-    sessions_per_week: number;
-    badge: string | null;
-    accent_color: string;
-    status: boolean;
-    sort_order: number;
-    instructor_id?: number | null;
-    price?: number | null;
-    total_duration_minutes?: number | null;
 };
 
 export default function ProgrammingCoursesEdit({
@@ -28,8 +14,9 @@ export default function ProgrammingCoursesEdit({
     course: ProgrammingCourse;
     instructors: { id: number; name: string }[];
 }) {
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, put, processing, errors } = useForm<ProgrammingCourseFormData>({
         title: course.title,
+        age_group: course.age_group ?? '5-17',
         thumbnail: course.thumbnail ?? '',
         short_description: course.short_description,
         learning_outcome: course.learning_outcome ?? '',

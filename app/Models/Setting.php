@@ -131,6 +131,10 @@ class Setting extends Model
 
     private static function shouldBypassCache(): bool
     {
+        if (app()->isProduction()) {
+            return false;
+        }
+
         $store = config('cache.default');
         $driver = config("cache.stores.{$store}.driver");
 
@@ -138,8 +142,11 @@ class Setting extends Model
             return false;
         }
 
-        $table = (string) config("cache.stores.{$store}.table", 'cache');
-
-        return ! Schema::hasTable($table);
+        try {
+            $table = (string) config("cache.stores.{$store}.table", 'cache');
+            return ! Schema::hasTable($table);
+        } catch (\Throwable $e) {
+            return true;
+        }
     }
 }

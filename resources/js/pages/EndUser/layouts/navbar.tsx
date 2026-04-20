@@ -290,24 +290,17 @@ const Navbar: React.FC = () => {
                             href="/"
                             title={settings?.site_name ?? 'Kid Coder Academy'}
                         >
-                            {logoError ? (
-                                <span className="max-w-[170px] truncate text-center text-lg font-bold text-color-primary sm:max-w-none sm:text-2xl">
-                                    {settings?.site_name ?? 'Kid Coder Academy'}
-                                </span>
-                            ) : (
-                                <img
-                                    src={
-                                        settings?.site_logo ??
-                                        '/assets/EndUser/images/logo.png'
-                                    }
-                                    alt={
-                                        settings?.site_name ??
-                                        'Kid Coder Academy'
-                                    }
-                                    className="logo-animated h-12 max-w-[140px] w-auto transform object-contain group-hover:scale-110 sm:h-16 sm:max-w-[180px] lg:h-20 lg:max-w-none"
-                                    onError={() => setLogoError(true)}
-                                />
-                            )}
+                            <img
+                                src={
+                                    logoError
+                                        ? '/assets/EndUser/images/logo-default.svg'
+                                        : settings?.site_logo?.trim() ||
+                                          '/assets/EndUser/images/logo-default.svg'
+                                }
+                                alt={settings?.site_name ?? 'Kid Coder Academy'}
+                                className="logo-animated h-12 max-w-[140px] w-auto transform object-contain group-hover:scale-110 sm:h-16 sm:max-w-[180px] lg:h-20 lg:max-w-none"
+                                onError={() => setLogoError(true)}
+                            />
                         </a>
 
                         <button

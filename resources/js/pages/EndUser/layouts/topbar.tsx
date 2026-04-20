@@ -7,7 +7,6 @@ type TopbarSettings = {
     facebook_url?: string | null;
     instagram_url?: string | null;
     linkedin_url?: string | null;
-    whatsapp_number?: string | null;
     youtube_url?: string | null;
 };
 
@@ -28,11 +27,15 @@ function renderSocialItem(item: SocialItem, index: number) {
     return (
         <li
             key={item.icon}
-            className={index === 0 ? '' : 'ml-6 border-l border-white/45 pl-6'}
+            className={
+                index === 0
+                    ? ''
+                    : 'ml-2 border-l border-white/35 pl-2 sm:ml-6 sm:border-white/45 sm:pl-6'
+            }
         >
             <a
                 href={item.link}
-                className="group relative flex h-9 w-9 items-center justify-center rounded-full !text-white no-underline transition-all duration-500 hover:-translate-y-1 hover:scale-110"
+                className="group relative flex h-8 w-8 items-center justify-center rounded-full !text-white no-underline transition-all duration-500 hover:-translate-y-1 hover:scale-110 sm:h-9 sm:w-9"
             >
                 <span className="absolute inset-0 rounded-full border border-white/20 bg-white/10 opacity-100 transition-all duration-500 group-hover:scale-110 group-hover:bg-white"></span>
                 <i
@@ -80,10 +83,6 @@ export default function Topbar() {
 
     const email = settings?.contact_email?.trim() ?? '';
     const phone = settings?.contact_phone?.trim() ?? '';
-    const whatsappNumber = (settings?.whatsapp_number ?? '').replace(
-        /[^0-9]/g,
-        '',
-    );
 
     const socialItems: SocialItem[] = [
         {
@@ -98,10 +97,6 @@ export default function Topbar() {
         {
             link: settings?.linkedin_url?.trim() ?? '',
             icon: 'fab fa-linkedin-in',
-        },
-        {
-            link: whatsappNumber ? `https://wa.me/${whatsappNumber}` : '',
-            icon: 'fab fa-whatsapp',
         },
     ].filter((item) => item.link);
 
@@ -119,20 +114,18 @@ export default function Topbar() {
                     hidden ? '-translate-y-full' : 'translate-y-0'
                 }`}
             >
-                <div className="container mx-auto flex h-full items-center justify-center px-4 sm:justify-between">
-                    <div className="flex h-full items-center">
-                        <ul className="fp__topbar_info flex flex-wrap items-center justify-center gap-3 sm:gap-0">
+                <div className="container mx-auto flex h-full items-center justify-between gap-3 px-4">
+                    <div className="flex h-full min-w-0 items-center">
+                        <ul className="fp__topbar_info flex flex-nowrap items-center gap-2 sm:gap-0">
                             {email && (
                                 <li className="sm:mr-8">
                                     <a
                                         href={`mailto:${email}`}
                                         className="group flex items-center gap-2 text-sm font-medium tracking-[0.01em] !text-white text-white no-underline transition-all duration-500 sm:gap-3"
+                                        aria-label={email}
                                     >
                                         <span className="relative flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:rotate-[360deg] group-hover:bg-white">
                                             <i className="fas fa-envelope text-sm text-white transition-colors duration-500 group-hover:text-color-primary"></i>
-                                        </span>
-                                        <span className="text-[11px] whitespace-nowrap text-white transition-all duration-500 group-hover:text-white sm:hidden">
-                                            إيميل
                                         </span>
                                         <span className="hidden text-white transition-all duration-500 group-hover:tracking-[0.02em] group-hover:text-white sm:inline">
                                             {email}
@@ -146,12 +139,10 @@ export default function Topbar() {
                                     <a
                                         href={`https://wa.me/${phone.replace(/[^0-9]/g, '')}`}
                                         className="group flex items-center gap-2 text-sm font-medium tracking-[0.01em] !text-white text-white no-underline transition-all duration-500 sm:gap-3"
+                                        aria-label={phone}
                                     >
                                         <span className="relative flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:rotate-[360deg] group-hover:bg-white">
                                             <i className="fab fa-whatsapp text-sm text-white transition-colors duration-500 group-hover:text-color-primary"></i>
-                                        </span>
-                                        <span className="text-[11px] whitespace-nowrap text-white transition-all duration-500 group-hover:text-white sm:hidden">
-                                            واتساب
                                         </span>
                                         <span className="hidden text-white transition-all duration-500 group-hover:tracking-[0.02em] group-hover:text-white sm:inline">
                                             {phone}
@@ -162,7 +153,7 @@ export default function Topbar() {
                         </ul>
                     </div>
 
-                    <div className="hidden items-center md:flex">
+                    <div className="flex shrink-0 items-center">
                         <ul className="flex items-center">
                             {socialItems.map(renderSocialItem)}
                         </ul>

@@ -46,10 +46,6 @@
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
@@ -65,6 +61,7 @@
     @php
         $primaryColor = \App\Models\Setting::get('primary_color', '#f97316');
         $fontFamily = \App\Models\Setting::get('font_family', 'playpen_arabic');
+        $siteLogo = \App\Models\Setting::get('site_logo') ?: '/assets/EndUser/images/logo-default.svg';
         $fontMap = [
             'playpen_arabic' => "'Playpen Sans Arabic', cursive",
             'marhey' => "'Marhey', cursive",
@@ -73,6 +70,8 @@
         ];
         $selectedFontStack = $fontMap[$fontFamily] ?? $fontMap['playpen_arabic'];
     @endphp
+    <link rel="icon" href="{{ $siteLogo }}" sizes="any">
+    <link rel="apple-touch-icon" href="{{ $siteLogo }}">
     <style>
         :root {
             --site-primary-color: {{ $primaryColor }};

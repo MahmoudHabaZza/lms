@@ -104,39 +104,93 @@ export default function AcademyJourneySection() {
                         {journeySubtitle}
                     </div>
 
-                    <div className="mt-7 grid gap-3.5 sm:grid-cols-2 lg:hidden">
+                    <div className="relative mt-8 lg:hidden" dir="ltr">
+                        <div className="pointer-events-none absolute left-1/2 top-10 bottom-8 w-[2px] -translate-x-1/2 bg-gradient-to-b from-emerald-300/80 via-slate-300 to-orange-200" />
+
+                        <div className="relative mb-6 flex justify-center">
+                            <div className="relative">
+                                <span className="absolute inset-0 rounded-full bg-emerald-200/70 blur-md" />
+                                <span className="relative inline-flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full border-2 border-emerald-300 bg-white/95 text-emerald-600 shadow-[0_18px_32px_-18px_rgba(16,185,129,0.9)]">
+                                    <Laptop size={28} />
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
                         {journeyPoints.map((point, index) => {
                             const Icon = point.icon;
                             const isActive = activePoint === index;
-                            const isLastOdd = index === journeyPoints.length - 1 && journeyPoints.length % 2 === 1;
+                            const branchLeft = index % 2 === 0;
 
                             return (
-                                <button
-                                    key={point.title}
-                                    type="button"
-                                    onMouseEnter={() => setActivePoint(index)}
-                                    onFocus={() => setActivePoint(index)}
-                                    className={`relative flex w-full items-center justify-between gap-4 rounded-2xl border bg-white/90 px-5 py-4 text-right backdrop-blur-sm transform-gpu transition-transform duration-300 ease-out ${
-                                        isActive
-                                            ? 'scale-105 border-orange-300 shadow-[0_20px_44px_-28px_color-mix(in_srgb,var(--site-primary-color)_92%,transparent)] z-20'
-                                            : 'border-white/70 shadow-[0_14px_28px_-24px_rgba(15,23,42,0.55)]'
-                                    } ${index % 2 === 1 ? 'sm:translate-y-4' : ''} ${isLastOdd ? 'sm:col-span-2 sm:mx-auto sm:w-[68%] sm:translate-y-0' : ''}`}
-                                onMouseLeave={() => setActivePoint(activePoint === index ? -1 : activePoint)}
-                                onBlur={() => setActivePoint(activePoint === index ? -1 : activePoint)}
-                                >
-                                    
-                                    <span className="pr-2">
-                                        <span className="block text-[1.02rem] font-bold text-slate-700">{point.title}</span>
-                                        <span className="mt-0.5 block text-[0.78rem] text-slate-500">{point.subtitle}</span>
-                                    </span>
+                                <div key={point.title} className="relative min-h-[110px]">
+                                    <div
+                                        className={`pointer-events-none absolute top-1/2 h-[2px] -translate-y-1/2 ${
+                                            branchLeft
+                                                ? 'left-1/2 right-[22%]'
+                                                : 'left-[22%] right-1/2'
+                                        }`}
+                                        style={{
+                                            backgroundColor: point.color,
+                                            opacity: isActive ? 0.55 : 0.28,
+                                        }}
+                                    />
+
                                     <span
-                                        className={`inline-flex ${isActive ? 'h-12 w-12' : 'h-9 w-9'} shrink-0 items-center justify-center rounded-full border-[4px] ${point.bubble} transform-gpu transition-all duration-300 ease-out`}
+                                        className="pointer-events-none absolute left-1/2 top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_6px_rgba(255,255,255,0.45)]"
+                                        style={{ backgroundColor: point.color }}
+                                    />
+
+                                    <button
+                                        type="button"
+                                        dir="rtl"
+                                        onClick={() =>
+                                            setActivePoint(
+                                                isActive ? -1 : index,
+                                            )
+                                        }
+                                        onMouseEnter={() =>
+                                            setActivePoint(index)
+                                        }
+                                        onFocus={() => setActivePoint(index)}
+                                        className={`relative flex w-[78%] max-w-[18rem] items-center justify-between gap-4 rounded-[24px] border bg-white/92 px-5 py-4 text-right backdrop-blur-sm transform-gpu transition-all duration-300 ease-out ${
+                                            branchLeft
+                                                ? 'mr-auto'
+                                                : 'ml-auto'
+                                        } ${
+                                            isActive
+                                                ? 'scale-[1.03] border-orange-300 shadow-[0_24px_48px_-30px_color-mix(in_srgb,var(--site-primary-color)_88%,transparent)]'
+                                                : 'border-white/75 shadow-[0_16px_30px_-26px_rgba(15,23,42,0.55)]'
+                                        }`}
                                     >
-                                        <Icon size={isActive ? 18 : 15} />
-                                    </span>
-                                </button>
+                                        <span className="min-w-0 pr-1">
+                                            <span className="block text-[1rem] leading-6 font-bold text-slate-700">
+                                                {point.title}
+                                            </span>
+                                            <span className="mt-1 block text-[0.78rem] leading-5 text-slate-500">
+                                                {point.subtitle}
+                                            </span>
+                                        </span>
+                                        <span
+                                            className={`absolute top-1/2 inline-flex shrink-0 items-center justify-center rounded-full border-[4px] ${point.bubble} -translate-y-1/2 transform-gpu transition-all duration-300 ease-out ${
+                                                isActive
+                                                    ? 'h-12 w-12'
+                                                    : 'h-10 w-10'
+                                            } ${
+                                                branchLeft
+                                                    ? '-right-5'
+                                                    : '-left-5'
+                                            }`}
+                                        >
+                                            <Icon
+                                                size={isActive ? 18 : 16}
+                                            />
+                                        </span>
+                                    </button>
+                                </div>
                             );
                         })}
+                        </div>
                     </div>
 
                     <div className="relative mt-1 hidden h-[540px] lg:block" dir="ltr">
@@ -296,4 +350,3 @@ export default function AcademyJourneySection() {
         </div>
     );
 }
-

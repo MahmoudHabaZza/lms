@@ -1,0 +1,1 @@
+import{c as a,r as n}from"./app-BbIlc8SC.js";function l(t){const e=a.c(3),[u,s]=n.useState(null);let r,c;return e[0]!==t?(r=()=>{if(!t){s(null);return}const o=URL.createObjectURL(t);return s(o),()=>{URL.revokeObjectURL(o)}},c=[t],e[0]=t,e[1]=r,e[2]=c):(r=e[1],c=e[2]),n.useEffect(r,c),u}export{l as u};

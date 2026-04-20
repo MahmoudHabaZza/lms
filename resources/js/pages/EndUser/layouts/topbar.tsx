@@ -121,15 +121,18 @@ export default function Topbar() {
             >
                 <div className="container mx-auto flex h-full items-center justify-center px-4 sm:justify-between">
                     <div className="flex h-full items-center">
-                        <ul className="fp__topbar_info flex flex-wrap items-center gap-0">
+                        <ul className="fp__topbar_info flex flex-wrap items-center justify-center gap-3 sm:gap-0">
                             {email && (
-                                <li className="mr-4 sm:mr-8">
+                                <li className="sm:mr-8">
                                     <a
                                         href={`mailto:${email}`}
-                                        className="group flex items-center gap-3 text-sm font-medium tracking-[0.01em] !text-white text-white no-underline transition-all duration-500"
+                                        className="group flex items-center gap-2 text-sm font-medium tracking-[0.01em] !text-white text-white no-underline transition-all duration-500 sm:gap-3"
                                     >
                                         <span className="relative flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:rotate-[360deg] group-hover:bg-white">
                                             <i className="fas fa-envelope text-sm text-white transition-colors duration-500 group-hover:text-color-primary"></i>
+                                        </span>
+                                        <span className="text-[11px] whitespace-nowrap text-white transition-all duration-500 group-hover:text-white sm:hidden">
+                                            إيميل
                                         </span>
                                         <span className="hidden text-white transition-all duration-500 group-hover:tracking-[0.02em] group-hover:text-white sm:inline">
                                             {email}
@@ -142,10 +145,13 @@ export default function Topbar() {
                                 <li>
                                     <a
                                         href={`https://wa.me/${phone.replace(/[^0-9]/g, '')}`}
-                                        className="group flex items-center gap-3 text-sm font-medium tracking-[0.01em] !text-white text-white no-underline transition-all duration-500"
+                                        className="group flex items-center gap-2 text-sm font-medium tracking-[0.01em] !text-white text-white no-underline transition-all duration-500 sm:gap-3"
                                     >
                                         <span className="relative flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:rotate-[360deg] group-hover:bg-white">
                                             <i className="fab fa-whatsapp text-sm text-white transition-colors duration-500 group-hover:text-color-primary"></i>
+                                        </span>
+                                        <span className="text-[11px] whitespace-nowrap text-white transition-all duration-500 group-hover:text-white sm:hidden">
+                                            واتساب
                                         </span>
                                         <span className="hidden text-white transition-all duration-500 group-hover:tracking-[0.02em] group-hover:text-white sm:inline">
                                             {phone}

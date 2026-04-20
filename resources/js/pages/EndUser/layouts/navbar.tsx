@@ -1,4 +1,5 @@
 ﻿import { Link, router, usePage } from '@inertiajs/react';
+import { ChevronDown, Menu, Search, UserRound, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
@@ -29,6 +30,7 @@ const Navbar: React.FC = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [logoError, setLogoError] = useState(false);
 
     const closeMenuTimer = React.useRef<ReturnType<typeof setTimeout> | null>(
         null,
@@ -59,7 +61,6 @@ const Navbar: React.FC = () => {
         router.post(logoutRoute);
     };
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [logoLoaded, setLogoLoaded] = useState(false);
 
     useEffect(() => {
         const onScroll = () => {
@@ -126,15 +127,15 @@ const Navbar: React.FC = () => {
                 style={{ top: 'var(--topbar-offset)' }}
             >
                 <div className="container mx-auto h-full px-4">
-                    <div className="flex h-full items-center justify-between gap-3">
-                        <div className="flex items-center gap-2">
+                    <div className="flex h-full items-center justify-between gap-2 sm:gap-3">
+                        <div className="flex shrink-0 items-center gap-2">
                             <button
                                 type="button"
                                 onClick={() => setIsSearchOpen(true)}
-                                className="menu_search rounded-full p-2 text-gray-900 transition-all duration-300 hover:scale-110 hover:text-color-primary"
+                                className="menu_search inline-flex h-10 w-10 items-center justify-center rounded-full p-2 text-gray-900 transition-all duration-300 hover:scale-110 hover:text-color-primary sm:h-11 sm:w-11"
                                 aria-label="Open search"
                             >
-                                <i className="far fa-search"></i>
+                                <Search className="h-5 w-5" />
                             </button>
 
                             <div className="hidden items-center gap-2 md:flex">
@@ -151,12 +152,12 @@ const Navbar: React.FC = () => {
                                             className="inline-flex items-center gap-2 rounded-full bg-color-primary/10 px-4 py-2 font-semibold text-color-primary transition-all duration-300 hover:bg-color-primary hover:text-white focus-visible:ring-2 focus-visible:ring-color-primary focus-visible:outline-none"
                                         >
                                             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-color-primary text-white">
-                                                <i className="far fa-user text-sm"></i>
+                                                <UserRound className="h-4 w-4" />
                                             </span>
                                             <span className="max-w-[120px] truncate text-sm font-semibold">
                                                 {auth.user.name}
                                             </span>
-                                            <i className="far fa-chevron-down text-xs"></i>
+                                            <ChevronDown className="h-3.5 w-3.5" />
                                         </button>
 
                                         {userMenuOpen && (
@@ -285,28 +286,37 @@ const Navbar: React.FC = () => {
                         </div>
 
                         <a
-                            className="logo-container group flex items-center justify-center font-fredoka no-underline transition-all duration-300"
+                            className="logo-container group flex min-w-0 flex-1 items-center justify-center px-2 font-fredoka no-underline transition-all duration-300 lg:flex-none lg:px-0"
                             href="/"
                             title={settings?.site_name ?? 'Kid Coder Academy'}
                         >
-                            <img
-                                src={
-                                    settings?.site_logo ??
-                                    '/assets/EndUser/images/logo.png'
-                                }
-                                alt={settings?.site_name ?? 'Kid Coder Academy'}
-                                className="logo-animated h-16 w-auto transform object-contain group-hover:scale-110 sm:h-20"
-                                onLoad={() => setLogoLoaded(true)}
-                            />
+                            {logoError ? (
+                                <span className="max-w-[170px] truncate text-center text-lg font-bold text-color-primary sm:max-w-none sm:text-2xl">
+                                    {settings?.site_name ?? 'Kid Coder Academy'}
+                                </span>
+                            ) : (
+                                <img
+                                    src={
+                                        settings?.site_logo ??
+                                        '/assets/EndUser/images/logo.png'
+                                    }
+                                    alt={
+                                        settings?.site_name ??
+                                        'Kid Coder Academy'
+                                    }
+                                    className="logo-animated h-12 max-w-[140px] w-auto transform object-contain group-hover:scale-110 sm:h-16 sm:max-w-[180px] lg:h-20 lg:max-w-none"
+                                    onError={() => setLogoError(true)}
+                                />
+                            )}
                         </a>
 
                         <button
-                            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm lg:hidden"
+                            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition-colors hover:border-color-primary hover:text-color-primary sm:h-11 sm:w-11 lg:hidden"
                             type="button"
                             onClick={() => setMobileOpen((open) => !open)}
                             aria-label="Toggle mobile menu"
                         >
-                            <i className="far fa-bars text-xl"></i>
+                            <Menu className="h-5 w-5" />
                         </button>
                     </div>
                 </div>
@@ -329,7 +339,7 @@ const Navbar: React.FC = () => {
                                 className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-600"
                                 aria-label="Close mobile menu"
                             >
-                                <i className="far fa-times text-lg"></i>
+                                <X className="h-5 w-5" />
                             </button>
                         </div>
 
@@ -432,7 +442,7 @@ const Navbar: React.FC = () => {
                         className="absolute top-4 right-4 text-gray-500 transition-colors hover:text-gray-700"
                         aria-label="Close search"
                     >
-                        <i className="far fa-times"></i>
+                        <X className="h-5 w-5" />
                     </button>
                     <input
                         type="text"

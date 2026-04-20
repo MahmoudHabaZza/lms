@@ -38,12 +38,18 @@ export function CourseShowcaseCard({
     const isGrid = layout === 'grid';
     const isHomeCompact = variant === 'home-compact';
     const { auth, settings } = usePage<{
-        auth?: { user?: { id: number; role?: string; is_admin?: boolean } | null };
+        auth?: {
+            user?: { id: number; role?: string; is_admin?: boolean } | null;
+        };
         settings?: Record<string, string | null | undefined>;
     }>().props;
-    const audienceLabel = settings?.course_card_default_audience_label?.trim() || 'من 5 إلى 17 سنة';
-    const noImageText = settings?.course_card_no_image_text?.trim() || 'لا توجد صورة';
-    const showDetailsLabel = settings?.course_card_show_details_label?.trim() || 'عرض التفاصيل';
+    const audienceLabel =
+        settings?.course_card_default_audience_label?.trim() ||
+        'من 5 إلى 17 سنة';
+    const noImageText =
+        settings?.course_card_no_image_text?.trim() || 'لا توجد صورة';
+    const showDetailsLabel =
+        settings?.course_card_show_details_label?.trim() || 'عرض التفاصيل';
 
     const onFavoriteClick = async (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -88,21 +94,37 @@ export function CourseShowcaseCard({
             href={course.show_url}
             className={cn(
                 'group relative block overflow-hidden rounded-[28px] bg-slate-900 text-right transition-transform duration-400 ease-out hover:-translate-y-1 hover:shadow-[0_20px_60px_-20px_color-mix(in_srgb,var(--site-primary-color)_80%,transparent)]',
-                isGrid ? 'min-h-[440px] w-full' : 'h-[460px] w-[300px] shrink-0',
+                isGrid
+                    ? 'min-h-[440px] w-full'
+                    : 'h-[420px] w-[260px] shrink-0 sm:h-[460px] sm:w-[300px]',
                 className,
             )}
-            style={{ '--course-accent': accent, animationDelay: `${animationDelay}s` } as CSSProperties}
+            style={
+                {
+                    '--course-accent': accent,
+                    animationDelay: `${animationDelay}s`,
+                } as CSSProperties
+            }
         >
             <button
                 type="button"
                 onClick={onFavoriteClick}
                 className={cn(
-                    'absolute right-3 top-3 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/45 bg-slate-900/45 text-white backdrop-blur-md transition hover:scale-105 hover:bg-slate-900/70',
+                    'absolute top-3 right-3 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/45 bg-slate-900/45 text-white backdrop-blur-md transition hover:scale-105 hover:bg-slate-900/70',
                     course.is_favorited ? 'text-rose-300' : 'text-white',
                 )}
-                aria-label={course.is_favorited ? 'إزالة من المفضلة' : 'إضافة إلى المفضلة'}
+                aria-label={
+                    course.is_favorited
+                        ? 'إزالة من المفضلة'
+                        : 'إضافة إلى المفضلة'
+                }
             >
-                <Heart className={cn('h-5 w-5', course.is_favorited ? 'fill-current' : '')} />
+                <Heart
+                    className={cn(
+                        'h-5 w-5',
+                        course.is_favorited ? 'fill-current' : '',
+                    )}
+                />
             </button>
 
             {course.thumbnail ? (
@@ -120,41 +142,55 @@ export function CourseShowcaseCard({
             <div className="absolute inset-0 bg-gradient-to-t from-[#020617f2] via-[#0f172abf] to-[#0f172a52]" />
 
             <span
-                className="absolute left-3 top-3 z-20 rounded-full px-3 py-1.5 text-xs font-bold text-white shadow-lg"
+                className="absolute top-3 left-3 z-20 rounded-full px-3 py-1.5 text-xs font-bold text-white shadow-lg"
                 style={{ backgroundColor: 'var(--site-primary-500)' }}
             >
                 {course.badge || audienceLabel}
             </span>
 
-            <div className="absolute inset-x-0 bottom-0 px-4 pb-4 pt-3">
+            <div className="absolute inset-x-0 bottom-0 px-4 pt-3 pb-4">
                 {isHomeCompact ? (
                     <div className="space-y-3">
-                        <h3 className="px-1 font-fredoka text-xl font-bold leading-tight text-white drop-shadow-[0_2px_12px_rgba(15,23,42,0.6)]">
+                        <h3 className="px-1 font-fredoka text-xl leading-tight font-bold text-white drop-shadow-[0_2px_12px_rgba(15,23,42,0.6)]">
                             {course.title}
                         </h3>
 
                         <div
                             className="rounded-2xl bg-slate-900/75 p-2.5 shadow-[0_10px_26px_-18px_rgba(15,23,42,0.8)] transition-all duration-400 ease-out hover:bg-slate-900/90 hover:shadow-[0_14px_38px_-18px_color-mix(in_srgb,var(--site-primary-color)_80%,transparent)]"
-                            style={{ border: '1px solid color-mix(in srgb, var(--site-primary-300) 85%, white 15%)' }}
+                            style={{
+                                border: '1px solid color-mix(in srgb, var(--site-primary-300) 85%, white 15%)',
+                            }}
                         >
                             <div className="flex flex-nowrap items-center justify-between gap-2 text-[9px] font-bold text-white/90">
                                 <span
-                                    className="flex basis-0 grow items-center justify-center gap-1 rounded-full px-2 py-1.5 text-center text-[10px] leading-none whitespace-nowrap text-white"
-                                    style={{ background: 'linear-gradient(to bottom, var(--site-primary-500), var(--site-primary-400))', border: '1px solid var(--site-primary-600)' }}
+                                    className="flex grow basis-0 items-center justify-center gap-1 rounded-full px-2 py-1.5 text-center text-[10px] leading-none whitespace-nowrap text-white"
+                                    style={{
+                                        background:
+                                            'linear-gradient(to bottom, var(--site-primary-500), var(--site-primary-400))',
+                                        border: '1px solid var(--site-primary-600)',
+                                    }}
                                 >
                                     <Calendar size={11} className="shrink-0" />
                                     {course.duration_months} شهور
                                 </span>
                                 <span
-                                    className="flex basis-0 grow items-center justify-center gap-1 rounded-full px-2 py-1.5 text-center text-[10px] leading-none whitespace-nowrap text-white"
-                                    style={{ background: 'linear-gradient(to bottom, var(--site-primary-500), var(--site-primary-400))', border: '1px solid var(--site-primary-600)' }}
+                                    className="flex grow basis-0 items-center justify-center gap-1 rounded-full px-2 py-1.5 text-center text-[10px] leading-none whitespace-nowrap text-white"
+                                    style={{
+                                        background:
+                                            'linear-gradient(to bottom, var(--site-primary-500), var(--site-primary-400))',
+                                        border: '1px solid var(--site-primary-600)',
+                                    }}
                                 >
                                     <Layers size={11} className="shrink-0" />
                                     {course.sessions_count} جلسة
                                 </span>
                                 <span
-                                    className="flex basis-0 grow items-center justify-center gap-1 rounded-full px-2 py-1.5 text-center text-[10px] leading-none whitespace-nowrap text-white"
-                                    style={{ background: 'linear-gradient(to bottom, var(--site-primary-500), var(--site-primary-400))', border: '1px solid var(--site-primary-600)' }}
+                                    className="flex grow basis-0 items-center justify-center gap-1 rounded-full px-2 py-1.5 text-center text-[10px] leading-none whitespace-nowrap text-white"
+                                    style={{
+                                        background:
+                                            'linear-gradient(to bottom, var(--site-primary-500), var(--site-primary-400))',
+                                        border: '1px solid var(--site-primary-600)',
+                                    }}
                                 >
                                     <Repeat size={11} className="shrink-0" />
                                     {course.sessions_per_week} أسبوعيًا
@@ -170,29 +206,47 @@ export function CourseShowcaseCard({
                 ) : (
                     <div
                         className="rounded-2xl bg-slate-900/75 p-3 shadow-[0_10px_26px_-18px_rgba(15,23,42,0.8)] transition-all duration-400 ease-out hover:bg-slate-900/90 hover:shadow-[0_14px_38px_-18px_color-mix(in_srgb,var(--site-primary-color)_80%,transparent)]"
-                        style={{ border: '1px solid color-mix(in srgb, var(--site-primary-300) 85%, white 15%)' }}
+                        style={{
+                            border: '1px solid color-mix(in srgb, var(--site-primary-300) 85%, white 15%)',
+                        }}
                     >
-                        <h3 className="font-fredoka text-lg font-bold leading-tight text-white">{course.title}</h3>
-                        <p className="mt-2 text-xs leading-6 text-white/80">{course.short_description}</p>
+                        <h3 className="font-fredoka text-lg leading-tight font-bold text-white">
+                            {course.title}
+                        </h3>
+                        <p className="mt-2 text-xs leading-6 text-white/80">
+                            {course.short_description}
+                        </p>
 
                         <div className="mt-3 grid grid-cols-3 gap-2 text-[10px] font-bold text-white/90">
                             <span
                                 className="flex min-w-0 items-center justify-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold whitespace-nowrap text-white"
-                                style={{ background: 'linear-gradient(to bottom, var(--site-primary-500), var(--site-primary-400))', border: '1px solid var(--site-primary-600)' }}
+                                style={{
+                                    background:
+                                        'linear-gradient(to bottom, var(--site-primary-500), var(--site-primary-400))',
+                                    border: '1px solid var(--site-primary-600)',
+                                }}
                             >
                                 <Calendar size={12} className="shrink-0" />
                                 {course.duration_months} شهور
                             </span>
                             <span
                                 className="flex min-w-0 items-center justify-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold whitespace-nowrap text-white"
-                                style={{ background: 'linear-gradient(to bottom, var(--site-primary-500), var(--site-primary-400))', border: '1px solid var(--site-primary-600)' }}
+                                style={{
+                                    background:
+                                        'linear-gradient(to bottom, var(--site-primary-500), var(--site-primary-400))',
+                                    border: '1px solid var(--site-primary-600)',
+                                }}
                             >
                                 <Layers size={12} className="shrink-0" />
                                 {course.sessions_count} جلسة
                             </span>
                             <span
                                 className="flex min-w-0 items-center justify-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold whitespace-nowrap text-white"
-                                style={{ background: 'linear-gradient(to bottom, var(--site-primary-500), var(--site-primary-400))', border: '1px solid var(--site-primary-600)' }}
+                                style={{
+                                    background:
+                                        'linear-gradient(to bottom, var(--site-primary-500), var(--site-primary-400))',
+                                    border: '1px solid var(--site-primary-600)',
+                                }}
                             >
                                 <Repeat size={12} className="shrink-0" />
                                 {course.sessions_per_week} أسبوعيًا
@@ -209,4 +263,3 @@ export function CourseShowcaseCard({
         </Link>
     );
 }
-

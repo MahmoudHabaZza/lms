@@ -43,13 +43,22 @@ export function StudentShell({ title, subtitle, children }: StudentShellProps) {
         student_meta?: { unread_notifications_count?: number } | null;
     }>();
     const [mobileOpen, setMobileOpen] = useState(false);
-    const unreadNotificationsCount = page.props.student_meta?.unread_notifications_count ?? 0;
+    const unreadNotificationsCount =
+        page.props.student_meta?.unread_notifications_count ?? 0;
 
     useEffect(() => {
         document.documentElement.setAttribute('dir', 'rtl');
         document.documentElement.lang = 'ar';
         document.documentElement.classList.remove('js-loading');
     }, []);
+
+    useEffect(() => {
+        document.body.style.overflow = mobileOpen ? 'hidden' : '';
+
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [mobileOpen]);
 
     return (
         <div
@@ -58,18 +67,25 @@ export function StudentShell({ title, subtitle, children }: StudentShellProps) {
         >
             <Head title={title} />
 
-            <div className="mx-auto flex min-h-screen max-w-[1600px] flex-col lg:flex-row">
+            <div className="mx-auto flex min-h-screen max-w-[1600px] flex-col overflow-x-hidden lg:flex-row">
                 <aside
-                    className={`fixed inset-y-0 right-0 z-50 flex w-80 shrink-0 flex-col transform border-l border-white/15 bg-[linear-gradient(180deg,#122038_0%,#132b43_52%,#0d182a_100%)] p-5 text-white shadow-[0_30px_80px_-35px_rgba(15,23,42,0.9)] transition-transform duration-300 lg:static lg:translate-x-0 ${
+                    className={`fixed inset-y-0 right-0 z-50 flex w-full max-w-80 shrink-0 transform flex-col border-l border-white/15 bg-[linear-gradient(180deg,#122038_0%,#132b43_52%,#0d182a_100%)] p-4 text-white shadow-[0_30px_80px_-35px_rgba(15,23,42,0.9)] transition-transform duration-300 sm:p-5 lg:static lg:translate-x-0 ${
                         mobileOpen ? 'translate-x-0' : 'translate-x-full'
                     }`}
                 >
                     <div className="rounded-[28px] border border-white/10 bg-white/8 p-5 backdrop-blur">
                         <div className="flex items-start justify-between">
                             <div>
-                                <div className="text-[11px] font-semibold tracking-[0.35em] text-orange-200/90">KID CODER</div>
-                                <div className="mt-3 font-playpen-arabic text-2xl font-extrabold text-white">مساحة التعلّم</div>
-                                <div className="mt-2 text-sm text-slate-300">كل محتوى الطالب في مكان واحد وبواجهة عربية كاملة.</div>
+                                <div className="text-[11px] font-semibold tracking-[0.35em] text-orange-200/90">
+                                    KID CODER
+                                </div>
+                                <div className="mt-3 font-playpen-arabic text-2xl font-extrabold text-white">
+                                    مساحة التعلّم
+                                </div>
+                                <div className="mt-2 text-sm text-slate-300">
+                                    كل محتوى الطالب في مكان واحد وبواجهة عربية
+                                    كاملة.
+                                </div>
                             </div>
                             <button
                                 type="button"
@@ -83,19 +99,25 @@ export function StudentShell({ title, subtitle, children }: StudentShellProps) {
 
                         <div className="mt-6 rounded-3xl bg-white/10 p-4">
                             <div className="text-xs text-slate-300">مرحبًا</div>
-                            <div className="mt-2 text-lg font-bold text-white">{page.props.auth?.user?.name ?? 'طالب'}</div>
+                            <div className="mt-2 text-lg font-bold text-white">
+                                {page.props.auth?.user?.name ?? 'طالب'}
+                            </div>
                             <div className="mt-3 flex items-center justify-between rounded-2xl bg-white/10 px-4 py-3 text-sm font-semibold text-slate-200">
                                 <span>الإشعارات غير المقروءة</span>
-                                <span className="rounded-full bg-orange-400 px-3 py-1 text-xs font-black text-slate-950">{unreadNotificationsCount}</span>
+                                <span className="rounded-full bg-orange-400 px-3 py-1 text-xs font-black text-slate-950">
+                                    {unreadNotificationsCount}
+                                </span>
                             </div>
                         </div>
                     </div>
 
-                    <nav className="mt-6 flex-1 space-y-2 overflow-y-auto pl-1">
+                    <nav className="mt-6 flex-1 space-y-2 overflow-y-auto overscroll-contain pr-1 pl-1">
                         {navItems.map((item) => {
                             const isActive = page.url.startsWith(item.href);
                             const Icon = item.icon;
-                            const showBadge = item.href === '/student/notifications' && unreadNotificationsCount > 0;
+                            const showBadge =
+                                item.href === '/student/notifications' &&
+                                unreadNotificationsCount > 0;
 
                             return (
                                 <Link
@@ -117,7 +139,9 @@ export function StudentShell({ title, subtitle, children }: StudentShellProps) {
                                     </div>
                                     <span
                                         className={`flex h-10 w-10 items-center justify-center rounded-2xl ${
-                                            isActive ? 'bg-orange-100 text-orange-700' : 'bg-white/10 text-white'
+                                            isActive
+                                                ? 'bg-orange-100 text-orange-700'
+                                                : 'bg-white/10 text-white'
                                         }`}
                                     >
                                         <Icon size={18} />
@@ -151,7 +175,7 @@ export function StudentShell({ title, subtitle, children }: StudentShellProps) {
                     />
                 )}
 
-                <main className="flex-1 px-4 py-5 sm:px-6 lg:px-8">
+                <main className="flex-1 px-3 py-4 sm:px-6 lg:px-8">
                     <div className="mb-5 flex items-center justify-between lg:hidden">
                         <button
                             type="button"
@@ -163,12 +187,20 @@ export function StudentShell({ title, subtitle, children }: StudentShellProps) {
                         </button>
                     </div>
 
-                    <div className="rounded-[32px] border border-white/70 bg-white/80 p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,0.35)] backdrop-blur">
-                        <div className="text-[11px] font-semibold tracking-[0.35em] text-orange-500">منصة الطالب</div>
+                    <div className="rounded-[32px] border border-white/70 bg-white/80 p-5 shadow-[0_30px_70px_-45px_rgba(15,23,42,0.35)] backdrop-blur sm:p-6">
+                        <div className="text-[11px] font-semibold tracking-[0.35em] text-orange-500">
+                            منصة الطالب
+                        </div>
                         <div className="mt-3 flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
                             <div>
-                                <h1 className="font-playpen-arabic text-3xl font-extrabold text-slate-900 sm:text-4xl">{title}</h1>
-                                {subtitle && <p className="mt-2 max-w-3xl text-sm leading-7 text-slate-600">{subtitle}</p>}
+                                <h1 className="font-playpen-arabic text-2xl font-extrabold text-slate-900 sm:text-4xl">
+                                    {title}
+                                </h1>
+                                {subtitle && (
+                                    <p className="mt-2 max-w-3xl text-sm leading-7 text-slate-600">
+                                        {subtitle}
+                                    </p>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -181,7 +213,8 @@ export function StudentShell({ title, subtitle, children }: StudentShellProps) {
                                     : 'border-rose-200 bg-rose-50/90 text-rose-700'
                             }`}
                         >
-                            {page.props.flash?.success || page.props.flash?.error}
+                            {page.props.flash?.success ||
+                                page.props.flash?.error}
                         </div>
                     )}
 

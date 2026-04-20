@@ -26,13 +26,18 @@ const resetTopbarOffset = () => {
 
 function renderSocialItem(item: SocialItem, index: number) {
     return (
-        <li key={item.icon} className={index === 0 ? '' : 'ml-6 border-l border-white/45 pl-6'}>
+        <li
+            key={item.icon}
+            className={index === 0 ? '' : 'ml-6 border-l border-white/45 pl-6'}
+        >
             <a
                 href={item.link}
                 className="group relative flex h-9 w-9 items-center justify-center rounded-full !text-white no-underline transition-all duration-500 hover:-translate-y-1 hover:scale-110"
             >
                 <span className="absolute inset-0 rounded-full border border-white/20 bg-white/10 opacity-100 transition-all duration-500 group-hover:scale-110 group-hover:bg-white"></span>
-                <i className={`${item.icon} relative z-10 text-sm text-white transition-all duration-500 group-hover:rotate-[360deg] group-hover:text-color-primary`}></i>
+                <i
+                    className={`${item.icon} relative z-10 text-sm text-white transition-all duration-500 group-hover:rotate-[360deg] group-hover:text-color-primary`}
+                ></i>
             </a>
         </li>
     );
@@ -65,21 +70,39 @@ export default function Topbar() {
     }, []);
 
     useEffect(() => {
-        document.documentElement.style.setProperty('--topbar-offset', hidden ? '0px' : '40px');
+        document.documentElement.style.setProperty(
+            '--topbar-offset',
+            hidden ? '0px' : '40px',
+        );
 
         return resetTopbarOffset;
     }, [hidden]);
 
     const email = settings?.contact_email?.trim() ?? '';
     const phone = settings?.contact_phone?.trim() ?? '';
-    const whatsappNumber = (settings?.whatsapp_number ?? '').replace(/[^0-9]/g, '');
+    const whatsappNumber = (settings?.whatsapp_number ?? '').replace(
+        /[^0-9]/g,
+        '',
+    );
 
     const socialItems: SocialItem[] = [
-        { link: settings?.facebook_url?.trim() ?? '', icon: 'fab fa-facebook-f' },
+        {
+            link: settings?.facebook_url?.trim() ?? '',
+            icon: 'fab fa-facebook-f',
+        },
         { link: settings?.youtube_url?.trim() ?? '', icon: 'fab fa-youtube' },
-        { link: settings?.instagram_url?.trim() ?? '', icon: 'fab fa-instagram' },
-        { link: settings?.linkedin_url?.trim() ?? '', icon: 'fab fa-linkedin-in' },
-        { link: whatsappNumber ? `https://wa.me/${whatsappNumber}` : '', icon: 'fab fa-whatsapp' },
+        {
+            link: settings?.instagram_url?.trim() ?? '',
+            icon: 'fab fa-instagram',
+        },
+        {
+            link: settings?.linkedin_url?.trim() ?? '',
+            icon: 'fab fa-linkedin-in',
+        },
+        {
+            link: whatsappNumber ? `https://wa.me/${whatsappNumber}` : '',
+            icon: 'fab fa-whatsapp',
+        },
     ].filter((item) => item.link);
 
     return (
@@ -92,23 +115,25 @@ export default function Topbar() {
 
             <section
                 dir="ltr"
-                className={`fp__topbar fixed left-0 right-0 top-0 z-[999] flex h-[40px] w-full items-center bg-color-primary shadow-[0_10px_30px_color-mix(in_srgb,var(--site-primary-color)_18%,transparent)] transition-transform duration-500 ${
+                className={`fp__topbar fixed top-0 right-0 left-0 z-[999] flex h-[40px] w-full items-center bg-color-primary shadow-[0_10px_30px_color-mix(in_srgb,var(--site-primary-color)_18%,transparent)] transition-transform duration-500 ${
                     hidden ? '-translate-y-full' : 'translate-y-0'
                 }`}
             >
-                <div className="container mx-auto flex h-full items-center justify-between px-4">
-                    <div className="flex items-center h-full">
+                <div className="container mx-auto flex h-full items-center justify-center px-4 sm:justify-between">
+                    <div className="flex h-full items-center">
                         <ul className="fp__topbar_info flex flex-wrap items-center gap-0">
                             {email && (
-                                <li className="mr-8">
+                                <li className="mr-4 sm:mr-8">
                                     <a
                                         href={`mailto:${email}`}
-                                        className="group flex items-center gap-3 !text-white no-underline text-sm font-medium tracking-[0.01em] text-white transition-all duration-500"
+                                        className="group flex items-center gap-3 text-sm font-medium tracking-[0.01em] !text-white text-white no-underline transition-all duration-500"
                                     >
                                         <span className="relative flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:rotate-[360deg] group-hover:bg-white">
                                             <i className="fas fa-envelope text-sm text-white transition-colors duration-500 group-hover:text-color-primary"></i>
                                         </span>
-                                        <span className="text-white transition-all duration-500 group-hover:tracking-[0.02em] group-hover:text-white">{email}</span>
+                                        <span className="hidden text-white transition-all duration-500 group-hover:tracking-[0.02em] group-hover:text-white sm:inline">
+                                            {email}
+                                        </span>
                                     </a>
                                 </li>
                             )}
@@ -117,12 +142,14 @@ export default function Topbar() {
                                 <li>
                                     <a
                                         href={`https://wa.me/${phone.replace(/[^0-9]/g, '')}`}
-                                        className="group flex items-center gap-3 !text-white no-underline text-sm font-medium tracking-[0.01em] text-white transition-all duration-500"
+                                        className="group flex items-center gap-3 text-sm font-medium tracking-[0.01em] !text-white text-white no-underline transition-all duration-500"
                                     >
                                         <span className="relative flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:rotate-[360deg] group-hover:bg-white">
                                             <i className="fab fa-whatsapp text-sm text-white transition-colors duration-500 group-hover:text-color-primary"></i>
                                         </span>
-                                        <span className="text-white transition-all duration-500 group-hover:tracking-[0.02em] group-hover:text-white">{phone}</span>
+                                        <span className="hidden text-white transition-all duration-500 group-hover:tracking-[0.02em] group-hover:text-white sm:inline">
+                                            {phone}
+                                        </span>
                                     </a>
                                 </li>
                             )}
@@ -139,4 +166,3 @@ export default function Topbar() {
         </>
     );
 }
-

@@ -1252,6 +1252,18 @@
     animation: codeBracketGlowRight 0.6s ease-out both;
 }
 
+.academy-title-group {
+    max-width: 100%;
+}
+
+.academy-title-group > span:nth-child(2) {
+    display: inline-block;
+    max-width: 100%;
+    text-wrap: balance;
+    word-break: keep-all;
+    overflow-wrap: normal;
+}
+
 .academy-tree-trunk {
     stroke: rgba(100, 116, 139, 0.45);
 }
@@ -2330,9 +2342,18 @@
 
 @media (max-width: 767px) {
     .academy-title-group {
-        flex-wrap: wrap;
-        justify-content: center;
+        display: inline-grid !important;
+        width: min(100%, 26rem);
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        justify-items: center;
+        column-gap: 0.45rem;
         row-gap: 0.35rem;
+    }
+
+    .academy-title-group > span:nth-child(2) {
+        width: 100%;
+        line-height: 1.35;
     }
 
     .course-reels-wrap .scrollbar-hide,

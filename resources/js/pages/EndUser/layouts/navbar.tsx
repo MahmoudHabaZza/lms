@@ -294,8 +294,7 @@ const Navbar: React.FC = () => {
                                 src={
                                     logoError
                                         ? '/assets/EndUser/images/logo-default.svg'
-                                        : settings?.site_logo?.trim() ||
-                                          '/assets/EndUser/images/logo-default.svg'
+                                        : '/site-logo'
                                 }
                                 alt={settings?.site_name ?? 'Kid Coder Academy'}
                                 className="logo-animated h-12 max-w-[140px] w-auto transform object-contain group-hover:scale-110 sm:h-16 sm:max-w-[180px] lg:h-20 lg:max-w-none"

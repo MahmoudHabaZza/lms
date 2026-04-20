@@ -40,6 +40,7 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
         $settings = Setting::values();
+        $settings['site_logo'] = Setting::logoUrl();
 
         return [
             ...parent::share($request),

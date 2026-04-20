@@ -61,6 +61,7 @@
     @php
         $primaryColor = \App\Models\Setting::get('primary_color', '#f97316');
         $fontFamily = \App\Models\Setting::get('font_family', 'playpen_arabic');
+        $siteLogo = \App\Models\Setting::logoUrl();
         $fontMap = [
             'playpen_arabic' => "'Playpen Sans Arabic', cursive",
             'marhey' => "'Marhey', cursive",
@@ -69,8 +70,8 @@
         ];
         $selectedFontStack = $fontMap[$fontFamily] ?? $fontMap['playpen_arabic'];
     @endphp
-    <link rel="icon" href="{{ route('site-logo') }}" sizes="any">
-    <link rel="apple-touch-icon" href="{{ route('site-logo') }}">
+    <link rel="icon" href="{{ $siteLogo }}" sizes="any">
+    <link rel="apple-touch-icon" href="{{ $siteLogo }}">
     <style>
         :root {
             --site-primary-color: {{ $primaryColor }};

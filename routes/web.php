@@ -23,34 +23,9 @@ use App\Http\Controllers\EndUser\InstructorApplicationController;
 use App\Http\Controllers\Student\FavoriteController as StudentFavoriteController;
 use App\Http\Controllers\Student\EnrollmentController as StudentEnrollmentController;
 use App\Http\Controllers\Student\StudentController;
-use App\Models\Setting;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/site-logo', function () {
-    $fallback = public_path('assets/EndUser/images/logo-default.svg');
-    $siteLogo = Setting::get('site_logo');
-
-    if (is_string($siteLogo) && $siteLogo !== '') {
-        if (str_starts_with($siteLogo, '/storage/')) {
-            $relativePath = ltrim(substr($siteLogo, strlen('/storage/')), '/');
-
-            if ($relativePath !== '' && Storage::disk('public')->exists($relativePath)) {
-                return response()->file(Storage::disk('public')->path($relativePath));
-            }
-        }
-
-        $publicPath = parse_url($siteLogo, PHP_URL_PATH);
-        $publicRelativePath = ltrim(is_string($publicPath) && $publicPath !== '' ? $publicPath : $siteLogo, '/');
-
-        if ($publicRelativePath !== '' && file_exists(public_path($publicRelativePath))) {
-            return response()->file(public_path($publicRelativePath));
-        }
-    }
-
-    return response()->file($fallback);
-})->name('site-logo');
 Route::get('/dashboard', DashboardRedirectController::class)->middleware('auth')->name('dashboard');
 Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
 Route::post('/bookings', [BookingController::class, 'store'])->middleware('throttle:10,1')->name('bookings.store');

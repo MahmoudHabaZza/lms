@@ -119,6 +119,15 @@ class Setting extends Model
         );
     }
 
+    public static function logoUrl(): string
+    {
+        $logo = static::get('site_logo');
+
+        return is_string($logo) && $logo !== ''
+            ? $logo
+            : '/assets/EndUser/images/logo-default.svg';
+    }
+
     public static function clearCache(): void
     {
         if (static::shouldBypassCache()) {

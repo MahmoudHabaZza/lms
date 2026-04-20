@@ -45,7 +45,7 @@ export default function Footer() {
     const youtubeUrl = settings?.youtube_url?.trim() ?? '';
     const whatsappNumber = (settings?.whatsapp_number ?? '').replace(/[^0-9]/g, '');
     const whatsappUrl = whatsappNumber ? `https://wa.me/${whatsappNumber}` : '';
-    const logo = '/site-logo';
+    const logo = settings?.site_logo?.trim() || '/assets/EndUser/images/logo-default.svg';
     const footerDescription = settings?.footer_description?.trim() || 'منصة تعليمية عصرية لتعليم البرمجة للأطفال والمبتدئين بأسلوب ممتع وتفاعلي، مع متابعة دقيقة لمسار التعلم.';
     const footerNewsletterDescription = settings?.footer_newsletter_description?.trim() || 'حدّث بيانات التواصل والسوشيال من لوحة التحكم لتظهر هنا تلقائيًا.';
     const footerCopyrightTemplate = settings?.footer_copyright?.trim() || '© {year} {site_name}. جميع الحقوق محفوظة.';

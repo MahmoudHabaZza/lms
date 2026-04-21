@@ -138,7 +138,7 @@ const Navbar: React.FC = () => {
                                 <Search className="h-5 w-5" />
                             </button>
 
-                            <div className="hidden items-center gap-2 md:flex">
+                            <div className="hidden items-center gap-2 lg:flex">
                                 {auth?.user ? (
                                     <div
                                         className="relative"
@@ -285,23 +285,124 @@ const Navbar: React.FC = () => {
                             </ul>
                         </div>
 
-                        <a
-                            className="logo-container group flex min-w-0 flex-1 items-center justify-center px-2 font-fredoka no-underline transition-all duration-300 lg:flex-none lg:px-0"
-                            href="/"
-                            title={settings?.site_name ?? 'Kid Coder Academy'}
-                        >
-                            <img
-                                src={
-                                    logoError
-                                        ? '/assets/EndUser/images/logo-default.svg'
-                                        : settings?.site_logo?.trim() ||
-                                          '/assets/EndUser/images/logo-default.svg'
-                                }
-                                alt={settings?.site_name ?? 'Kid Coder Academy'}
-                                className="logo-animated h-12 max-w-[140px] w-auto transform object-contain group-hover:scale-110 sm:h-16 sm:max-w-[180px] lg:h-20 lg:max-w-none"
-                                onError={() => setLogoError(true)}
-                            />
-                        </a>
+                        <div className="flex flex-1 items-center justify-center gap-2 lg:flex-none lg:justify-start">
+                            <a
+                                className="logo-container group flex min-w-0 items-center justify-center px-2 font-fredoka no-underline transition-all duration-300 lg:px-0"
+                                href="/"
+                                title={settings?.site_name ?? 'Kid Coder Academy'}
+                            >
+                                <img
+                                    src={
+                                        logoError
+                                            ? '/assets/EndUser/images/logo-default.svg'
+                                            : settings?.site_logo?.trim() ||
+                                              '/assets/EndUser/images/logo-default.svg'
+                                    }
+                                    alt={settings?.site_name ?? 'Kid Coder Academy'}
+                                    className="logo-animated h-12 max-w-[140px] w-auto transform object-contain group-hover:scale-110 sm:h-16 sm:max-w-[180px] lg:h-20 lg:max-w-none"
+                                    onError={() => setLogoError(true)}
+                                />
+                            </a>
+
+                            <div className="flex items-center gap-2 md:hidden">
+                                {auth?.user ? (
+                                    <div
+                                        className="relative"
+                                        onMouseEnter={openUserMenu}
+                                        onMouseLeave={closeUserMenu}
+                                        onFocus={openUserMenu}
+                                        onBlur={closeUserMenu}
+                                    >
+                                        <button
+                                            type="button"
+                                            className="inline-flex items-center gap-2 rounded-full bg-color-primary/10 px-3 py-2 font-semibold text-color-primary transition-all duration-300 hover:bg-color-primary hover:text-white focus-visible:ring-2 focus-visible:ring-color-primary focus-visible:outline-none"
+                                        >
+                                            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-color-primary text-white">
+                                                <UserRound className="h-3 w-3" />
+                                            </span>
+                                            <span className="max-w-[80px] truncate text-xs font-semibold">
+                                                {auth.user.name}
+                                            </span>
+                                            <ChevronDown className="h-3 w-3" />
+                                        </button>
+
+                                        {userMenuOpen && (
+                                            <ul
+                                                className="absolute top-full left-0 z-50 mt-2 w-44 rounded-2xl border border-gray-100 bg-white p-1 shadow-[0_15px_35px_rgba(15,23,42,0.25)] transition-all duration-200 ease-out"
+                                                onMouseEnter={openUserMenu}
+                                                onMouseLeave={closeUserMenu}
+                                            >
+                                                <li>
+                                                    <a
+                                                        href="/student/profile"
+                                                        className="block rounded px-3 py-2 text-right text-sm text-gray-700 hover:bg-gray-100"
+                                                        onClick={() =>
+                                                            setUserMenuOpen(
+                                                                false,
+                                                            )
+                                                        }
+                                                    >
+                                                        ملفي الشخصي
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        href="/student/dashboard"
+                                                        className="block rounded px-3 py-2 text-right text-sm text-gray-700 hover:bg-gray-100"
+                                                        onClick={() =>
+                                                            setUserMenuOpen(
+                                                                false,
+                                                            )
+                                                        }
+                                                    >
+                                                        لوحة التحكم
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        href="/student/courses"
+                                                        className="block rounded px-3 py-2 text-right text-sm text-gray-700 hover:bg-gray-100"
+                                                        onClick={() =>
+                                                            setUserMenuOpen( false )
+                                                        }
+                                                    >
+                                                        الدورات
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <button
+                                                        type="button"
+                                                        className="w-full rounded px-3 py-2 text-right text-sm text-red-600 hover:bg-red-50"
+                                                        onClick={() => {
+                                                            setUserMenuOpen(
+                                                                false,
+                                                            );
+                                                            handleLogout();
+                                                        }}
+                                                    >
+                                                        تسجيل خروج
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <a
+                                        href="/login"
+                                        className="rounded-md border border-color-primary bg-white px-3 py-2 text-sm font-playpen-arabic text-color-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-color-primary hover:text-white hover:shadow-xl"
+                                    >
+                                        {loginLabel}
+                                    </a>
+                                )}
+
+                                <a
+                                    href="/bookings"
+                                    className="rounded-md border border-color-primary bg-color-primary px-3 py-2 text-sm font-playpen-arabic text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-white hover:text-color-primary hover:shadow-xl"
+                                >
+                                    {bookNowLabel}
+                                </a>
+                            </div>
+                        </div>
 
                         <button
                             className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition-colors hover:border-color-primary hover:text-color-primary sm:h-11 sm:w-11 lg:hidden"
@@ -362,59 +463,6 @@ const Navbar: React.FC = () => {
                                 </li>
                             ))}
                         </ul>
-
-                        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                            {auth?.user ? (
-                                <>
-                                    <a
-                                        href="/student/profile"
-                                        className="inline-flex min-h-11 items-center justify-center rounded-xl border border-color-primary bg-white px-4 py-3 text-center font-playpen-arabic text-color-primary transition-all duration-300 hover:bg-color-primary hover:text-white hover:shadow-xl"
-                                        onClick={() => setMobileOpen(false)}
-                                    >
-                                        ملفي الشخصي
-                                    </a>
-                                    <a
-                                        href="/student/dashboard"
-                                        className="inline-flex min-h-11 items-center justify-center rounded-xl border border-color-primary bg-white px-4 py-3 text-center font-playpen-arabic text-color-primary transition-all duration-300 hover:bg-color-primary hover:text-white hover:shadow-xl"
-                                        onClick={() => setMobileOpen(false)}
-                                    >
-                                        لوحة التحكم
-                                    </a>
-                                    <a
-                                        href="/student/courses"
-                                        className="inline-flex min-h-11 items-center justify-center rounded-xl border border-color-primary bg-white px-4 py-3 text-center font-playpen-arabic text-color-primary transition-all duration-300 hover:bg-color-primary hover:text-white hover:shadow-xl"
-                                        onClick={() => setMobileOpen(false)}
-                                    >
-                                        الدورات
-                                    </a>
-                                    <button
-                                        type="button"
-                                        className="inline-flex min-h-11 items-center justify-center rounded-xl border border-color-primary bg-color-primary px-4 py-3 text-center font-playpen-arabic text-white transition-all duration-300 hover:bg-white hover:text-color-primary hover:shadow-xl"
-                                        onClick={() => {
-                                            setMobileOpen(false);
-                                            handleLogout();
-                                        }}
-                                    >
-                                        تسجيل خروج
-                                    </button>
-                                </>
-                            ) : (
-                                <a
-                                    href="/login"
-                                    className="inline-flex min-h-11 items-center justify-center rounded-xl border border-color-primary bg-white px-4 py-3 text-center font-playpen-arabic text-color-primary transition-all duration-300 hover:bg-color-primary hover:text-white hover:shadow-xl"
-                                    onClick={() => setMobileOpen(false)}
-                                >
-                                    {loginLabel}
-                                </a>
-                            )}
-                            <a
-                                href="/bookings"
-                                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-color-primary bg-color-primary px-4 py-3 text-center font-playpen-arabic text-white transition-all duration-300 hover:bg-white hover:text-color-primary hover:shadow-xl"
-                                onClick={() => setMobileOpen(false)}
-                            >
-                                {bookNowLabel}
-                            </a>
-                        </div>
                     </div>
                 </div>
             )}

@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Youtube } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Mail, MapPin, Youtube } from 'lucide-react';
 
 type FooterSettings = {
     site_name?: string | null;
@@ -88,7 +88,7 @@ export default function Footer() {
                             )}
                             {phone && (
                                 <div>
-                                    <Phone />
+                                    <i className="fab fa-whatsapp text-orange-600"></i>
                                     <a href={`tel:${phone}`}>{phone}</a>
                                 </div>
                             )}
@@ -154,7 +154,7 @@ export default function Footer() {
                     )}
                     {whatsappUrl && (
                         <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-                            <i className="fab fa-whatsapp text-[18px]"></i>
+                            <i className="fab fa-whatsapp text-xl"></i>
                         </a>
                     )}
                 </div>

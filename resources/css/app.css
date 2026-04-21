@@ -3704,8 +3704,7 @@
 .footer-v4-logo {
     width: 72px;
     height: 72px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3714,6 +3713,7 @@
 .footer-v4-logo-img {
     width: 60px;
     height: auto;
+    border-radius: 50%;
 }
 
 .footer-v4-tag {

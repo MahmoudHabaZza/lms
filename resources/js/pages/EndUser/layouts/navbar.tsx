@@ -1,4 +1,4 @@
-﻿import { Link, router, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { ChevronDown, Menu, Search, UserRound, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
@@ -11,21 +11,21 @@ interface MenuItem {
 
 const Navbar: React.FC = () => {
     const { url, settings, auth } = usePage<any>().props;
-    const loginLabel = settings?.navbar_login_label?.trim() || 'تسجيل الدخول';
-    const bookNowLabel = settings?.navbar_book_now_label?.trim() || 'احجز الآن';
+    const loginLabel = settings?.navbar_login_label?.trim() || '????? ??????';
+    const bookNowLabel = settings?.navbar_book_now_label?.trim() || '???? ????';
     const searchPlaceholder =
-        settings?.navbar_search_placeholder?.trim() || 'ابحث...';
+        settings?.navbar_search_placeholder?.trim() || '????...';
     const searchButtonLabel =
-        settings?.navbar_search_button_label?.trim() || 'بحث';
+        settings?.navbar_search_button_label?.trim() || '???';
     const navHomeLabel =
-        settings?.navbar_menu_home_label?.trim() || 'الصفحة الرئيسية';
-    const navJoinLabel = settings?.navbar_menu_join_label?.trim() || 'انضم لنا';
+        settings?.navbar_menu_home_label?.trim() || '?????? ????????';
+    const navJoinLabel = settings?.navbar_menu_join_label?.trim() || '???? ???';
     const navFavoritesLabel =
-        settings?.navbar_menu_favorites_label?.trim() || 'المفضلة';
+        settings?.navbar_menu_favorites_label?.trim() || '???????';
     const navContactLabel =
-        settings?.navbar_menu_contact_label?.trim() || 'تواصل معنا';
+        settings?.navbar_menu_contact_label?.trim() || '????? ????';
     const navPrivacyLabel =
-        settings?.navbar_menu_privacy_label?.trim() || 'سياسة الخصوصية';
+        settings?.navbar_menu_privacy_label?.trim() || '????? ????????';
 
     const [mobileOpen, setMobileOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -95,11 +95,11 @@ const Navbar: React.FC = () => {
         event.preventDefault();
         const result = await Swal.fire({
             icon: 'warning',
-            title: 'سجل دخولك أولًا',
-            text: 'لازم تسجل الدخول كطالب علشان تفتح صفحة المفضلة.',
-            confirmButtonText: 'تسجيل الدخول',
+            title: '??? ????? ?????',
+            text: '???? ???? ?????? ????? ????? ???? ???? ???????.',
+            confirmButtonText: '????? ??????',
             showCancelButton: true,
-            cancelButtonText: 'إلغاء',
+            cancelButtonText: '?????',
         });
 
         if (result.isConfirmed) {
@@ -176,7 +176,7 @@ const Navbar: React.FC = () => {
                                                             )
                                                         }
                                                     >
-                                                        ملفي الشخصي
+                                                        ???? ??????
                                                     </a>
                                                 </li>
                                                 <li>
@@ -189,7 +189,7 @@ const Navbar: React.FC = () => {
                                                             )
                                                         }
                                                     >
-                                                        لوحة التحكم
+                                                        ???? ??????
                                                     </a>
                                                 </li>
                                                 <li>
@@ -202,7 +202,7 @@ const Navbar: React.FC = () => {
                                                             )
                                                         }
                                                     >
-                                                        الدورات
+                                                        ???????
                                                     </a>
                                                 </li>
                                                 <li>
@@ -216,7 +216,7 @@ const Navbar: React.FC = () => {
                                                             handleLogout();
                                                         }}
                                                     >
-                                                        تسجيل خروج
+                                                        ????? ????
                                                     </button>
                                                 </li>
                                             </ul>
@@ -285,25 +285,7 @@ const Navbar: React.FC = () => {
                             </ul>
                         </div>
 
-                        <div className="flex flex-1 items-center justify-center gap-2 lg:flex-none lg:justify-start">
-                            <a
-                                className="logo-container group flex min-w-0 items-center justify-center px-2 font-fredoka no-underline transition-all duration-300 lg:px-0"
-                                href="/"
-                                title={settings?.site_name ?? 'Kid Coder Academy'}
-                            >
-                                <img
-                                    src={
-                                        logoError
-                                            ? '/assets/EndUser/images/logo-default.svg'
-                                            : settings?.site_logo?.trim() ||
-                                              '/assets/EndUser/images/logo-default.svg'
-                                    }
-                                    alt={settings?.site_name ?? 'Kid Coder Academy'}
-                                    className="logo-animated h-12 max-w-[140px] w-auto transform object-contain group-hover:scale-110 sm:h-16 sm:max-w-[180px] lg:h-20 lg:max-w-none"
-                                    onError={() => setLogoError(true)}
-                                />
-                            </a>
-
+                        <div className="flex flex-1 items-center justify-start gap-2 lg:flex-none lg:justify-start">
                             <div className="flex items-center gap-2 md:hidden">
                                 {auth?.user ? (
                                     <div
@@ -342,7 +324,7 @@ const Navbar: React.FC = () => {
                                                             )
                                                         }
                                                     >
-                                                        ملفي الشخصي
+                                                        ???? ??????
                                                     </a>
                                                 </li>
                                                 <li>
@@ -355,7 +337,7 @@ const Navbar: React.FC = () => {
                                                             )
                                                         }
                                                     >
-                                                        لوحة التحكم
+                                                        ???? ??????
                                                     </a>
                                                 </li>
                                                 <li>
@@ -363,10 +345,12 @@ const Navbar: React.FC = () => {
                                                         href="/student/courses"
                                                         className="block rounded px-3 py-2 text-right text-sm text-gray-700 hover:bg-gray-100"
                                                         onClick={() =>
-                                                            setUserMenuOpen( false )
+                                                            setUserMenuOpen(
+                                                                false,
+                                                            )
                                                         }
                                                     >
-                                                        الدورات
+                                                        ???????
                                                     </a>
                                                 </li>
                                                 <li>
@@ -380,7 +364,7 @@ const Navbar: React.FC = () => {
                                                             handleLogout();
                                                         }}
                                                     >
-                                                        تسجيل خروج
+                                                        ????? ????
                                                     </button>
                                                 </li>
                                             </ul>
@@ -402,6 +386,24 @@ const Navbar: React.FC = () => {
                                     {bookNowLabel}
                                 </a>
                             </div>
+
+                            <a
+                                className="logo-container group flex min-w-0 items-center justify-center px-2 font-fredoka no-underline transition-all duration-300 lg:px-0"
+                                href="/"
+                                title={settings?.site_name ?? 'Kid Coder Academy'}
+                            >
+                                <img
+                                    src={
+                                        logoError
+                                            ? '/assets/EndUser/images/logo-default.svg'
+                                            : settings?.site_logo?.trim() ||
+                                              '/assets/EndUser/images/logo-default.svg'
+                                    }
+                                    alt={settings?.site_name ?? 'Kid Coder Academy'}
+                                    className="logo-animated h-12 max-w-[140px] w-auto transform object-contain group-hover:scale-110 sm:h-16 sm:max-w-[180px] lg:h-20 lg:max-w-none"
+                                    onError={() => setLogoError(true)}
+                                />
+                            </a>
                         </div>
 
                         <button
@@ -425,7 +427,7 @@ const Navbar: React.FC = () => {
                     <div className="mx-auto max-h-[calc(100svh-var(--topbar-offset)-90px)] w-full max-w-7xl overflow-y-auto px-4 py-4">
                         <div className="mb-4 flex items-center justify-between">
                             <span className="text-sm font-bold text-slate-700">
-                                القائمة
+                                ???????
                             </span>
                             <button
                                 type="button"
@@ -501,6 +503,6 @@ const Navbar: React.FC = () => {
             </div>
         </>
     );
-};
+}
 
 export default Navbar;

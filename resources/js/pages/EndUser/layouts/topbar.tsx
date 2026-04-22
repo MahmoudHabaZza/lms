@@ -8,6 +8,7 @@ type TopbarSettings = {
     instagram_url?: string | null;
     linkedin_url?: string | null;
     youtube_url?: string | null;
+    tiktok_url?: string | null;
 };
 
 type TopbarProps = {
@@ -97,6 +98,10 @@ export default function Topbar() {
         {
             link: settings?.linkedin_url?.trim() ?? '',
             icon: 'fab fa-linkedin-in',
+        },
+        {
+            link: settings?.tiktok_url?.trim() ?? '',
+            icon: 'fab fa-tiktok',
         },
     ].filter((item) => item.link);
 

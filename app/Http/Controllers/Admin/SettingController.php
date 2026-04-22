@@ -127,7 +127,7 @@ class SettingController extends Controller
             validator(['value' => $value], ['value' => ['email']])->validate();
         }
 
-        if (in_array($key, ['facebook_url', 'instagram_url', 'linkedin_url', 'youtube_url'], true) && $value !== '') {
+        if (in_array($key, ['facebook_url', 'instagram_url', 'linkedin_url', 'youtube_url', 'tiktok_url'], true) && $value !== '') {
             validator(['value' => $value], ['value' => ['url']])->validate();
         }
 

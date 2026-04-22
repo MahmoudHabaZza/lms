@@ -8,7 +8,7 @@ class SiteSetting extends Model
 {
     protected $table = 'site_settings';
 
-    protected $fillable = ['site_name', 'logo', 'favicon', 'primary_color', 'secondary_color', 'facebook_url', 'linkedin_url'];
+    protected $fillable = ['site_name', 'logo', 'favicon', 'primary_color', 'secondary_color', 'facebook_url', 'linkedin_url', 'instagram_url', 'youtube_url', 'tiktok_url'];
 
     // Singleton helper (optional)
     public static function instance()

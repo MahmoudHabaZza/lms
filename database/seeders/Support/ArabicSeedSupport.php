@@ -48,6 +48,11 @@ class ArabicSeedSupport
             ['key' => 'mail_encryption', 'value' => 'tls', 'type' => 'string', 'group' => 'mail'],
             ['key' => 'mail_from_address', 'value' => 'hello@kid-coder.test', 'type' => 'string', 'group' => 'mail'],
             ['key' => 'mail_from_name', 'value' => 'Kid Coder Arabic Academy', 'type' => 'string', 'group' => 'mail'],
+            ['key' => 'facebook_url', 'value' => 'https://www.facebook.com/kidcoderacademy', 'type' => 'string', 'group' => 'social'],
+            ['key' => 'instagram_url', 'value' => 'https://www.instagram.com/kidcoderacademy', 'type' => 'string', 'group' => 'social'],
+            ['key' => 'linkedin_url', 'value' => 'https://www.linkedin.com/company/kidcoderacademy', 'type' => 'string', 'group' => 'social'],
+            ['key' => 'youtube_url', 'value' => 'https://www.youtube.com/@kidcoderacademy', 'type' => 'string', 'group' => 'social'],
+            ['key' => 'tiktok_url', 'value' => 'https://www.tiktok.com/@kidcoderacademy', 'type' => 'string', 'group' => 'social'],
         ];
     }
 

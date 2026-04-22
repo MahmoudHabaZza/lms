@@ -26,6 +26,7 @@ type FooterSettings = {
     site_logo?: string | null;
     whatsapp_number?: string | null;
     youtube_url?: string | null;
+    tiktok_url?: string | null;
 };
 
 type FooterProps = {
@@ -43,6 +44,7 @@ export default function Footer() {
     const linkedinUrl = settings?.linkedin_url?.trim() ?? '';
     const instagramUrl = settings?.instagram_url?.trim() ?? '';
     const youtubeUrl = settings?.youtube_url?.trim() ?? '';
+    const tiktokUrl = settings?.tiktok_url?.trim() ?? '';
     const whatsappNumber = (settings?.whatsapp_number ?? '').replace(/[^0-9]/g, '');
     const whatsappUrl = whatsappNumber ? `https://wa.me/${whatsappNumber}` : '';
     const logo = settings?.site_logo?.trim() || '/assets/EndUser/images/logo-default.svg';
@@ -150,6 +152,11 @@ export default function Footer() {
                     {instagramUrl && (
                         <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                             <Instagram />
+                        </a>
+                    )}
+                    {tiktokUrl && (
+                        <a href={tiktokUrl} target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                            <i className="fab fa-tiktok text-xl"></i>
                         </a>
                     )}
                     {whatsappUrl && (

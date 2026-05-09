@@ -36,6 +36,7 @@ class UpdateStudentReelRequest extends FormRequest
 
                     return empty($reel?->video_path);
                 }),
+                'nullable',
                 'file',
                 'mimetypes:video/mp4,video/webm,video/quicktime',
                 'max:204800',

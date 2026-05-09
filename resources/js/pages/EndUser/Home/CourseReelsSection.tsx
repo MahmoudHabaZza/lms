@@ -30,6 +30,7 @@ export default function CourseReelsSection({
     const [activeReel, setActiveReel] = useState<CourseReel | null>(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
+    const [isDescriptionVisible, setIsDescriptionVisible] = useState(false);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     const normalizedReels = useMemo(() => courseReels.filter((reel) => reel.video_url), [courseReels]);
@@ -70,6 +71,7 @@ export default function CourseReelsSection({
         const closeOnEscape = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
                 setActiveReel(null);
+                setIsDescriptionVisible(false);
             }
         };
 
@@ -118,7 +120,10 @@ export default function CourseReelsSection({
                                 <button
                                     key={reel.id}
                                     type="button"
-                                    onClick={() => setActiveReel(reel)}
+                                    onClick={() => {
+                                        setActiveReel(reel);
+                                        setIsDescriptionVisible(false);
+                                    }}
                                     className="course-reel-card group relative shrink-0 text-right"
                                     style={{ animationDelay: `${index * 0.08}s` }}
                                 >
@@ -144,7 +149,11 @@ export default function CourseReelsSection({
                                                         type="button"
                                                         className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white shadow-lg transition hover:scale-110"
                                                         style={{ backgroundColor: 'var(--site-primary-500)' }}
-                                                        onClick={(e) => { e.stopPropagation(); setActiveReel(reel); }}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setActiveReel(reel);
+                                                            setIsDescriptionVisible(false);
+                                                        }}
                                                         aria-label="Play course reel"
                                                     >
                                                         <Play size={16} />
@@ -180,14 +189,23 @@ export default function CourseReelsSection({
             </div>
 
             {activeReel && activeReel.video_url && (
-                <div className="fixed inset-0 z-[1200] flex items-center justify-center explore-modal-overlay bg-[#020617d9] px-4 py-8" onClick={() => setActiveReel(null)}>
+                <div
+                    className="fixed inset-0 z-[1200] flex items-center justify-center explore-modal-overlay bg-[#020617d9] px-4 py-8"
+                    onClick={() => {
+                        setActiveReel(null);
+                        setIsDescriptionVisible(false);
+                    }}
+                >
                     <div
                         className="explore-modal-card relative overflow-hidden"
                         onClick={(event) => event.stopPropagation()}
                     >
                         <button
                             type="button"
-                            onClick={() => setActiveReel(null)}
+                            onClick={() => {
+                                setActiveReel(null);
+                                setIsDescriptionVisible(false);
+                            }}
                             className="absolute right-4 top-4 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white transition hover:bg-black"
                             aria-label="Close video"
                         >
@@ -224,7 +242,20 @@ export default function CourseReelsSection({
                             <p className="text-xs font-semibold uppercase tracking-wider text-orange-300">شرح الكورس</p>
                             <h3 className="mt-1 font-bold text-lg text-white">{activeReel.course_title}</h3>
                             {activeReel.course_badge && <p className="text-sm text-slate-300">{activeReel.course_badge}</p>}
-                            {activeReel.course_description && <p className="mt-2 text-sm text-slate-300">{activeReel.course_description}</p>}
+                            {activeReel.course_description && (
+                                <>
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsDescriptionVisible((current) => !current)}
+                                        className="mt-3 inline-flex rounded-full bg-orange-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-orange-400"
+                                    >
+                                        {isDescriptionVisible ? 'إخفاء الوصف' : 'عرض الوصف'}
+                                    </button>
+                                    {isDescriptionVisible && (
+                                        <p className="mt-2 text-sm text-slate-300">{activeReel.course_description}</p>
+                                    )}
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

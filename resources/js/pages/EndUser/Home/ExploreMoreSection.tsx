@@ -12,6 +12,19 @@ type StudentReel = {
     quote: string | null;
 };
 
+const fallbackReelCovers = {
+    boy: '/assets/EndUser/images/reels/reel-cover-02.png',
+    girl: '/assets/EndUser/images/reels/reel-cover-03.png',
+};
+
+const girlNamePattern = /(رهف|مايا|ريم|رنا|جنى|هنا|سارة|ملك|مريم|فاطمة|نور|والدة|أم|ام)/;
+
+function fallbackCoverFor(reel: StudentReel): string {
+    return girlNamePattern.test(reel.student_name)
+        ? fallbackReelCovers.girl
+        : fallbackReelCovers.boy;
+}
+
 export default function ExploreMoreSection({
     studentReels = [],
     className = '',
@@ -153,9 +166,10 @@ export default function ExploreMoreSection({
                             dir="ltr"
                         >
                             {normalizedReels.map((reel, index) => {
+                                const fallbackCover = fallbackCoverFor(reel);
                                 const coverImage = failedCoverIds.has(reel.id)
-                                    ? null
-                                    : reel.cover_image;
+                                    ? fallbackCover
+                                    : reel.cover_image || fallbackCover;
 
                                 return (
                                     <button
@@ -187,6 +201,13 @@ export default function ExploreMoreSection({
                                                     alt={reel.student_name}
                                                     className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
                                                     onError={() => {
+                                                        if (
+                                                            coverImage ===
+                                                            fallbackCover
+                                                        ) {
+                                                            return;
+                                                        }
+
                                                         setFailedCoverIds(
                                                             (current) => {
                                                                 const next =

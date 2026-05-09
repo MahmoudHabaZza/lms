@@ -31,7 +31,7 @@ class HomeController extends Controller
         $viewer = $request->user();
         $payload = $viewer
             ? $this->buildPayload($viewer)
-            : Cache::remember('end-user.home.guest.v1', now()->addMinutes(10), fn () => $this->buildPayload());
+            : Cache::remember('end-user.home.guest.v2', now()->addMinutes(10), fn () => $this->buildPayload());
 
         return Inertia::render('EndUser/Home/index', $payload);
     }
@@ -178,17 +178,19 @@ class HomeController extends Controller
             ->get(['id', 'course_id', 'title', 'description', 'cover_image', 'video_path', 'video_url'])
             ->map(function (CourseReel $reel) use ($instructorImages): array {
                 $courseItem = $reel->course;
+                $reelCoverImage = $this->resolveMediaUrl($reel->cover_image);
+                $courseThumbnail = $this->resolveMediaUrl($courseItem?->thumbnail);
 
                 return [
                     'id' => $reel->id,
                     'course_title' => $courseItem?->title ?? ($reel->title ?? 'Course Reel'),
                     'course_badge' => $courseItem?->badge ?? null,
                     'course_description' => $courseItem?->short_description ?? ($reel->description ?? ''),
-                    'course_thumbnail' => $courseItem?->thumbnail ?? $reel->cover_image,
+                    'course_thumbnail' => $courseThumbnail ?? $reelCoverImage,
                     'course_accent_color' => $courseItem?->accent_color ?? '#2f80ed',
-                    'reel_cover_image' => $reel->cover_image ?? ($courseItem?->thumbnail ?? null),
-                    'reel_instructor_image' => $reel->cover_image
-                        ? $reel->cover_image
+                    'reel_cover_image' => $reelCoverImage ?? $courseThumbnail,
+                    'reel_instructor_image' => $reelCoverImage
+                        ? $reelCoverImage
                         : $instructorImages[$reel->id % count($instructorImages)],
                     'reel_title' => $reel->title ?? $courseItem?->title,
                     'reel_track' => Course::unifiedAudienceLabel(),

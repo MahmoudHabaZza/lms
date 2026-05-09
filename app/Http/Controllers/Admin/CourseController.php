@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Course;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -64,9 +65,14 @@ class CourseController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $payload = $this->validateCourse($request);
+        unset($payload['thumbnail_file']);
         $payload['status'] = (bool) ($payload['status'] ?? false);
         $payload['accent_color'] = $payload['accent_color'] ?? '#f97316';
         $payload['age_group'] = Course::AGE_GROUP_5_TO_17;
+
+        if ($request->hasFile('thumbnail_file')) {
+            $payload['thumbnail'] = $request->file('thumbnail_file')->store('course/thumbnails', 'public');
+        }
 
         Course::create($payload);
 
@@ -102,9 +108,15 @@ class CourseController extends Controller
     public function update(Request $request, Course $course): RedirectResponse
     {
         $payload = $this->validateCourse($request);
+        unset($payload['thumbnail_file']);
         $payload['status'] = (bool) ($payload['status'] ?? false);
         $payload['accent_color'] = $payload['accent_color'] ?? '#f97316';
         $payload['age_group'] = Course::AGE_GROUP_5_TO_17;
+
+        if ($request->hasFile('thumbnail_file')) {
+            $this->deleteStoredFile($course->thumbnail);
+            $payload['thumbnail'] = $request->file('thumbnail_file')->store('course/thumbnails', 'public');
+        }
 
         $course->update($payload);
 
@@ -113,6 +125,7 @@ class CourseController extends Controller
 
     public function destroy(Course $course): RedirectResponse
     {
+        $this->deleteStoredFile($course->thumbnail);
         $course->delete();
 
         return to_route('admin.courses.index')->with('success', 'تم حذف الكورس بنجاح.');
@@ -126,6 +139,7 @@ class CourseController extends Controller
             'short_description' => ['required', 'string'],
             'learning_outcome' => ['nullable', 'string', 'max:255'],
             'thumbnail' => ['nullable', 'string', 'max:255'],
+            'thumbnail_file' => ['nullable', 'image', 'max:5120'],
             'price' => ['nullable', 'numeric', 'min:0'],
             'total_duration_minutes' => ['nullable', 'integer', 'min:0'],
             'duration_months' => ['required', 'integer', 'min:1', 'max:60'],
@@ -149,5 +163,18 @@ class CourseController extends Controller
             ->orderBy('name')
             ->get(['id', 'name'])
             ->toArray();
+    }
+
+    private function deleteStoredFile(?string $value): void
+    {
+        if ($value === null || $value === '') {
+            return;
+        }
+
+        if (str_starts_with($value, '/') || str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return;
+        }
+
+        Storage::disk('public')->delete($value);
     }
 }

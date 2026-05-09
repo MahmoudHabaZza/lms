@@ -1,4 +1,5 @@
 import InputError from '@/components/input-error';
+import { useFilePreview } from '@/hooks/use-file-preview';
 import type { FormEvent } from 'react';
 
 export type CourseFormData = {
@@ -7,6 +8,7 @@ export type CourseFormData = {
     short_description: string;
     learning_outcome: string;
     thumbnail: string;
+    thumbnail_file: File | null;
     price: number | null;
     total_duration_minutes: number | null;
     duration_months: number;
@@ -18,6 +20,7 @@ export type CourseFormData = {
     status: boolean;
     instructor_id: number | null;
     category_id: number | null;
+    _method?: 'put';
 };
 
 type CourseFormProps = {
@@ -41,7 +44,8 @@ export default function CourseForm({
     submitLabel,
     onSubmit,
 }: CourseFormProps) {
-    const thumbnailPreview = data.thumbnail.startsWith('http') || data.thumbnail.startsWith('/') ? data.thumbnail : null;
+    const uploadedThumbnailPreview = useFilePreview(data.thumbnail_file);
+    const thumbnailPreview = uploadedThumbnailPreview || (data.thumbnail.startsWith('http') || data.thumbnail.startsWith('/') ? data.thumbnail : null);
 
     return (
         <form onSubmit={onSubmit} className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
@@ -103,9 +107,9 @@ export default function CourseForm({
 
                     <div className="mt-5 space-y-5">
                         <div>
-                            <label htmlFor="thumbnail" className="mb-2 block text-right text-sm font-semibold text-slate-700">رابط أو مسار الصورة</label>
-                            <input id="thumbnail" type="text" dir="ltr" value={data.thumbnail} onChange={(event) => setData('thumbnail', event.target.value)} className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100" />
-                            <InputError message={errors.thumbnail} className="mt-2" />
+                            <label htmlFor="thumbnail_file" className="mb-2 block text-right text-sm font-semibold text-slate-700">رفع صورة الكورس</label>
+                            <input id="thumbnail_file" type="file" accept="image/*" onChange={(event) => setData('thumbnail_file', event.target.files?.[0] ?? null)} className="w-full rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm" />
+                            <InputError message={errors.thumbnail_file} className="mt-2" />
                         </div>
 
                         <div className="grid gap-5 sm:grid-cols-2">

@@ -17,6 +17,7 @@ export default function CoursesCreate({ categories }: Props) {
         short_description: '',
         learning_outcome: '',
         thumbnail: '',
+        thumbnail_file: null,
         price: 0,
         total_duration_minutes: 0,
         duration_months: 3,
@@ -32,7 +33,7 @@ export default function CoursesCreate({ categories }: Props) {
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        post('/admin/courses');
+        post('/admin/courses', { forceFormData: true });
     };
 
     return (

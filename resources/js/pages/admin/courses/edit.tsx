@@ -12,12 +12,13 @@ export default function CoursesEdit({ course, categories }: Props) {
     const page = usePage<{ settings?: { primary_color?: string } }>();
     const primaryColor = page.props.settings?.primary_color?.trim() ?? '';
 
-    const { data, setData, put, processing, errors } = useForm<CourseFormData>({
+    const { data, setData, post, processing, errors } = useForm<CourseFormData>({
         title: course.title ?? '',
         description: course.description ?? '',
         short_description: course.short_description ?? '',
         learning_outcome: course.learning_outcome ?? '',
         thumbnail: course.thumbnail ?? '',
+        thumbnail_file: null,
         price: course.price ?? 0,
         total_duration_minutes: course.total_duration_minutes ?? 0,
         duration_months: course.duration_months ?? 3,
@@ -29,11 +30,12 @@ export default function CoursesEdit({ course, categories }: Props) {
         status: course.status ?? true,
         instructor_id: course.instructor_id ?? null,
         category_id: course.category_id ?? null,
+        _method: 'put',
     });
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        put(`/admin/courses/${course.id}`);
+        post(`/admin/courses/${course.id}`, { forceFormData: true });
     };
 
     return (

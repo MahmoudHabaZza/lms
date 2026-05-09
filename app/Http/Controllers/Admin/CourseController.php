@@ -23,7 +23,7 @@ class CourseController extends Controller
             ->withQueryString()
             ->through(fn (Course $course) => [
                 'id' => $course->id,
-                'thumbnail' => $course->thumbnail,
+                'thumbnail' => $this->resolveMediaUrl($course->thumbnail),
                 'title' => $course->title,
                 'short_description' => $course->short_description,
                 'price' => $course->price,
@@ -163,6 +163,19 @@ class CourseController extends Controller
             ->orderBy('name')
             ->get(['id', 'name'])
             ->toArray();
+    }
+
+    private function resolveMediaUrl(?string $value): ?string
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://') || str_starts_with($value, '/')) {
+            return $value;
+        }
+
+        return Storage::disk('public')->url($value);
     }
 
     private function deleteStoredFile(?string $value): void

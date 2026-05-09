@@ -129,12 +129,23 @@ export default function ExploreMoreSection({
                                     className="explore-reel-card group relative shrink-0 text-right"
                                     style={{ animationDelay: `${index * 0.08}s` }}
                                 >
-                                    <div className="explore-reel-media relative h-[350px] w-[280px] overflow-hidden rounded-[28px] border border-white/60 bg-slate-900 shadow-[0_24px_45px_-34px_rgba(15,23,42,.95)]">
+                                    <div
+                                        className="explore-reel-media relative h-[350px] w-[280px] overflow-hidden rounded-[28px] border border-white/60 bg-slate-900 shadow-[0_24px_45px_-34px_rgba(15,23,42,.95)]"
+                                        style={
+                                            reel.cover_image
+                                                ? {
+                                                      backgroundImage: `url("${reel.cover_image}")`,
+                                                      backgroundPosition: 'center',
+                                                      backgroundSize: 'cover',
+                                                  }
+                                                : undefined
+                                        }
+                                    >
                                         {reel.cover_image ? (
                                             <img
                                                 src={reel.cover_image}
                                                 alt={reel.student_name}
-                                                className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
+                                                className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
                                             />
                                         ) : (
                                             <div className="flex h-full w-full items-center justify-center bg-gradient-to-b from-slate-700 to-slate-900 text-4xl font-bold text-white">

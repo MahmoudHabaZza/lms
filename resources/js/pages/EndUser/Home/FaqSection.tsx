@@ -100,7 +100,7 @@ export default function FaqSection({ faqs = [] }: { faqs?: FaqItem[] }) {
                                                                     controls
                                                                     preload="metadata"
                                                                     playsInline
-                                                                    className="h-full w-full object-cover"
+                                                                    className="h-full w-full object-contain"
                                                                 />
                                                             </div>
                                                             <div className="explore-modal-info">

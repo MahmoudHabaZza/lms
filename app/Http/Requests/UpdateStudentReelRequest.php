@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\StudentReel;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -29,7 +28,6 @@ class UpdateStudentReelRequest extends FormRequest
             'student_age' => ['nullable', 'integer', 'min:4', 'max:20'],
             'cover_image' => ['nullable', 'string', 'max:255'],
             'cover_image_file' => ['nullable', 'image', 'max:5120'],
-            'video_source' => ['required', 'string', Rule::in(StudentReel::videoSources())],
             'video_file' => [
                 Rule::requiredIf(function (): bool {
                     $reel = $this->route('student_reel');

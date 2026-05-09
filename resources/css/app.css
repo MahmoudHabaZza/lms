@@ -1828,6 +1828,8 @@
 
 .explore-modal-overlay {
     animation: exploreFadeIn 0.24s ease-out;
+    align-items: flex-start;
+    overflow-y: auto;
 }
 
 .explore-modal-card {
@@ -1835,7 +1837,7 @@
     width: 340px;
     min-width: 340px;
     max-width: calc(100vw - 2rem);
-    max-height: calc(100svh - 2rem);
+    max-height: none;
     border-radius: 28px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     overflow: hidden;
@@ -1867,6 +1869,7 @@
         width: min(92vw, 340px);
         min-width: 0;
         height: auto;
+        max-height: none;
     }
 }
 
@@ -2377,7 +2380,7 @@
     .explore-modal-card {
         width: min(92vw, 340px);
         min-width: 0;
-        max-height: calc(100svh - 2rem);
+        max-height: none;
     }
 
     .explore-modal-video-wrap {

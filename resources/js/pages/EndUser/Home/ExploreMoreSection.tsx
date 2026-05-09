@@ -12,19 +12,6 @@ type StudentReel = {
     quote: string | null;
 };
 
-const fallbackReelCovers = {
-    boy: '/assets/EndUser/images/reels/reel-cover-02.png',
-    girl: '/assets/EndUser/images/reels/reel-cover-03.png',
-};
-
-const girlNamePattern = /(رهف|مايا|ريم|رنا|جنى|هنا|سارة|ملك|مريم|فاطمة|نور|والدة|أم|ام)/;
-
-function fallbackCoverFor(reel: StudentReel): string {
-    return girlNamePattern.test(reel.student_name)
-        ? fallbackReelCovers.girl
-        : fallbackReelCovers.boy;
-}
-
 export default function ExploreMoreSection({
     studentReels = [],
     className = '',
@@ -166,10 +153,12 @@ export default function ExploreMoreSection({
                             dir="ltr"
                         >
                             {normalizedReels.map((reel, index) => {
-                                const fallbackCover = fallbackCoverFor(reel);
                                 const coverImage = failedCoverIds.has(reel.id)
-                                    ? fallbackCover
-                                    : reel.cover_image || fallbackCover;
+                                    ? null
+                                    : reel.cover_image;
+                                const previewVideoUrl = reel.video_url
+                                    ? `${reel.video_url}#t=0.1`
+                                    : null;
 
                                 return (
                                     <button
@@ -201,13 +190,6 @@ export default function ExploreMoreSection({
                                                     alt={reel.student_name}
                                                     className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
                                                     onError={() => {
-                                                        if (
-                                                            coverImage ===
-                                                            fallbackCover
-                                                        ) {
-                                                            return;
-                                                        }
-
                                                         setFailedCoverIds(
                                                             (current) => {
                                                                 const next =
@@ -222,6 +204,14 @@ export default function ExploreMoreSection({
                                                             },
                                                         );
                                                     }}
+                                                />
+                                            ) : previewVideoUrl ? (
+                                                <video
+                                                    src={previewVideoUrl}
+                                                    muted
+                                                    playsInline
+                                                    preload="metadata"
+                                                    className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
                                                 />
                                             ) : (
                                                 <div className="flex h-full w-full items-center justify-center bg-gradient-to-b from-slate-700 to-slate-900 text-4xl font-bold text-white">

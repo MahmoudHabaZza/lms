@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Course;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -58,7 +57,6 @@ class CourseController extends Controller
     public function create(): Response
     {
         return Inertia::render('admin/courses/create', [
-            'instructors' => $this->instructors(),
             'categories' => $this->categories(),
         ]);
     }
@@ -97,7 +95,6 @@ class CourseController extends Controller
                 'instructor_id' => $course->instructor_id,
                 'category_id' => $course->category_id,
             ],
-            'instructors' => $this->instructors(),
             'categories' => $this->categories(),
         ]);
     }
@@ -139,20 +136,11 @@ class CourseController extends Controller
             'status' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'instructor_id' => [
-                'required',
+                'nullable',
                 Rule::exists('users', 'id')->where(fn ($query) => $query->where('role', 'instructor')),
             ],
             'category_id' => ['nullable', 'exists:categories,id'],
         ]);
-    }
-
-    private function instructors(): array
-    {
-        return User::query()
-            ->where('role', 'instructor')
-            ->orderBy('name')
-            ->get(['id', 'name'])
-            ->toArray();
     }
 
     private function categories(): array

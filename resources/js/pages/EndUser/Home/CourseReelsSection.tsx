@@ -123,7 +123,7 @@ export default function CourseReelsSection({
                                     style={{ animationDelay: `${index * 0.08}s` }}
                                 >
                                     <div
-                                        className="relative h-[360px] w-[270px] overflow-hidden rounded-[28px] border border-orange-200/40 shadow-[0_20px_40px_-18px_rgba(15,23,42,0.8)] transition hover:shadow-[0_25px_45px_-15px_rgba(15,23,42,0.9)]"
+                                        className="course-reel-media relative h-[360px] w-[270px] overflow-hidden rounded-[28px] border border-orange-200/40 shadow-[0_20px_40px_-18px_rgba(15,23,42,0.8)] transition hover:shadow-[0_25px_45px_-15px_rgba(15,23,42,0.9)]"
                                         style={{ backgroundImage: `url('${reel.reel_instructor_image || reel.reel_cover_image || ''}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
                                     >
                                         <div className="absolute inset-0 bg-gradient-to-t from-[#0e192dce] via-[#0f172a9f] to-transparent" />
@@ -204,7 +204,7 @@ export default function CourseReelsSection({
                                 loop
                                 preload="metadata"
                                 playsInline
-                                className="h-full w-full object-cover"
+                                className="h-full w-full object-contain"
                                 ref={(el) => {
                                     if (el) {
                                         el.muted = false;

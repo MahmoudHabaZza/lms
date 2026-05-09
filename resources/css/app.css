@@ -1834,6 +1834,8 @@
     animation: exploreZoomIn 0.35s ease-out;
     width: 340px;
     min-width: 340px;
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100svh - 2rem);
     border-radius: 28px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     overflow: hidden;
@@ -1848,12 +1850,13 @@
 .explore-modal-video-wrap {
     width: 340px;
     height: 520px;
+    aspect-ratio: 340 / 520;
     position: relative;
     background: #000;
 }
 
 .explore-modal-info {
-    width: 280px;
+    width: 100%;
     min-height: 110px;
     padding: 10px 12px;
     background: #0f172a;
@@ -1861,19 +1864,9 @@
 
 @media (max-width: 768px) {
     .explore-modal-card {
-        width: min(90vw, 280px);
-    }
-
-    .explore-modal-video-wrap,
-    .explore-modal-info {
-        width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    .explore-modal-card {
-        width: min(90vw, 280px);
-        height: min(90vh, 350px);
+        width: min(92vw, 340px);
+        min-width: 0;
+        height: auto;
     }
 }
 
@@ -2369,20 +2362,29 @@
         scroll-snap-align: center;
     }
 
+    .course-reel-media,
+    .explore-reel-media {
+        width: min(82vw, 340px) !important;
+        height: auto !important;
+        aspect-ratio: 9 / 16;
+    }
+
     .feedback-gallery-media {
         width: 260px !important;
         height: 380px !important;
     }
 
     .explore-modal-card {
-        width: min(92vw, 320px);
+        width: min(92vw, 340px);
         min-width: 0;
         max-height: calc(100svh - 2rem);
     }
 
     .explore-modal-video-wrap {
         width: 100%;
-        height: min(58vh, 460px);
+        height: min(163.5vw, 604px, calc(100svh - 8rem));
+        aspect-ratio: 9 / 16;
+        max-height: calc(100svh - 8rem);
     }
 
     .explore-modal-info {

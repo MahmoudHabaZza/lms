@@ -5,11 +5,10 @@ import CourseForm, { type CourseFormData } from './course-form';
 
 type Props = {
     course: CourseFormData & { id: number };
-    instructors: { id: number; name: string }[];
     categories: { id: number; name: string }[];
 };
 
-export default function CoursesEdit({ course, instructors, categories }: Props) {
+export default function CoursesEdit({ course, categories }: Props) {
     const page = usePage<{ settings?: { primary_color?: string } }>();
     const primaryColor = page.props.settings?.primary_color?.trim() ?? '';
 
@@ -54,7 +53,6 @@ export default function CoursesEdit({ course, instructors, categories }: Props) 
                     data={data}
                     setData={setData}
                     errors={errors}
-                    instructors={instructors}
                     categories={categories}
                     processing={processing}
                     submitLabel="حفظ التعديلات"

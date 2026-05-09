@@ -4,11 +4,10 @@ import AdminLayout from '../layouts/admin-layout';
 import CourseForm, { type CourseFormData } from './course-form';
 
 type Props = {
-    instructors: { id: number; name: string }[];
     categories: { id: number; name: string }[];
 };
 
-export default function CoursesCreate({ instructors, categories }: Props) {
+export default function CoursesCreate({ categories }: Props) {
     const page = usePage<{ settings?: { primary_color?: string } }>();
     const primaryColor = page.props.settings?.primary_color?.trim() ?? '';
 
@@ -27,7 +26,7 @@ export default function CoursesCreate({ instructors, categories }: Props) {
         accent_color: primaryColor,
         sort_order: 0,
         status: true,
-        instructor_id: instructors[0]?.id ?? null,
+        instructor_id: null,
         category_id: null,
     });
 
@@ -53,7 +52,6 @@ export default function CoursesCreate({ instructors, categories }: Props) {
                     data={data}
                     setData={setData}
                     errors={errors}
-                    instructors={instructors}
                     categories={categories}
                     processing={processing}
                     submitLabel="حفظ الكورس"

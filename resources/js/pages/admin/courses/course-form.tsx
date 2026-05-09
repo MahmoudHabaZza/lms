@@ -24,7 +24,6 @@ type CourseFormProps = {
     data: CourseFormData;
     setData: <K extends keyof CourseFormData>(key: K, value: CourseFormData[K]) => void;
     errors: Partial<Record<keyof CourseFormData, string>>;
-    instructors: { id: number; name: string }[];
     categories: { id: number; name: string }[];
     processing: boolean;
     submitLabel: string;
@@ -37,7 +36,6 @@ export default function CourseForm({
     data,
     setData,
     errors,
-    instructors,
     categories,
     processing,
     submitLabel,
@@ -84,28 +82,15 @@ export default function CourseForm({
                     <InputError message={errors.learning_outcome} className="mt-2" />
                 </div>
 
-                <div className="grid gap-5 sm:grid-cols-2">
-                    <div>
-                        <label htmlFor="instructor_id" className="mb-2 block text-right text-sm font-semibold text-slate-700">المدرب</label>
-                        <select id="instructor_id" value={data.instructor_id ?? ''} onChange={(event) => setData('instructor_id', event.target.value ? Number(event.target.value) : null)} className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-right outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100">
-                            <option value="">بدون مدرب</option>
-                            {instructors.map((instructor) => (
-                                <option key={instructor.id} value={instructor.id}>{instructor.name}</option>
-                            ))}
-                        </select>
-                        <InputError message={errors.instructor_id} className="mt-2" />
-                    </div>
-
-                    <div>
-                        <label htmlFor="category_id" className="mb-2 block text-right text-sm font-semibold text-slate-700">التصنيف</label>
-                        <select id="category_id" value={data.category_id ?? ''} onChange={(event) => setData('category_id', event.target.value ? Number(event.target.value) : null)} className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-right outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100">
-                            <option value="">بدون تصنيف</option>
-                            {categories.map((category) => (
-                                <option key={category.id} value={category.id}>{category.name}</option>
-                            ))}
-                        </select>
-                        <InputError message={errors.category_id} className="mt-2" />
-                    </div>
+                <div>
+                    <label htmlFor="category_id" className="mb-2 block text-right text-sm font-semibold text-slate-700">التصنيف</label>
+                    <select id="category_id" value={data.category_id ?? ''} onChange={(event) => setData('category_id', event.target.value ? Number(event.target.value) : null)} className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-right outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100">
+                        <option value="">بدون تصنيف</option>
+                        {categories.map((category) => (
+                            <option key={category.id} value={category.id}>{category.name}</option>
+                        ))}
+                    </select>
+                    <InputError message={errors.category_id} className="mt-2" />
                 </div>
             </div>
 

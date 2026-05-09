@@ -72,7 +72,7 @@ class StudentReelController extends Controller
         $payload['video_source'] = StudentReel::VIDEO_SOURCE_UPLOAD;
 
         if ($request->hasFile('cover_image_file')) {
-            $this->deleteStoredFile($studentReel->cover_image);
+            $this->deleteStoredFile($studentReel->cover_image, $studentReel->id);
             $payload['cover_image'] = $request->file('cover_image_file')->store('feedback/reels/covers', 'public');
         }
 
@@ -90,7 +90,7 @@ class StudentReelController extends Controller
 
     public function destroy(StudentReel $studentReel): RedirectResponse
     {
-        $this->deleteStoredFile($studentReel->cover_image);
+        $this->deleteStoredFile($studentReel->cover_image, $studentReel->id);
         $this->deleteStoredFile($studentReel->video_path);
 
         $studentReel->delete();
@@ -131,13 +131,23 @@ class StudentReelController extends Controller
         return Storage::disk('public')->url($value);
     }
 
-    private function deleteStoredFile(?string $value): void
+    private function deleteStoredFile(?string $value, ?int $exceptReelId = null): void
     {
         if ($value === null || $value === '') {
             return;
         }
 
         if (str_starts_with($value, '/') || str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return;
+        }
+
+        if (
+            $exceptReelId !== null
+            && StudentReel::query()
+                ->where('cover_image', $value)
+                ->whereKeyNot($exceptReelId)
+                ->exists()
+        ) {
             return;
         }
 

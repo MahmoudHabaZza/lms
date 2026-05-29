@@ -14,14 +14,17 @@ import {
     Images,
     Layers3,
     LayoutDashboard,
+    LogOut,
     Mail,
     Map,
+    Menu,
     Rocket,
     Settings,
     Shield,
     ShieldCheck,
     Users,
     Wand2,
+    X,
 } from 'lucide-react';
 import {
     useEffect,

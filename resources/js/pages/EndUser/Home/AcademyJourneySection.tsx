@@ -243,13 +243,25 @@ export default function AcademyJourneySection({ journeyPoints = [] }: AcademyJou
                                 const isActive = activePoint === index;
                                 const row = Math.floor(index / 2);
                                 const col = index % 2;
-                                const isDeepBranch = layout.nodeY > treeBranchStartY + 150;
-                                const baseControl = treeRoot.x + (layout.nodeX - treeRoot.x) * 0.35;
-                                const sideOffset = (col === 0 ? -1 : 1) * (60 + Math.max(0, row - 1) * 50);
-                                const controlX = baseControl + sideOffset;
-                                let controlY = isDeepBranch
-                                    ? treeBranchStartY + 66 + Math.max(0, row - 1) * 70
-                                    : treeBranchStartY - 28;
+                                const dx = layout.nodeX - treeRoot.x;
+                                const dy = layout.nodeY - treeBranchStartY;
+                                const len = Math.sqrt(dx * dx + dy * dy) || 1;
+                                let px, py;
+                                if (dx < 0) {
+                                    px = -dy / len;
+                                    py = dx / len;
+                                } else if (dx > 0) {
+                                    px = dy / len;
+                                    py = -dx / len;
+                                } else {
+                                    px = 0;
+                                    py = 1;
+                                }
+                                const push = 30 + row * 24;
+                                const mx = (treeRoot.x + layout.nodeX) / 2;
+                                const my = (treeBranchStartY + layout.nodeY) / 2;
+                                const controlX = mx + px * push;
+                                const controlY = my + py * push;
                                 const cardAnchorX = layout.cardLeft + layout.cardWidth + 3;
                                 const cardAnchorY = layout.cardTop + 38;
                                 const cardControlX1 = cardAnchorX - 42;

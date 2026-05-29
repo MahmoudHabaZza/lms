@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Auth\AdminAuthenticatedSessionController;
 use App\Http\Controllers\Admin\BannerSlideController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AcademyJourneyPointController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ProgrammingCourseController;
 use App\Http\Controllers\Admin\SettingController;
@@ -84,6 +85,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
     Route::post('logout', [AdminAuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::resource('banner-slides', BannerSlideController::class)->middleware('has_permission:manage-banner-slides')->except('show');
     Route::resource('academy-sections', AcademySectionController::class)->middleware('has_permission:manage-academy-sections')->except('show');
+    Route::resource('academy-journey-points', AcademyJourneyPointController::class)->middleware('has_permission:manage-academy-journey-points')->except('show');
     Route::get('programming-courses', [ProgrammingCourseController::class, 'index'])->middleware('has_permission:manage-programming-courses')->name('programming-courses.index');
     Route::get('programming-courses/create', [ProgrammingCourseController::class, 'create'])->middleware('has_permission:manage-programming-courses')->name('programming-courses.create');
     Route::get('programming-courses/{programmingCourse}/edit', [ProgrammingCourseController::class, 'edit'])->middleware('has_permission:manage-programming-courses')->name('programming-courses.edit');

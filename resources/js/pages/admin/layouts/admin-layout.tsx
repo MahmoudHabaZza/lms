@@ -15,6 +15,7 @@ import {
     Layers3,
     LogOut,
     Mail,
+    Map,
     Menu,
     Rocket,
     Settings,
@@ -109,6 +110,11 @@ const navSections: NavSection[] = [
                 icon: Images,
             },
             { title: 'الأسئلة الشائعة', href: '/admin/faqs', icon: CircleHelp },
+            {
+                title: 'رحلة الأكاديمية',
+                href: '/admin/academy-journey-points',
+                icon: Map,
+            },
         ],
     },
     {

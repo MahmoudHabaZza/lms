@@ -73,6 +73,15 @@ type FaqItem = {
     video_cover_image: string | null;
 };
 
+type JourneyPoint = {
+    id: number;
+    title: string;
+    subtitle: string;
+    icon: string;
+    bubble_color: string;
+    bubble_style: string;
+};
+
 type HomeProps = {
     bannerSlides?: BannerSlide[];
     academySection?: AcademySection | null;
@@ -82,6 +91,7 @@ type HomeProps = {
     topStudents?: TopStudent[];
     studentFeedbackImages?: StudentFeedbackImage[];
     faqs?: FaqItem[];
+    journeyPoints?: JourneyPoint[];
 };
 
 export default function Home({
@@ -93,6 +103,7 @@ export default function Home({
     topStudents = [],
     studentFeedbackImages = [],
     faqs = [],
+    journeyPoints = [],
 }: HomeProps) {
     const { settings } = usePage<{ settings?: Record<string, string | null> }>().props;
     const homeIntroSubtitle = settings?.home_intro_subtitle || 'أكاديمية برمجة للأطفال والناشئين';
@@ -103,7 +114,7 @@ export default function Home({
 
             <div>
                 <SectionThree slides={bannerSlides} staticSection={academySection} />
-                <AcademyJourneySection />
+                <AcademyJourneySection journeyPoints={journeyPoints} />
                 <ProgrammingTrackSection courses={courses} />
                 <CourseReelsSection courseReels={courseReels} className="!pb-0 !sm:pb-0" />
 

@@ -28,6 +28,7 @@ class ArabicSeedSupport
             ['name' => 'Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„ØªØ³Ø¬ÙŠÙ„Ø§Øª', 'slug' => 'manage-enrollments'],
             ['name' => 'Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª', 'slug' => 'manage-settings'],
             ['name' => 'Ø¹Ø±Ø¶ Ø§Ù„ØªØ­Ù„ÙŠÙ„Ø§Øª', 'slug' => 'view-analytics'],
+            ['name' => 'Ø¥Ø¯Ø§Ø±Ø© Ù†Ù‚Ø§Ø· Ø±Ø­Ù„Ø© Ø§Ù„Ø£ÙƒØ§Ø¯ÙŠÙ…ÙŠØ©', 'slug' => 'manage-academy-journey-points'],
         ];
     }
 

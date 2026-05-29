@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             LearningCatalogSeeder::class,
             ProgrammingShowcaseSeeder::class,
             TopStudentsSeeder::class,
+            AcademyJourneyPointSeeder::class,
             LearningActivitySeeder::class,
             AssessmentAndNotificationsSeeder::class,
         ]);

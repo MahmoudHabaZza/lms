@@ -1,77 +1,84 @@
 import {
     BadgeCheck,
-    Laptop,
     Code2,
+    Laptop,
     Rocket,
     Trophy,
     Users,
     UserRoundCheck,
+    GraduationCap,
+    BookOpen,
+    Award,
 } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, type ElementType } from 'react';
 
 type JourneyPoint = {
+    id: number;
     title: string;
     subtitle: string;
-    icon: typeof Users;
-    bubble: string;
-    color: string;
+    icon: string;
+    bubble_color: string;
+    bubble_style: string;
 };
 
-const journeyPoints: JourneyPoint[] = [
-    {
-        title: 'سيشن أونلاين تفاعلية',
-        subtitle: 'تعلم حي بخطوات عملية',
-        icon: Users,
-        bubble: 'border-sky-500 bg-white text-sky-600',
-        color: '#1d9bf0',
-    },
-    {
-        title: '4 أطفال في الجروب',
-        subtitle: 'مجموعات صغيرة بمتابعة أدق',
-        icon: UserRoundCheck,
-        bubble: 'border-emerald-500 bg-white text-emerald-600',
-        color: '#10b981',
-    },
-    {
-        title: 'شهادة معتمدة',
-        subtitle: 'إنجاز رسمي بعد كل مستوى',
-        icon: BadgeCheck,
-        bubble: 'border-orange-500 bg-white text-orange-500',
-        color: 'var(--site-primary-color)',
-    },
-    {
-        title: 'حساب خاص لمتابعة أداء الأبناء',
-        subtitle: 'لوحة واضحة لولي الأمر',
-        icon: Trophy,
-        bubble: 'border-rose-600 bg-white text-rose-600',
-        color: '#e11d70',
-    },
-    {
-        title: 'مشاريع وتحديات تطبيقية',
-        subtitle: 'كل مستوى ينتهي بإنجاز ممتع',
-        icon: Code2,
-        bubble: 'border-amber-500 bg-white text-amber-600',
-        color: 'var(--site-primary-500)',
-    },
-];
+const iconMap: Record<string, ElementType> = {
+    Users,
+    UserRoundCheck,
+    BadgeCheck,
+    Trophy,
+    Code2,
+    Rocket,
+    Laptop,
+    GraduationCap,
+    BookOpen,
+    Award,
+};
+
+function resolveIcon(iconName: string): ElementType {
+    return iconMap[iconName] || Rocket;
+}
+
+function parseBubbleStyle(bubbleStyle: string): { border: string; bg: string; text: string } {
+    const parts = bubbleStyle.split(' ');
+    return {
+        border: parts.find((p) => p.startsWith('border-')) || 'border-sky-500',
+        bg: parts.find((p) => p.startsWith('bg-')) || 'bg-white',
+        text: parts.find((p) => p.startsWith('text-')) || 'text-sky-600',
+    };
+}
+
+type AcademyJourneySectionProps = {
+    journeyPoints: JourneyPoint[];
+};
 
 const treeRoot = { x: 640, y: 68 };
 const treeBranchStartY = 68;
 
-const desktopTreeLayout = [
-    { cardTop: 110, cardLeft: 42, cardWidth: 410, nodeX: 332, nodeY: 168 },
-    { cardTop: 110, cardLeft: 828, cardWidth: 410, nodeX: 948, nodeY: 168 },
-    { cardTop: 246, cardLeft: 22, cardWidth: 430, nodeX: 252, nodeY: 278 },
-    { cardTop: 246, cardLeft: 824, cardWidth: 430, nodeX: 1028, nodeY: 278 },
-    { cardTop: 380, cardLeft: 442, cardWidth: 396, nodeX: 640, nodeY: 382 },
-];
-
-export default function AcademyJourneySection() {
+export default function AcademyJourneySection({ journeyPoints = [] }: AcademyJourneySectionProps) {
     const { settings } = usePage<any>().props;
     const [activePoint, setActivePoint] = useState(0);
     const journeyTitle = settings?.home_journey_title?.trim() || 'رحلة في عالم كيد كودر';
     const journeySubtitle = settings?.home_journey_subtitle?.trim() || 'تجربة تعليمية عملية بتصميم متابعة ذكي وممتع';
+
+    if (journeyPoints.length === 0) {
+        return null;
+    }
+
+    const desktopTreeLayout = journeyPoints.map((_, index) => {
+        const cols = Math.min(journeyPoints.length, 5);
+        const totalWidth = 1280;
+        const cardWidth = Math.min(430, Math.max(350, (totalWidth - 80) / cols));
+        const gapX = (totalWidth - cardWidth * cols) / (cols + 1);
+        const row = Math.floor(index / cols);
+        const col = index % cols;
+        const cardLeft = gapX + col * (cardWidth + gapX);
+        const cardTop = 110 + row * 136;
+        const nodeX = cardLeft + cardWidth / 2 + (col < cols / 2 ? 24 : -24);
+        const nodeY = cardTop + 38;
+
+        return { cardTop, cardLeft, cardWidth, nodeX, nodeY };
+    });
 
     return (
         <div className="flex flex-col">
@@ -118,12 +125,12 @@ export default function AcademyJourneySection() {
 
                         <div className="space-y-4">
                         {journeyPoints.map((point, index) => {
-                            const Icon = point.icon;
+                            const Icon = resolveIcon(point.icon);
                             const isActive = activePoint === index;
                             const branchLeft = index % 2 === 0;
 
                             return (
-                                <div key={point.title} className="relative min-h-[110px]">
+                                <div key={point.id} className="relative min-h-[110px]">
                                     <div
                                         className={`pointer-events-none absolute top-1/2 h-[2px] -translate-y-1/2 ${
                                             branchLeft
@@ -131,14 +138,14 @@ export default function AcademyJourneySection() {
                                                 : 'left-[22%] right-1/2'
                                         }`}
                                         style={{
-                                            backgroundColor: point.color,
+                                            backgroundColor: point.bubble_color,
                                             opacity: isActive ? 0.55 : 0.28,
                                         }}
                                     />
 
                                     <span
                                         className="pointer-events-none absolute left-1/2 top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_6px_rgba(255,255,255,0.45)]"
-                                        style={{ backgroundColor: point.color }}
+                                        style={{ backgroundColor: point.bubble_color }}
                                     />
 
                                     <button
@@ -172,7 +179,7 @@ export default function AcademyJourneySection() {
                                             </span>
                                         </span>
                                         <span
-                                            className={`absolute top-1/2 inline-flex shrink-0 items-center justify-center rounded-full border-[4px] ${point.bubble} -translate-y-1/2 transform-gpu transition-all duration-300 ease-out ${
+                                            className={`absolute top-1/2 inline-flex shrink-0 items-center justify-center rounded-full border-[4px] ${point.bubble_style} -translate-y-1/2 transform-gpu transition-all duration-300 ease-out ${
                                                 isActive
                                                     ? 'h-12 w-12'
                                                     : 'h-10 w-10'
@@ -220,7 +227,6 @@ export default function AcademyJourneySection() {
                             {journeyPoints.map((point, index) => {
                                 const layout = desktopTreeLayout[index];
                                 const isActive = activePoint === index;
-                                // push lower-left and lower-right branches further out to avoid crossing other branches
                                 const baseControl = treeRoot.x + (layout.nodeX - treeRoot.x) * 0.35;
                                 const sideOffset = index === 2 ? -80 : index === 3 ? 80 : (index - 2) * 24;
                                 const controlX = baseControl + sideOffset;
@@ -228,7 +234,6 @@ export default function AcademyJourneySection() {
                                     layout.nodeY > treeBranchStartY + 150
                                         ? treeBranchStartY + 66
                                         : treeBranchStartY - 28;
-                                // if this is branch 3 or 4 (index 2 or 3), push control point downward
                                 if (index === 2 || index === 3) {
                                     controlY = controlY + 140;
                                 }
@@ -241,10 +246,10 @@ export default function AcademyJourneySection() {
                                     (layout.nodeY > cardAnchorY ? 13 : -13);
 
                                 return (
-                                    <g key={`tree-path-${point.title}`}>
+                                    <g key={`tree-path-${point.id}`}>
                                         <path
                                             d={`M${cardAnchorX} ${cardAnchorY} C ${cardControlX1} ${cardAnchorY} ${cardControlX2} ${cardControlY} ${layout.nodeX} ${layout.nodeY}`}
-                                            stroke={point.color}
+                                            stroke={point.bubble_color}
                                             strokeWidth={isActive ? 2 : 1.5}
                                             opacity={isActive ? 0.72 : 0.4}
                                             strokeLinecap="round"
@@ -252,7 +257,7 @@ export default function AcademyJourneySection() {
                                         />
                                         <path
                                             d={`M${treeRoot.x} ${treeBranchStartY} Q ${controlX} ${controlY} ${layout.nodeX} ${layout.nodeY}`}
-                                            stroke={point.color}
+                                            stroke={point.bubble_color}
                                             strokeWidth={isActive ? 3.1 : 2.2}
                                             opacity={isActive ? 0.96 : 0.76}
                                             strokeLinecap="round"
@@ -262,7 +267,7 @@ export default function AcademyJourneySection() {
                                             cx={layout.nodeX}
                                             cy={layout.nodeY}
                                             r={isActive ? 7.4 : 6.3}
-                                            fill={point.color}
+                                            fill={point.bubble_color}
                                             opacity={0.95}
                                             style={{ transition: 'r 180ms ease' }}
                                         />
@@ -270,7 +275,7 @@ export default function AcademyJourneySection() {
                                             cx={layout.nodeX}
                                             cy={layout.nodeY}
                                             r={isActive ? 12.8 : 10.8}
-                                            stroke={point.color}
+                                            stroke={point.bubble_color}
                                             strokeWidth="1.4"
                                             opacity={isActive ? 0.35 : 0.22}
                                             style={{ transition: 'r 180ms ease, opacity 180ms ease' }}
@@ -297,13 +302,13 @@ export default function AcademyJourneySection() {
                             </div>
 
                             {journeyPoints.map((point, index) => {
-                                const Icon = point.icon;
+                                const Icon = resolveIcon(point.icon);
                                 const isActive = activePoint === index;
                                 const layout = desktopTreeLayout[index];
 
                                 return (
                                         <button
-                                        key={point.title}
+                                        key={point.id}
                                         type="button"
                                         onMouseEnter={() => setActivePoint(index)}
                                         onFocus={() => setActivePoint(index)}
@@ -331,7 +336,7 @@ export default function AcademyJourneySection() {
                                         </span>
 
                                         <span
-                                            className={`absolute ${isActive ? '-right-10' : '-right-8'} top-1/2 inline-flex ${isActive ? 'h-[64px] w-[64px]' : 'h-[46px] w-[46px]'} -translate-y-1/2 items-center justify-center rounded-full border-[6px] ${point.bubble} transform-gpu transition-all duration-300 ease-out`}
+                                            className={`absolute ${isActive ? '-right-10' : '-right-8'} top-1/2 inline-flex ${isActive ? 'h-[64px] w-[64px]' : 'h-[46px] w-[46px]'} -translate-y-1/2 items-center justify-center rounded-full border-[6px] ${point.bubble_style} transform-gpu transition-all duration-300 ease-out`}
                                             style={{
                                                 boxShadow: isActive
                                                     ? '0 16px 36px -20px rgba(15,23,42,0.88)'

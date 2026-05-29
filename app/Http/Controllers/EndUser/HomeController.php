@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\EndUser;
 
 use App\Http\Controllers\Controller;
+use App\Models\AcademyJourneyPoint;
 use App\Models\AcademySection;
 use App\Models\BannerSlide;
 use App\Models\Course;
@@ -221,9 +222,16 @@ class HomeController extends Controller
                 ->values();
         }
 
+        $journeyPoints = AcademyJourneyPoint::query()
+            ->where('status', true)
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get(['id', 'title', 'subtitle', 'icon', 'bubble_color', 'bubble_style']);
+
         return [
             'bannerSlides' => $slides,
             'academySection' => $academySection,
+            'journeyPoints' => $journeyPoints,
             'courses' => $courses,
             'studentReels' => $studentReels,
             'courseReels' => $courseReels,

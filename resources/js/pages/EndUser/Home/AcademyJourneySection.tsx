@@ -65,16 +65,30 @@ export default function AcademyJourneySection({ journeyPoints = [] }: AcademyJou
         return null;
     }
 
+    const n = journeyPoints.length;
+    const numRows = Math.ceil(n / 2);
+    const rowHeight = 134;
+    const svgViewBoxHeight = Math.max(500, 110 + numRows * rowHeight + 60);
+
     const desktopTreeLayout = journeyPoints.map((_, index) => {
-        const cols = Math.min(journeyPoints.length, 5);
-        const totalWidth = 1280;
-        const cardWidth = Math.min(430, Math.max(350, (totalWidth - 80) / cols));
-        const gapX = (totalWidth - cardWidth * cols) / (cols + 1);
-        const row = Math.floor(index / cols);
-        const col = index % cols;
-        const cardLeft = gapX + col * (cardWidth + gapX);
-        const cardTop = 110 + row * 136;
-        const nodeX = cardLeft + cardWidth / 2 + (col < cols / 2 ? 24 : -24);
+        const row = Math.floor(index / 2);
+        const col = index % 2;
+        const isLastCentered = index === n - 1 && n % 2 === 1;
+
+        const cardWidth = isLastCentered ? 396 : 410;
+        const cardTop = 110 + row * rowHeight;
+
+        let cardLeft;
+        if (isLastCentered) {
+            cardLeft = (1280 - cardWidth) / 2;
+        } else {
+            const spread = Math.min(row, 2) * 16;
+            cardLeft = col === 0
+                ? Math.max(6, 42 - spread)
+                : Math.min(864, 828 + spread);
+        }
+
+        const nodeX = cardLeft + cardWidth / 2 + (col === 0 ? 24 : -24);
         const nodeY = cardTop + 38;
 
         return { cardTop, cardLeft, cardWidth, nodeX, nodeY };
@@ -200,9 +214,9 @@ export default function AcademyJourneySection({ journeyPoints = [] }: AcademyJou
                         </div>
                     </div>
 
-                    <div className="relative mt-1 hidden h-[540px] lg:block" dir="ltr">
+                    <div className="relative mt-1 hidden lg:block" dir="ltr" style={{ height: svgViewBoxHeight }}>
                         <svg
-                            viewBox="0 0 1280 540"
+                            viewBox={`0 0 1280 ${svgViewBoxHeight}`}
                             className="pointer-events-none absolute inset-0 h-full w-full"
                             fill="none"
                             aria-hidden="true"
@@ -216,9 +230,9 @@ export default function AcademyJourneySection({ journeyPoints = [] }: AcademyJou
                             />
                             <ellipse
                                 cx="640"
-                                cy="280"
+                                cy={svgViewBoxHeight * 0.52}
                                 rx="388"
-                                ry="180"
+                                ry={Math.min(180, svgViewBoxHeight * 0.35)}
                                 stroke="#a7b1c2"
                                 strokeDasharray="4 8"
                                 strokeWidth="1.25"
@@ -227,16 +241,15 @@ export default function AcademyJourneySection({ journeyPoints = [] }: AcademyJou
                             {journeyPoints.map((point, index) => {
                                 const layout = desktopTreeLayout[index];
                                 const isActive = activePoint === index;
+                                const row = Math.floor(index / 2);
+                                const col = index % 2;
+                                const isDeepBranch = layout.nodeY > treeBranchStartY + 150;
                                 const baseControl = treeRoot.x + (layout.nodeX - treeRoot.x) * 0.35;
-                                const sideOffset = index === 2 ? -80 : index === 3 ? 80 : (index - 2) * 24;
+                                const sideOffset = (col === 0 ? -1 : 1) * (60 + Math.max(0, row - 1) * 50);
                                 const controlX = baseControl + sideOffset;
-                                let controlY =
-                                    layout.nodeY > treeBranchStartY + 150
-                                        ? treeBranchStartY + 66
-                                        : treeBranchStartY - 28;
-                                if (index === 2 || index === 3) {
-                                    controlY = controlY + 140;
-                                }
+                                let controlY = isDeepBranch
+                                    ? treeBranchStartY + 66 + Math.max(0, row - 1) * 70
+                                    : treeBranchStartY - 28;
                                 const cardAnchorX = layout.cardLeft + layout.cardWidth + 3;
                                 const cardAnchorY = layout.cardTop + 38;
                                 const cardControlX1 = cardAnchorX - 42;

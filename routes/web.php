@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AcademyJourneyPointController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\IntegrationController;
 use App\Http\Controllers\Admin\ProgrammingCourseController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
@@ -121,6 +122,8 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
     Route::post('settings', [SettingController::class, 'update'])->name('settings.update');
     Route::post('settings/logo', [SettingController::class, 'uploadLogo'])->name('settings.logo');
     Route::post('settings/test-email', [SettingController::class, 'testEmail'])->name('settings.test-email');
+    Route::get('integrations', [IntegrationController::class, 'index'])->name('integrations.index');
+    Route::post('integrations', [IntegrationController::class, 'update'])->name('integrations.update');
 });
 
 require __DIR__.'/settings.php';

@@ -8,7 +8,6 @@ import AdminLayout from '../layouts/admin-layout';
 type JourneyPoint = {
     id: number;
     title: string;
-    subtitle: string;
     icon: string;
     bubble_color: string;
     bubble_style: string;
@@ -84,7 +83,6 @@ export default function AcademyJourneyPointsIndex({ journeyPoints, stats }: { jo
                                     <th className="px-4 py-3">المعرف</th>
                                     <th className="px-4 py-3">الأيقونة</th>
                                     <th className="px-4 py-3">العنوان</th>
-                                    <th className="px-4 py-3">الوصف</th>
                                     <th className="px-4 py-3">اللون</th>
                                     <th className="px-4 py-3">الحالة</th>
                                     <th className="px-4 py-3">الترتيب</th>
@@ -102,9 +100,6 @@ export default function AcademyJourneyPointsIndex({ journeyPoints, stats }: { jo
                                         </td>
                                         <td className="max-w-xs px-4 py-4 font-semibold text-slate-900">
                                             <div className="line-clamp-2">{point.title}</div>
-                                        </td>
-                                        <td className="max-w-xs px-4 py-4 text-slate-600">
-                                            <div className="line-clamp-2">{point.subtitle}</div>
                                         </td>
                                         <td className="px-4 py-4">
                                             <div className="flex items-center gap-2">
@@ -145,7 +140,7 @@ export default function AcademyJourneyPointsIndex({ journeyPoints, stats }: { jo
                                 ))}
                                 {journeyPoints.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={8} className="px-4 py-10 text-center text-slate-500">
+                                        <td colSpan={7} className="px-4 py-10 text-center text-slate-500">
                                             لا توجد نقاط رحلة مضافة حالياً.
                                         </td>
                                     </tr>

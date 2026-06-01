@@ -8,7 +8,6 @@ class AcademyJourneyPoint extends Model
 {
     protected $fillable = [
         'title',
-        'subtitle',
         'icon',
         'bubble_color',
         'bubble_style',

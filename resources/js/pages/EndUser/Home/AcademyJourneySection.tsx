@@ -16,7 +16,6 @@ import { useState, type ElementType } from 'react';
 type JourneyPoint = {
     id: number;
     title: string;
-    subtitle: string;
     icon: string;
     bubble_color: string;
     bubble_style: string;
@@ -188,9 +187,6 @@ export default function AcademyJourneySection({ journeyPoints = [] }: AcademyJou
                                             <span className="block text-[1rem] leading-6 font-bold text-slate-700">
                                                 {point.title}
                                             </span>
-                                            <span className="mt-1 block text-[0.78rem] leading-5 text-slate-500">
-                                                {point.subtitle}
-                                            </span>
                                         </span>
                                         <span
                                             className={`absolute top-1/2 inline-flex shrink-0 items-center justify-center rounded-full border-[4px] ${point.bubble_style} -translate-y-1/2 transform-gpu transition-all duration-300 ease-out ${
@@ -355,9 +351,6 @@ export default function AcademyJourneySection({ journeyPoints = [] }: AcademyJou
                                         </span>
                                         <span className="block px-13 pt-[9px] text-[1.08rem] font-bold text-slate-700">
                                             {point.title}
-                                        </span>
-                                        <span className="block px-13 text-[0.78rem] text-slate-500">
-                                            {point.subtitle}
                                         </span>
 
                                         <span

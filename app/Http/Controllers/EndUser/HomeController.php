@@ -226,7 +226,7 @@ class HomeController extends Controller
             ->where('status', true)
             ->orderBy('sort_order')
             ->orderBy('id')
-            ->get(['id', 'title', 'subtitle', 'icon', 'bubble_color', 'bubble_style']);
+            ->get(['id', 'title', 'icon', 'bubble_color', 'bubble_style']);
 
         return [
             'bannerSlides' => $slides,

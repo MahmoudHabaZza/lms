@@ -75,7 +75,6 @@ type FaqItem = {
 type JourneyPoint = {
     id: number;
     title: string;
-    subtitle: string;
     icon: string;
     bubble_color: string;
     bubble_style: string;

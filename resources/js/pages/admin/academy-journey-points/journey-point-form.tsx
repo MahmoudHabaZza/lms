@@ -27,7 +27,6 @@ export const BUBBLE_STYLE_OPTIONS = [
 
 export type JourneyPointFormData = {
     title: string;
-    subtitle: string;
     icon: string;
     bubble_color: string;
     bubble_style: string;
@@ -62,7 +61,7 @@ export default function JourneyPointForm({
                     <div className="text-xs font-bold tracking-[0.3em] text-orange-500">بيانات النقطة</div>
                     <h2 className="mt-2 text-xl font-black text-slate-900">محتوى نقطة الرحلة</h2>
                     <p className="mt-2 text-sm leading-7 text-slate-500">
-                        أضف عنوان ووصف قصير لكل نقطة في رحلة الأكاديمية.
+                        أضف عنوان لكل نقطة في رحلة الأكاديمية.
                     </p>
                 </div>
 
@@ -79,21 +78,6 @@ export default function JourneyPointForm({
                         placeholder="مثال: سيشن أونلاين تفاعلية"
                     />
                     <InputError message={errors.title} className="mt-2" />
-                </div>
-
-                <div>
-                    <label htmlFor="subtitle" className="mb-2 block text-right text-sm font-semibold text-slate-700">
-                        الوصف القصير
-                    </label>
-                    <input
-                        id="subtitle"
-                        type="text"
-                        value={data.subtitle}
-                        onChange={(event) => setData('subtitle', event.target.value)}
-                        className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-right outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100"
-                        placeholder="مثال: تعلم حي بخطوات عملية"
-                    />
-                    <InputError message={errors.subtitle} className="mt-2" />
                 </div>
 
                 <div className="grid gap-5 sm:grid-cols-2">
@@ -206,7 +190,6 @@ export default function JourneyPointForm({
                             </div>
                             <div className="text-right">
                                 <div className="text-sm font-bold text-slate-900">{data.title || 'عنوان النقطة'}</div>
-                                <div className="mt-1 text-xs text-slate-500">{data.subtitle || 'الوصف القصير للنقطة'}</div>
                             </div>
                         </div>
 

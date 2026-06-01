@@ -6,7 +6,6 @@ import JourneyPointForm, { type JourneyPointFormData } from './journey-point-for
 export default function AcademyJourneyPointsCreate() {
     const { data, setData, post, processing, errors } = useForm<JourneyPointFormData>({
         title: '',
-        subtitle: '',
         icon: '',
         bubble_color: '',
         bubble_style: '',

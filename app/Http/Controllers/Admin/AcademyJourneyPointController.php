@@ -23,7 +23,6 @@ class AcademyJourneyPointController extends Controller
                 ->through(fn (AcademyJourneyPoint $point): array => [
                     'id' => $point->id,
                     'title' => $point->title,
-                    'subtitle' => $point->subtitle,
                     'icon' => $point->icon,
                     'bubble_color' => $point->bubble_color,
                     'bubble_style' => $point->bubble_style,
@@ -60,7 +59,6 @@ class AcademyJourneyPointController extends Controller
             'journeyPoint' => [
                 'id' => $academyJourneyPoint->id,
                 'title' => $academyJourneyPoint->title,
-                'subtitle' => $academyJourneyPoint->subtitle,
                 'icon' => $academyJourneyPoint->icon,
                 'bubble_color' => $academyJourneyPoint->bubble_color,
                 'bubble_style' => $academyJourneyPoint->bubble_style,

@@ -15,7 +15,6 @@ class StoreAcademyJourneyPointRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'subtitle' => ['required', 'string', 'max:255'],
             'icon' => ['required', 'string', 'max:100'],
             'bubble_color' => ['required', 'string', 'max:50'],
             'bubble_style' => ['required', 'string', 'max:200'],

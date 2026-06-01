@@ -12,7 +12,6 @@ class AcademyJourneyPointSeeder extends Seeder
         $points = [
             [
                 'title' => 'سيشن أونلاين تفاعلية',
-                'subtitle' => 'تعلم حي بخطوات عملية',
                 'icon' => 'Users',
                 'bubble_color' => '#1d9bf0',
                 'bubble_style' => 'border-sky-500 bg-white text-sky-600',
@@ -21,7 +20,6 @@ class AcademyJourneyPointSeeder extends Seeder
             ],
             [
                 'title' => '4 أطفال في الجروب',
-                'subtitle' => 'مجموعات صغيرة بمتابعة أدق',
                 'icon' => 'UserRoundCheck',
                 'bubble_color' => '#10b981',
                 'bubble_style' => 'border-emerald-500 bg-white text-emerald-600',
@@ -30,7 +28,6 @@ class AcademyJourneyPointSeeder extends Seeder
             ],
             [
                 'title' => 'شهادة معتمدة',
-                'subtitle' => 'إنجاز رسمي بعد كل مستوى',
                 'icon' => 'BadgeCheck',
                 'bubble_color' => 'var(--site-primary-color)',
                 'bubble_style' => 'border-orange-500 bg-white text-orange-500',
@@ -39,7 +36,6 @@ class AcademyJourneyPointSeeder extends Seeder
             ],
             [
                 'title' => 'حساب خاص لمتابعة أداء الأبناء',
-                'subtitle' => 'لوحة واضحة لولي الأمر',
                 'icon' => 'Trophy',
                 'bubble_color' => '#e11d70',
                 'bubble_style' => 'border-rose-600 bg-white text-rose-600',
@@ -48,7 +44,6 @@ class AcademyJourneyPointSeeder extends Seeder
             ],
             [
                 'title' => 'مشاريع وتحديات تطبيقية',
-                'subtitle' => 'كل مستوى ينتهي بإنجاز ممتع',
                 'icon' => 'Code2',
                 'bubble_color' => 'var(--site-primary-500)',
                 'bubble_style' => 'border-amber-500 bg-white text-amber-600',

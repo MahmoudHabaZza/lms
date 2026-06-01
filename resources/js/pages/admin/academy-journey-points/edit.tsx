@@ -6,7 +6,6 @@ import JourneyPointForm, { type JourneyPointFormData } from './journey-point-for
 type JourneyPoint = {
     id: number;
     title: string;
-    subtitle: string;
     icon: string;
     bubble_color: string;
     bubble_style: string;
@@ -17,7 +16,6 @@ type JourneyPoint = {
 export default function AcademyJourneyPointsEdit({ journeyPoint }: { journeyPoint: JourneyPoint }) {
     const { data, setData, post, processing, errors } = useForm<JourneyPointFormData & { _method: 'put' }>({
         title: journeyPoint.title,
-        subtitle: journeyPoint.subtitle,
         icon: journeyPoint.icon,
         bubble_color: journeyPoint.bubble_color,
         bubble_style: journeyPoint.bubble_style,

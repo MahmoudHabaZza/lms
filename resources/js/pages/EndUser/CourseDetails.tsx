@@ -200,7 +200,6 @@ export default function CourseDetails({ course }: CourseDetailsPageProps) {
                 </section>
 
                 {/* ─── Quick Info Cards ─── */}
-                {/*
                 <section className="relative z-10 mx-auto -mt-10 max-w-5xl px-5">
                     <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 xl:grid-cols-4">
                         <InfoCard
@@ -227,24 +226,6 @@ export default function CourseDetails({ course }: CourseDetailsPageProps) {
                                     : 'جديد'
                             }
                         />
-                    </div>
-                </section>
-                */}
-
-                {/* ─── Placeholder: Course Stats ─── */}
-                <section className="relative z-10 mx-auto -mt-10 max-w-5xl px-5">
-                    <div className="flex items-center justify-center">
-                        <div className="flex h-full min-h-[154px] w-full flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-slate-200 bg-white/80 p-5 text-center shadow-sm backdrop-blur-sm">
-                            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-orange-100 text-2xl">
-                                <Rocket className="size-7 text-amber-600" />
-                            </div>
-                            <span className="text-sm font-bold text-slate-500">
-                                إحصائيات الكورس قيد التجهيز
-                            </span>
-                            <span className="text-xs leading-6 text-slate-400">
-                                سنضيف هنا قريباً عدد الدروس والمدة والمستوى والتقييم
-                            </span>
-                        </div>
                     </div>
                 </section>
 
@@ -348,7 +329,6 @@ export default function CourseDetails({ course }: CourseDetailsPageProps) {
                 )}
 
                 {/* ─── Curriculum ─── */}
-                {/*
                 {course.curriculum_sections.length > 0 && (
                     <section id="course-content" className="bg-white py-14">
                         <div className="mx-auto max-w-5xl px-5">
@@ -365,42 +345,6 @@ export default function CourseDetails({ course }: CourseDetailsPageProps) {
                         </div>
                     </section>
                 )}
-                */}
-
-                {/* ─── Placeholder: Course Content ─── */}
-                <section id="course-content" className="bg-white py-14">
-                    <div className="mx-auto max-w-3xl px-5 text-center">
-                        <div className="mb-8 flex justify-center">
-                            <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-sky-100 to-indigo-100 shadow-inner">
-                                <BookOpen className="size-10 text-indigo-500" />
-                            </div>
-                        </div>
-                        <h2 className="mb-4 text-center text-2xl font-extrabold text-slate-800 sm:text-3xl">
-                            {contentTitle}
-                        </h2>
-                        <p className="mx-auto max-w-xl text-base leading-8 text-slate-500">
-                            محتوى الكورس قيد الإعداد حاليًا. سيتم إضافة الدروس والمحاضرات قريبًا — تابعنا لتكون أول من يعرف!
-                        </p>
-                        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                            {[1, 2, 3].map((i) => (
-                                <div
-                                    key={i}
-                                    className="flex flex-col items-center gap-3 rounded-2xl border border-slate-100 bg-slate-50/70 px-4 py-8"
-                                >
-                                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-slate-200 to-slate-100">
-                                        <Layers3 className="size-6 text-slate-400" />
-                                    </div>
-                                    <span className="text-sm font-bold text-slate-400">
-                                        قسم {i}
-                                    </span>
-                                    <span className="text-xs text-slate-300">
-                                        دروس قريباً
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
 
                 {/* ─── CTA Banner ─── */}
                 <section className="py-14 sm:py-16">

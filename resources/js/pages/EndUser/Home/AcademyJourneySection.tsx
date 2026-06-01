@@ -210,7 +210,7 @@ export default function AcademyJourneySection({ journeyPoints = [] }: AcademyJou
                         </div>
                     </div>
 
-                    <div className="relative mt-1 hidden lg:block" dir="ltr" style={{ height: svgViewBoxHeight }}>
+                    <div className="relative mt-1 hidden lg:block" dir="ltr" style={{ aspectRatio: `1280 / ${svgViewBoxHeight}` }}>
                         <svg
                             viewBox={`0 0 1280 ${svgViewBoxHeight}`}
                             className="pointer-events-none absolute inset-0 h-full w-full"
@@ -312,7 +312,7 @@ export default function AcademyJourneySection({ journeyPoints = [] }: AcademyJou
                         <div className="absolute left-0 top-0 h-full w-full">
                             <div
                                 className="absolute -translate-x-1/2 -translate-y-1/2"
-                                style={{ left: `${treeRoot.x}px`, top: `${treeRoot.y - 12}px` }}
+                                style={{ left: `50%`, top: `${((treeRoot.y - 12) / svgViewBoxHeight) * 100}%` }}
                             >
                                 <div className="relative">
                                     <span className="absolute inset-0 rounded-full bg-emerald-200/70 blur-md" />
@@ -339,9 +339,9 @@ export default function AcademyJourneySection({ journeyPoints = [] }: AcademyJou
                                                 : 'border-white/70 shadow-[0_18px_34px_-28px_rgba(15,23,42,0.6)]'
                                         }`}
                                         style={{
-                                            top: `${layout.cardTop}px`,
-                                            left: `${layout.cardLeft}px`,
-                                            width: `${layout.cardWidth}px`,
+                                            top: `${(layout.cardTop / svgViewBoxHeight) * 100}%`,
+                                            left: `${(layout.cardLeft / 1280) * 100}%`,
+                                            width: `${(layout.cardWidth / 1280) * 100}%`,
                                         }}
                                         dir="rtl"
                                     >

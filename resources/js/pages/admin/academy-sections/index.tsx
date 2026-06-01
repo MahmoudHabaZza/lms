@@ -9,7 +9,6 @@ import AdminLayout from '../layouts/admin-layout';
 type AcademySection = {
     id: number;
     title: string;
-    description: string;
     status: boolean;
     sort_order: number;
 };
@@ -82,7 +81,6 @@ export default function AcademySectionsIndex({ sections, stats }: { sections: Pa
                                 <tr>
                                     <th className="px-4 py-3">المعرف</th>
                                     <th className="px-4 py-3">العنوان</th>
-                                    <th className="px-4 py-3">الوصف</th>
                                     <th className="px-4 py-3">الحالة</th>
                                     <th className="px-4 py-3">الترتيب</th>
                                     <th className="px-4 py-3">الإجراءات</th>
@@ -93,9 +91,6 @@ export default function AcademySectionsIndex({ sections, stats }: { sections: Pa
                                     <tr key={section.id} className="border-t border-slate-100 align-top">
                                         <td className="px-4 py-4 text-slate-500">{section.id}</td>
                                         <td className="px-4 py-4 font-semibold text-slate-900">{section.title}</td>
-                                        <td className="max-w-xl px-4 py-4 text-slate-600">
-                                            <p className="line-clamp-3 leading-7">{section.description}</p>
-                                        </td>
                                         <td className="px-4 py-4">
                                             <span
                                                 className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
@@ -131,7 +126,7 @@ export default function AcademySectionsIndex({ sections, stats }: { sections: Pa
                                 ))}
                                 {sections.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={6} className="px-4 py-10 text-center text-slate-500">
+                                        <td colSpan={5} className="px-4 py-10 text-center text-slate-500">
                                             لا توجد أقسام مضافة حاليًا.
                                         </td>
                                     </tr>

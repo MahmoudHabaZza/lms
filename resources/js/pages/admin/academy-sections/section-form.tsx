@@ -3,7 +3,6 @@ import type { FormEvent } from 'react';
 
 type AcademySectionFormData = {
     title: string;
-    description: string;
     sort_order: number;
     status: boolean;
 };
@@ -12,7 +11,6 @@ type AcademySectionFormProps = {
     data: AcademySectionFormData;
     setData: {
         (key: 'title', value: string): void;
-        (key: 'description', value: string): void;
         (key: 'sort_order', value: number): void;
         (key: 'status', value: boolean): void;
     };
@@ -52,19 +50,6 @@ export default function SectionForm({
                     <InputError message={errors.title} className="mt-2" />
                 </div>
 
-                <div>
-                    <label htmlFor="description" className="mb-2 block text-right text-sm font-semibold text-slate-700">
-                        الوصف
-                    </label>
-                    <textarea
-                        id="description"
-                        rows={8}
-                        value={data.description}
-                        onChange={(e) => setData('description', e.target.value)}
-                        className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-right leading-7 outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100"
-                    />
-                    <InputError message={errors.description} className="mt-2" />
-                </div>
             </div>
 
             <div className="space-y-6">
@@ -104,9 +89,9 @@ export default function SectionForm({
                 <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
                     <div className="text-right">
                         <h3 className="text-lg font-bold text-slate-900">حفظ</h3>
-                        <p className="mt-1 text-sm leading-7 text-slate-500">
-                            تأكد من أن الوصف مختصر وواضح لأنه يظهر ضمن تجربة الواجهة الرئيسية.
-                        </p>
+                            <p className="mt-1 text-sm leading-7 text-slate-500">
+                                تأكد من أن العنوان مختصر وواضح لأنه يظهر ضمن تجربة الواجهة الرئيسية.
+                            </p>
                     </div>
 
                     <button

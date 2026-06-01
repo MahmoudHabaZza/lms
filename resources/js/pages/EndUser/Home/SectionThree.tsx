@@ -16,7 +16,7 @@ export default function SectionThree({
     staticSection = null,
 }: {
     slides?: BannerSlide[];
-    staticSection?: { title?: string; description?: string } | null;
+    staticSection?: { title?: string } | null;
 }) {
     const { settings } = usePage<any>().props;
     const fallbackSlides: BannerSlide[] = [
@@ -52,7 +52,7 @@ export default function SectionThree({
 
     const activeSlide = safeSlides[activeIndex];
     const heroSubTitle = staticSection?.title ?? activeSlide.sub_title ?? 'كن جزءًا من رحلة البرمجة الآن';
-    const heroDescription = staticSection?.description ?? activeSlide.description ?? 'تعليم منظم مع دعم مباشر من خبراء متخصصين.';
+    const heroDescription = activeSlide.description ?? 'تعليم منظم مع دعم مباشر من خبراء متخصصين.';
 
     return (
         <section className="relative overflow-hidden pt-14">

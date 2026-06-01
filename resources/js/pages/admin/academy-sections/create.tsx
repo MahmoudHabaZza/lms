@@ -6,8 +6,6 @@ import SectionForm from './section-form';
 export default function AcademySectionsCreate() {
     const { data, setData, post, processing, errors } = useForm({
         title: 'رحلة في عالم كيد كودر',
-        description:
-            'أكاديمية متخصصة في تعليم البرمجة والمهارات الرقمية للأطفال واليافعين، عبر مسارات ممتعة وعملية تناسب مختلف المراحل العمرية.',
         sort_order: 0,
         status: true,
     });

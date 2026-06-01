@@ -6,7 +6,6 @@ import SectionForm from './section-form';
 type AcademySection = {
     id: number;
     title: string;
-    description: string;
     status: boolean;
     sort_order: number;
 };
@@ -14,7 +13,6 @@ type AcademySection = {
 export default function AcademySectionsEdit({ section }: { section: AcademySection }) {
     const { data, setData, put, processing, errors } = useForm({
         title: section.title,
-        description: section.description,
         sort_order: section.sort_order,
         status: section.status,
     });

@@ -23,7 +23,6 @@ type BannerSlide = {
 type AcademySection = {
     id: number;
     title: string;
-    description: string;
 };
 
 type StudentReel = {
@@ -144,9 +143,6 @@ export default function Home({
                                     {homeIntroSubtitle}
                                 </p>
 
-                                <p className="mx-auto mt-5 max-w-6xl text-sm leading-8 text-slate-700 sm:text-base sm:leading-8 lg:text-xl lg:leading-10">
-                                    {academySection.description}
-                                </p>
                             </div>
                         </div>
                     </section>

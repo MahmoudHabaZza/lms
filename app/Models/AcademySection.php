@@ -8,7 +8,6 @@ class AcademySection extends Model
 {
     protected $fillable = [
         'title',
-        'description',
         'status',
         'sort_order',
     ];

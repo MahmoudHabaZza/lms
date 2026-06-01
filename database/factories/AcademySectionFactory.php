@@ -13,7 +13,6 @@ class AcademySectionFactory extends Factory
     {
         return [
             'title' => 'ميزة تعليمية',
-            'description' => 'وصف مختصر لميزة داخل الأكاديمية.',
             'status' => true,
             'sort_order' => fake()->numberBetween(1, 10),
             'created_at' => now(),

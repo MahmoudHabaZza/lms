@@ -61,7 +61,7 @@ class HomeController extends Controller
             ->where('status', true)
             ->orderBy('sort_order')
             ->orderBy('id')
-            ->first(['id', 'title', 'description']);
+            ->first(['id', 'title']);
         $courses = Course::query()
             ->with([
                 'instructor:id,name,profile_picture,avatar',

@@ -3,7 +3,6 @@ import InputError from '@/components/input-error';
 
 type AcademySectionFormData = {
     title: string;
-    description: string;
     status: boolean;
     sort_order: number;
 };
@@ -12,7 +11,6 @@ type AcademySectionFormProps = {
     data: AcademySectionFormData;
     setData: {
         (key: 'title', value: string): void;
-        (key: 'description', value: string): void;
         (key: 'status', value: boolean): void;
         (key: 'sort_order', value: number): void;
     };
@@ -45,21 +43,6 @@ export default function AcademySectionForm({
                     className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
                 />
                 {errors.title && <InputError message={errors.title} />}
-            </div>
-
-            <div>
-                <label htmlFor="description" className="mb-2 block text-sm font-medium">
-                    الوصف
-                </label>
-                <textarea
-                    id="description"
-                    value={data.description}
-                    placeholder="أدخل وصف القسم الأكاديمي"
-                    onChange={(e) => setData('description', e.target.value)}
-                    rows={6}
-                    className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
-                />
-                {errors.description && <InputError message={errors.description} />}
             </div>
 
             <div className="grid grid-cols-2 gap-4">

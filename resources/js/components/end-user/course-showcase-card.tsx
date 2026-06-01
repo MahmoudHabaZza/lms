@@ -43,9 +43,6 @@ export function CourseShowcaseCard({
         };
         settings?: Record<string, string | null | undefined>;
     }>().props;
-    const audienceLabel =
-        settings?.course_card_default_audience_label?.trim() ||
-        'من 5 إلى 17 سنة';
     const noImageText =
         settings?.course_card_no_image_text?.trim() || 'لا توجد صورة';
     const showDetailsLabel =
@@ -140,13 +137,6 @@ export function CourseShowcaseCard({
             )}
 
             <div className="absolute inset-0 bg-gradient-to-t from-[#020617f2] via-[#0f172abf] to-[#0f172a52]" />
-
-            <span
-                className="absolute top-3 left-3 z-20 rounded-full px-3 py-1.5 text-xs font-bold text-white shadow-lg"
-                style={{ backgroundColor: 'var(--site-primary-500)' }}
-            >
-                {course.badge || audienceLabel}
-            </span>
 
             <div className="absolute inset-x-0 bottom-0 px-4 pt-3 pb-4">
                 {isHomeCompact ? (

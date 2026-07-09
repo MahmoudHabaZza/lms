@@ -9,23 +9,48 @@ interface MenuItem {
     child?: MenuItem[];
 }
 
+const normalizeLabel = (
+    value: string | null | undefined,
+    fallback: string,
+): string => {
+    const trimmed = value?.trim();
+
+    if (!trimmed || trimmed.includes('?')) {
+        return fallback;
+    }
+
+    return trimmed;
+};
+
 const Navbar: React.FC = () => {
     const { url, settings, auth } = usePage<any>().props;
-    const loginLabel = settings?.navbar_login_label?.trim() || '????? ??????';
-    const bookNowLabel = settings?.navbar_book_now_label?.trim() || '???? ????';
-    const searchPlaceholder =
-        settings?.navbar_search_placeholder?.trim() || '????...';
-    const searchButtonLabel =
-        settings?.navbar_search_button_label?.trim() || '???';
-    const navHomeLabel =
-        settings?.navbar_menu_home_label?.trim() || '?????? ????????';
-    const navJoinLabel = settings?.navbar_menu_join_label?.trim() || '???? ???';
-    const navFavoritesLabel =
-        settings?.navbar_menu_favorites_label?.trim() || '???????';
-    const navContactLabel =
-        settings?.navbar_menu_contact_label?.trim() || '????? ????';
-    const navPrivacyLabel =
-        settings?.navbar_menu_privacy_label?.trim() || '????? ????????';
+    const loginLabel = normalizeLabel(settings?.navbar_login_label, 'تسجيل الدخول');
+    const bookNowLabel = normalizeLabel(settings?.navbar_book_now_label, 'احجز الآن');
+    const searchPlaceholder = normalizeLabel(
+        settings?.navbar_search_placeholder,
+        'ابحث...'
+    );
+    const searchButtonLabel = normalizeLabel(
+        settings?.navbar_search_button_label,
+        'بحث'
+    );
+    const navHomeLabel = normalizeLabel(
+        settings?.navbar_menu_home_label,
+        'الرئيسية'
+    );
+    const navJoinLabel = normalizeLabel(settings?.navbar_menu_join_label, 'انضم لنا');
+    const navFavoritesLabel = normalizeLabel(
+        settings?.navbar_menu_favorites_label,
+        'المفضلة'
+    );
+    const navContactLabel = normalizeLabel(
+        settings?.navbar_menu_contact_label,
+        'تواصل معنا'
+    );
+    const navPrivacyLabel = normalizeLabel(
+        settings?.navbar_menu_privacy_label,
+        'سياسة الخصوصية'
+    );
 
     const [mobileOpen, setMobileOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -95,11 +120,11 @@ const Navbar: React.FC = () => {
         event.preventDefault();
         const result = await Swal.fire({
             icon: 'warning',
-            title: '??? ????? ?????',
-            text: '???? ???? ?????? ????? ????? ???? ???? ???????.',
-            confirmButtonText: '????? ??????',
+            title: 'تحتاج إلى تسجيل الدخول',
+            text: 'يجب تسجيل الدخول لرؤية المفضلة والاطلاع على المحتوى الخاص بك.',
+            confirmButtonText: 'تسجيل الدخول',
             showCancelButton: true,
-            cancelButtonText: '?????',
+            cancelButtonText: 'إلغاء',
         });
 
         if (result.isConfirmed) {
@@ -176,7 +201,7 @@ const Navbar: React.FC = () => {
                                                             )
                                                         }
                                                     >
-                                                        ???? ??????
+                                                        الحساب الشخصي
                                                     </a>
                                                 </li>
                                                 <li>
@@ -189,7 +214,7 @@ const Navbar: React.FC = () => {
                                                             )
                                                         }
                                                     >
-                                                        ???? ??????
+                                                        لوحة التحكم
                                                     </a>
                                                 </li>
                                                 <li>
@@ -202,7 +227,7 @@ const Navbar: React.FC = () => {
                                                             )
                                                         }
                                                     >
-                                                        ???????
+                                                        الكورسات
                                                     </a>
                                                 </li>
                                                 <li>
@@ -216,7 +241,7 @@ const Navbar: React.FC = () => {
                                                             handleLogout();
                                                         }}
                                                     >
-                                                        ????? ????
+                                                        تسجيل الخروج
                                                     </button>
                                                 </li>
                                             </ul>
@@ -324,7 +349,7 @@ const Navbar: React.FC = () => {
                                                             )
                                                         }
                                                     >
-                                                        ???? ??????
+                                                        الحساب الشخصي
                                                     </a>
                                                 </li>
                                                 <li>
@@ -337,7 +362,7 @@ const Navbar: React.FC = () => {
                                                             )
                                                         }
                                                     >
-                                                        ???? ??????
+                                                        لوحة التحكم
                                                     </a>
                                                 </li>
                                                 <li>
@@ -350,7 +375,7 @@ const Navbar: React.FC = () => {
                                                             )
                                                         }
                                                     >
-                                                        ???????
+                                                        الكورسات
                                                     </a>
                                                 </li>
                                                 <li>
@@ -364,7 +389,7 @@ const Navbar: React.FC = () => {
                                                             handleLogout();
                                                         }}
                                                     >
-                                                        ????? ????
+                                                        تسجيل الخروج
                                                     </button>
                                                 </li>
                                             </ul>
@@ -427,7 +452,7 @@ const Navbar: React.FC = () => {
                     <div className="mx-auto max-h-[calc(100svh-var(--topbar-offset)-90px)] w-full max-w-7xl overflow-y-auto px-4 py-4">
                         <div className="mb-4 flex items-center justify-between">
                             <span className="text-sm font-bold text-slate-700">
-                                ???????
+                                القائمة
                             </span>
                             <button
                                 type="button"

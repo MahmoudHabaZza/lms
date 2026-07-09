@@ -1,4 +1,5 @@
 import { confirmDelete } from '@/lib/confirm';
+import { generateStudentPassword } from '@/lib/password';
 import { Link, router, useForm } from '@inertiajs/react';
 import type { FormEvent } from 'react';
 import AdminLayout from '../layouts/admin-layout';
@@ -34,6 +35,14 @@ export default function StudentEdit({ student, courses }: { student: StudentDeta
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        if (data.password_action === 'auto' && data.password.trim() === '') {
+            const generatedPassword = generateStudentPassword();
+            setData('password', generatedPassword);
+            window.setTimeout(() => put(`/admin/students/${student.id}`), 0);
+            return;
+        }
+
         put(`/admin/students/${student.id}`);
     };
 

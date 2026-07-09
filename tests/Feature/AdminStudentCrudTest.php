@@ -64,6 +64,29 @@ class AdminStudentCrudTest extends TestCase
         Mail::assertNothingSent();
     }
 
+    public function test_admin_can_create_student_with_auto_generated_password_when_password_is_empty(): void
+    {
+        $admin = $this->createAdmin();
+
+        $response = $this->actingAs($admin)->post('/admin/students', [
+            'name' => 'سارة أحمد',
+            'email' => 'sara.auto@kid-coder.test',
+            'username' => 'saraauto',
+            'phone_number' => '+201112223333',
+            'is_active' => true,
+            'password_mode' => 'auto',
+            'password' => '',
+        ]);
+
+        $response->assertRedirect('/admin/students');
+        $response->assertSessionHasNoErrors();
+
+        $student = User::query()->where('email', 'sara.auto@kid-coder.test')->firstOrFail();
+
+        $this->assertSame('student', $student->role);
+        $this->assertNotSame('', $student->password);
+    }
+
     public function test_admin_can_update_student_and_sync_courses(): void
     {
         Mail::fake();

@@ -1,3 +1,4 @@
+import { generateStudentPassword } from '@/lib/password';
 import { Link, useForm } from '@inertiajs/react';
 import type { FormEvent } from 'react';
 import AdminLayout from '../layouts/admin-layout';
@@ -23,6 +24,14 @@ export default function StudentCreate({ courses }: { courses: CourseOption[] }) 
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        if (data.password_mode === 'auto' && data.password.trim() === '') {
+            const generatedPassword = generateStudentPassword();
+            setData('password', generatedPassword);
+            window.setTimeout(() => post('/admin/students'), 0);
+            return;
+        }
+
         post('/admin/students');
     };
 

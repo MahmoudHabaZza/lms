@@ -10,10 +10,12 @@ export const UserInfo = memo(function UserInfo({
     user: User;
     showEmail?: boolean;
 }) {
+    const avatarUrl = user.avatar || user.profile_picture;
+
     return (
         <>
             <Avatar className="h-8 w-8 overflow-hidden rounded-full">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarImage src={avatarUrl} alt={user.name} />
                 <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
                     {getInitials(user.name)}
                 </AvatarFallback>

@@ -24,7 +24,7 @@ class UpdateStudentRequest extends FormRequest
             'phone_number' => ['nullable', 'string', 'max:25'],
             'is_active' => ['sometimes', 'boolean'],
             'password_action' => ['required', Rule::in(['keep', 'manual', 'auto'])],
-            'password' => ['nullable', 'string', Password::default(), 'required_if:password_action,manual'],
+            'password' => ['nullable', 'string', Password::min(10), 'required_if:password_action,manual'],
             'course_ids' => ['nullable', 'array'],
             'course_ids.*' => ['integer', 'exists:courses,id'],
         ];

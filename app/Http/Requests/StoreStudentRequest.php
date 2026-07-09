@@ -22,7 +22,7 @@ class StoreStudentRequest extends FormRequest
             'phone_number' => ['nullable', 'string', 'max:25'],
             'is_active' => ['sometimes', 'boolean'],
             'password_mode' => ['required', Rule::in(['manual', 'auto'])],
-            'password' => ['nullable', 'string', Password::default(), 'required_if:password_mode,manual'],
+            'password' => ['nullable', 'string', Password::min(10), 'required_if:password_mode,manual'],
             'course_ids' => ['nullable', 'array'],
             'course_ids.*' => ['integer', 'exists:courses,id'],
         ];

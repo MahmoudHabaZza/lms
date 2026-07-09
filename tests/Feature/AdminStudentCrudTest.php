@@ -165,6 +165,21 @@ class AdminStudentCrudTest extends TestCase
         $response->assertSessionHasErrors(['name', 'email', 'password']);
     }
 
+    public function test_student_creation_requires_password_to_have_at_least_10_characters_when_manual(): void
+    {
+        $admin = $this->createAdmin();
+
+        $response = $this->actingAs($admin)->from('/admin/students/create')->post('/admin/students', [
+            'name' => 'أحمد',
+            'email' => 'short-password@kid-coder.test',
+            'password_mode' => 'manual',
+            'password' => '123456789',
+        ]);
+
+        $response->assertRedirect('/admin/students/create');
+        $response->assertSessionHasErrors(['password']);
+    }
+
     private function createAdmin(): User
     {
         return User::factory()->create([

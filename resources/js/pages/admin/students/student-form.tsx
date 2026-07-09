@@ -8,6 +8,8 @@ export type StudentFormData = {
     email: string;
     username: string;
     phone_number: string;
+    drive_link: string;
+    telegram_link: string;
     is_active: boolean;
     password_mode: 'manual' | 'auto';
     password_action: 'keep' | 'manual' | 'auto';
@@ -27,6 +29,8 @@ type StudentFormProps = {
         (key: 'email', value: string): void;
         (key: 'username', value: string): void;
         (key: 'phone_number', value: string): void;
+        (key: 'drive_link', value: string): void;
+        (key: 'telegram_link', value: string): void;
         (key: 'is_active', value: boolean): void;
         (key: 'password_mode', value: 'manual' | 'auto'): void;
         (key: 'password_action', value: 'keep' | 'manual' | 'auto'): void;
@@ -150,7 +154,19 @@ export default function StudentForm({
                             <InputError message={errors.phone_number} className="mt-2" />
                         </div>
 
-                        <label className="flex items-center justify-end gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 sm:self-end">
+                        <div className="sm:col-span-2">
+                            <label className="mb-2 block text-right text-sm font-semibold text-slate-700">رابط Google Drive (اختياري)</label>
+                            <input type="url" value={data.drive_link} onChange={(event) => setData('drive_link', event.target.value)} placeholder="https://drive.google.com/..." className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100" />
+                            <InputError message={errors.drive_link} className="mt-2" />
+                        </div>
+
+                        <div className="sm:col-span-2">
+                            <label className="mb-2 block text-right text-sm font-semibold text-slate-700">رابط التليجرام (اختياري)</label>
+                            <input type="url" value={data.telegram_link} onChange={(event) => setData('telegram_link', event.target.value)} placeholder="https://t.me/..." className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100" />
+                            <InputError message={errors.telegram_link} className="mt-2" />
+                        </div>
+
+                        <label className="flex items-center justify-end gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 sm:col-span-2 sm:self-end">
                             <span>الحساب مفعل</span>
                             <input type="checkbox" checked={data.is_active} onChange={(event) => setData('is_active', event.target.checked)} className="h-4 w-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500" />
                         </label>

@@ -16,6 +16,8 @@ type StudentDetails = {
     email: string;
     username: string | null;
     phone_number: string | null;
+    drive_link: string | null;
+    telegram_link: string | null;
     is_active: boolean;
     course_ids: number[] | null;
 };
@@ -26,6 +28,8 @@ export default function StudentEdit({ student, courses }: { student: StudentDeta
         email: student.email,
         username: student.username ?? '',
         phone_number: student.phone_number ?? '',
+        drive_link: student.drive_link ?? '',
+        telegram_link: student.telegram_link ?? '',
         is_active: student.is_active,
         password_mode: 'auto',
         password_action: 'keep',

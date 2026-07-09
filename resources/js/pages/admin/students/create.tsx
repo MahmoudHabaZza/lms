@@ -15,6 +15,8 @@ export default function StudentCreate({ courses }: { courses: CourseOption[] }) 
         email: '',
         username: '',
         phone_number: '',
+        drive_link: '',
+        telegram_link: '',
         is_active: true,
         password_mode: 'auto',
         password_action: 'keep',

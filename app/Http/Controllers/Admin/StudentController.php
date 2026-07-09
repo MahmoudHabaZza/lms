@@ -119,6 +119,8 @@ class StudentController extends Controller
             'email' => $student->email,
             'username' => $student->username,
             'phone_number' => $student->phone_number,
+            'drive_link' => $student->drive_link,
+            'telegram_link' => $student->telegram_link,
             'is_active' => (bool) $student->is_active,
             'created_at' => $student->created_at?->format('Y-m-d'),
             'assigned_courses_count' => $student->assigned_courses_count ?? $student->assignedCourses->count(),

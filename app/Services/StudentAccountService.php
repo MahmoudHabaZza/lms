@@ -17,6 +17,14 @@ class StudentAccountService
 
         $courseIds = $payload['course_ids'] ?? [];
 
+        // Normalize the optional links
+        if (empty($payload['drive_link'])) {
+            $payload['drive_link'] = null;
+        }
+        if (empty($payload['telegram_link'])) {
+            $payload['telegram_link'] = null;
+        }
+
         unset($payload['password_mode'], $payload['password'], $payload['course_ids']);
 
         $payload['role'] = 'student';
@@ -46,6 +54,14 @@ class StudentAccountService
         $plainPassword = null;
         $courseIds = $payload['course_ids'] ?? [];
         $incomingPassword = $payload['password'] ?? null;
+
+        // Normalize the optional links
+        if (empty($payload['drive_link'])) {
+            $payload['drive_link'] = null;
+        }
+        if (empty($payload['telegram_link'])) {
+            $payload['telegram_link'] = null;
+        }
 
         unset($payload['password_action'], $payload['password'], $payload['course_ids']);
 

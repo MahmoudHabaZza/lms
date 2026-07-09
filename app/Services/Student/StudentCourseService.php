@@ -172,8 +172,15 @@ class StudentCourseService
         $reviewsCount = (int) ($reviewsStats?->aggregate_count ?? 0);
         $averageRating = round((float) ($reviewsStats?->aggregate_rating ?? 0), 1);
 
+        $hasExternalContent = filled($student->drive_link) || filled($student->telegram_link);
+
         return [
             ...$this->courseSummaryPayload($student, $course, $isEnrolled),
+            'content_mode' => $hasExternalContent ? 'links' : 'lessons',
+            'course_links' => [
+                'drive_link' => $student->drive_link,
+                'telegram_link' => $student->telegram_link,
+            ],
             'access_state' => [
                 'is_enrolled' => $isEnrolled,
                 'is_favorited' => $this->isFavorited($course, $student),

@@ -12,7 +12,7 @@ type AuthContextShape = {
     user: User | null;
     loading: boolean;
     login: (email: string, password: string) => Promise<void>;
-    register: (name: string, email: string, password: string, password_confirmation: string) => Promise<void>;
+    register: (name: string, email: string, password: string, password_confirmation: string, drive_link?: string | null, telegram_link?: string | null) => Promise<void>;
     logout: () => Promise<void>;
     refreshUser: () => Promise<void>;
 };
@@ -44,8 +44,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await refreshUser();
     }
 
-    async function register(name: string, email: string, password: string, password_confirmation: string) {
-        const res = await api.post('/register', { name, email, password, password_confirmation });
+    async function register(name: string, email: string, password: string, password_confirmation: string, drive_link?: string | null, telegram_link?: string | null) {
+        const res = await api.post('/register', { name, email, password, password_confirmation, drive_link, telegram_link });
         localStorage.setItem('api_token', res.token);
         await refreshUser();
     }

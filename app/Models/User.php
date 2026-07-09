@@ -30,6 +30,8 @@ class User extends Authenticatable implements JWTSubject
         'profile_picture',
         'avatar',
         'phone_number',
+        'drive_link',
+        'telegram_link',
         'role',
         'is_staff',
         'is_superuser',

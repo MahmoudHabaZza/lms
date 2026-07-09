@@ -33,6 +33,11 @@ type CourseDetailsPageProps = {
         lessons_count: number;
         tasks_count: number;
         quizzes_count: number;
+        content_mode: 'links' | 'lessons';
+        course_links: {
+            drive_link: string | null;
+            telegram_link: string | null;
+        };
         resources_count: number;
         show_url: string;
         enroll_url: string | null;
@@ -90,6 +95,7 @@ type CourseDetailsPageProps = {
 
 export default function CourseDetails() {
     const { course } = usePage<CourseDetailsPageProps>().props;
+    const hasExternalContent = course.content_mode === 'links' && (course.course_links.drive_link || course.course_links.telegram_link);
     const reviewForm = useForm({
         rating: course.reviews.student_review?.rating ?? 5,
         comment: course.reviews.student_review?.comment ?? '',
@@ -173,66 +179,115 @@ export default function CourseDetails() {
                 </section>
 
                 <div className="grid gap-6 xl:grid-cols-[1.3fr_0.7fr]">
-                    <section className="space-y-6 rounded-[30px] border border-white/70 bg-white/85 p-5 shadow-[0_24px_60px_-36px_rgba(15,23,42,0.28)]">
-                        <div className="flex items-center gap-3">
-                            <div className="rounded-2xl bg-orange-100 p-3 text-orange-700">
-                                <BookOpen size={20} />
+                    {hasExternalContent ? (
+                        <section className="space-y-6 rounded-[30px] border border-white/70 bg-white/85 p-5 shadow-[0_24px_60px_-36px_rgba(15,23,42,0.28)]">
+                            <div className="flex items-center gap-3">
+                                <div className="rounded-2xl bg-orange-100 p-3 text-orange-700">
+                                    <BookOpen size={20} />
+                                </div>
+                                <div>
+                                    <h3 className="font-playpen-arabic text-2xl font-extrabold text-slate-900">محتوى الكورس</h3>
+                                    <p className="text-sm text-slate-600">
+                                        تم ربط هذا الكورس برابط أو أكثر من المحتوى الخارجي الخاص بالطالب، لذا يظهر هنا مباشرة.
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                <h3 className="font-playpen-arabic text-2xl font-extrabold text-slate-900">خطة الدروس</h3>
-                                <p className="text-sm text-slate-600">
-                                    {course.access_state.is_enrolled
-                                        ? 'الدروس التالية تُفتح بالترتيب بعد إكمال السابقة.'
-                                        : 'يمكنك استعراض عناوين الدروس الآن، لكن فتح المحتوى يتطلب الاشتراك.'}
-                                </p>
-                            </div>
-                        </div>
 
-                        <div className="space-y-4">
-                            {course.lessons.map((lesson, index) => (
-                                <article key={lesson.id} className="rounded-[26px] border border-slate-100 bg-slate-50/70 p-4">
-                                    <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                                        <div className="flex items-start gap-4">
-                                            <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl font-black ${lesson.is_completed ? 'bg-emerald-100 text-emerald-700' : lesson.is_locked ? 'bg-slate-200 text-slate-500' : 'bg-orange-100 text-orange-700'}`}>
-                                                {index + 1}
+                            <div className="space-y-3">
+                                {course.course_links.drive_link && (
+                                    <a
+                                        href={course.course_links.drive_link}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="flex items-center justify-between rounded-[22px] border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-orange-200 hover:bg-orange-50/60"
+                                    >
+                                        <span>رابط Google Drive</span>
+                                        <span className="rounded-full bg-white px-3 py-1 text-xs font-black text-orange-700">Open</span>
+                                    </a>
+                                )}
+
+                                {course.course_links.telegram_link && (
+                                    <a
+                                        href={course.course_links.telegram_link}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="flex items-center justify-between rounded-[22px] border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-sky-200 hover:bg-sky-50/60"
+                                    >
+                                        <span>رابط التليجرام</span>
+                                        <span className="rounded-full bg-white px-3 py-1 text-xs font-black text-sky-700">Open</span>
+                                    </a>
+                                )}
+
+                                {!course.course_links.drive_link && !course.course_links.telegram_link && (
+                                    <StudentEmptyState
+                                        title="لا يوجد محتوى خارجي"
+                                        description="سيظهر هنا المحتوى الخارجي فور إضافة الروابط من حساب الطالب."
+                                    />
+                                )}
+                            </div>
+                        </section>
+                    ) : (
+                        <section className="space-y-6 rounded-[30px] border border-white/70 bg-white/85 p-5 shadow-[0_24px_60px_-36px_rgba(15,23,42,0.28)]">
+                            <div className="flex items-center gap-3">
+                                <div className="rounded-2xl bg-orange-100 p-3 text-orange-700">
+                                    <BookOpen size={20} />
+                                </div>
+                                <div>
+                                    <h3 className="font-playpen-arabic text-2xl font-extrabold text-slate-900">خطة الدروس</h3>
+                                    <p className="text-sm text-slate-600">
+                                        {course.access_state.is_enrolled
+                                            ? 'الدروس التالية تُفتح بالترتيب بعد إكمال السابقة.'
+                                            : 'يمكنك استعراض عناوين الدروس الآن، لكن فتح المحتوى يتطلب الاشتراك.'}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="space-y-4">
+                                {course.lessons.map((lesson, index) => (
+                                    <article key={lesson.id} className="rounded-[26px] border border-slate-100 bg-slate-50/70 p-4">
+                                        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                                            <div className="flex items-start gap-4">
+                                                <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl font-black ${lesson.is_completed ? 'bg-emerald-100 text-emerald-700' : lesson.is_locked ? 'bg-slate-200 text-slate-500' : 'bg-orange-100 text-orange-700'}`}>
+                                                    {index + 1}
+                                                </div>
+                                                <div>
+                                                    <div className="flex flex-wrap items-center gap-2">
+                                                        <h4 className="text-lg font-black text-slate-900">{lesson.title}</h4>
+                                                        {lesson.is_completed && <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">مكتمل</span>}
+                                                        {lesson.is_locked && (
+                                                            <span className="inline-flex items-center gap-1 rounded-full bg-slate-200 px-3 py-1 text-xs font-bold text-slate-600">
+                                                                <Lock size={12} />
+                                                                مقفول
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <p className="mt-2 text-sm leading-7 text-slate-600">{lesson.description || 'لا يوجد وصف لهذا الدرس.'}</p>
+                                                    <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-slate-500">
+                                                        <span className="rounded-full bg-white px-3 py-1">المدة: {lesson.duration_minutes} دقيقة</span>
+                                                        <span className="rounded-full bg-white px-3 py-1">الموارد: {lesson.resources.length}</span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <div className="flex flex-wrap items-center gap-2">
-                                                    <h4 className="text-lg font-black text-slate-900">{lesson.title}</h4>
-                                                    {lesson.is_completed && <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">مكتمل</span>}
-                                                    {lesson.is_locked && (
-                                                        <span className="inline-flex items-center gap-1 rounded-full bg-slate-200 px-3 py-1 text-xs font-bold text-slate-600">
-                                                            <Lock size={12} />
-                                                            مقفول
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <p className="mt-2 text-sm leading-7 text-slate-600">{lesson.description || 'لا يوجد وصف لهذا الدرس.'}</p>
-                                                <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-slate-500">
-                                                    <span className="rounded-full bg-white px-3 py-1">المدة: {lesson.duration_minutes} دقيقة</span>
-                                                    <span className="rounded-full bg-white px-3 py-1">الموارد: {lesson.resources.length}</span>
-                                                </div>
+
+                                            <div className="flex flex-wrap gap-3">
+                                                {lesson.show_url ? (
+                                                    <Link href={lesson.show_url} className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800">
+                                                        <PlayCircle size={18} />
+                                                        فتح الدرس
+                                                    </Link>
+                                                ) : (
+                                                    <div className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-500">
+                                                        <Lock size={18} />
+                                                        {course.access_state.is_enrolled ? 'غير متاح بعد' : 'يتطلب الاشتراك'}
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
-
-                                        <div className="flex flex-wrap gap-3">
-                                            {lesson.show_url ? (
-                                                <Link href={lesson.show_url} className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800">
-                                                    <PlayCircle size={18} />
-                                                    فتح الدرس
-                                                </Link>
-                                            ) : (
-                                                <div className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-500">
-                                                    <Lock size={18} />
-                                                    {course.access_state.is_enrolled ? 'غير متاح بعد' : 'يتطلب الاشتراك'}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </article>
-                            ))}
-                        </div>
-                    </section>
+                                    </article>
+                                ))}
+                            </div>
+                        </section>
+                    )}
 
                     <div className="space-y-6">
                         <section className="rounded-[30px] border border-white/70 bg-white/85 p-5 shadow-[0_24px_60px_-36px_rgba(15,23,42,0.28)]">

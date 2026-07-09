@@ -58,12 +58,40 @@ export default function Register() {
                             </div>
 
                             <div className="grid gap-2">
+                                <Label htmlFor="drive_link">
+                                    Google Drive link (optional)
+                                </Label>
+                                <Input
+                                    id="drive_link"
+                                    type="url"
+                                    tabIndex={3}
+                                    name="drive_link"
+                                    placeholder="https://drive.google.com/..."
+                                />
+                                <InputError message={errors.drive_link} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="telegram_link">
+                                    Telegram link (optional)
+                                </Label>
+                                <Input
+                                    id="telegram_link"
+                                    type="url"
+                                    tabIndex={4}
+                                    name="telegram_link"
+                                    placeholder="https://t.me/..."
+                                />
+                                <InputError message={errors.telegram_link} />
+                            </div>
+
+                            <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>
                                 <Input
                                     id="password"
                                     type="password"
                                     required
-                                    tabIndex={3}
+                                    tabIndex={5}
                                     autoComplete="new-password"
                                     name="password"
                                     placeholder="Password"
@@ -79,7 +107,7 @@ export default function Register() {
                                     id="password_confirmation"
                                     type="password"
                                     required
-                                    tabIndex={4}
+                                    tabIndex={6}
                                     autoComplete="new-password"
                                     name="password_confirmation"
                                     placeholder="Confirm password"
@@ -92,7 +120,7 @@ export default function Register() {
                             <Button
                                 type="submit"
                                 className="mt-2 w-full"
-                                tabIndex={5}
+                                tabIndex={7}
                                 data-test="register-user-button"
                             >
                                 {processing && <Spinner />}
@@ -102,7 +130,7 @@ export default function Register() {
 
                         <div className="text-center text-sm text-muted-foreground">
                             Already have an account?{' '}
-                            <TextLink href={login()} tabIndex={6}>
+                            <TextLink href={login()} tabIndex={8}>
                                 Log in
                             </TextLink>
                         </div>

@@ -23,6 +23,8 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', Rule::in(['student', 'instructor'])],
             'phone_number' => ['nullable', 'string', 'max:25'],
+            'drive_link' => ['nullable', 'url', 'max:255'],
+            'telegram_link' => ['nullable', 'url', 'max:255'],
             'avatar' => ['nullable', 'file', 'image', 'max:2048'],
             'instructor_code' => ['nullable', 'string'],
         ]);
@@ -49,6 +51,8 @@ class AuthController extends Controller
             'password' => Hash::make($data['password']),
             'role' => $data['role'],
             'phone_number' => $data['phone_number'] ?? null,
+            'drive_link' => $this->normalizeLink($data['drive_link'] ?? null),
+            'telegram_link' => $this->normalizeLink($data['telegram_link'] ?? null),
             'avatar' => $avatarPath,
             'is_admin' => false,
             'is_staff' => $data['role'] === 'instructor',
@@ -161,6 +165,13 @@ class AuthController extends Controller
         return $status === Password::PASSWORD_RESET
             ? response()->json(['message' => __($status)])
             : response()->json(['message' => __($status)], 500);
+    }
+
+    private function normalizeLink(?string $link): ?string
+    {
+        $trimmed = trim((string) $link);
+
+        return $trimmed === '' ? null : $trimmed;
     }
 
     private function serializeUser(User $user): array

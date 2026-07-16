@@ -779,6 +779,27 @@
     animation: adminBtnGlow 2.2s ease-in-out infinite;
 }
 
+.admin-login-input {
+    color: #0f172a;
+    -webkit-text-fill-color: #0f172a;
+    caret-color: var(--site-primary-color);
+    color-scheme: light;
+}
+
+.admin-login-input::placeholder {
+    color: #64748b;
+    opacity: 1;
+}
+
+.admin-login-input:-webkit-autofill,
+.admin-login-input:-webkit-autofill:hover,
+.admin-login-input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+    -webkit-text-fill-color: #0f172a;
+    color: #0f172a;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 /* Student Login Styles - Kid-Friendly */
 .student-login-bg {
     background: linear-gradient(135deg, #fef3c7 0%, #fde68a 40%, #fcd34d 100%);
@@ -3860,11 +3881,43 @@
     direction: rtl;
 }
 
+.footer-v4-bottom-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
 @media (max-width: 640px) {
     .footer-v4-bottom {
         flex-direction: column;
         text-align: center;
     }
+
+    .footer-v4-bottom-content {
+        align-items: center;
+    }
+}
+
+.footer-v4-credit {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-v4-credit:hover {
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.footer-v4-credit-name {
+    color: var(--site-primary-color);
+    font-weight: 700;
 }
 
 .footer-v4-social {

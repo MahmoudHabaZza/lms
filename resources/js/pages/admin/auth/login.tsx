@@ -45,8 +45,10 @@ export default function AdminLogin() {
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
                                 dir="ltr"
-                                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100"
+                                className="admin-login-input w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left text-slate-900 outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100"
                                 placeholder="admin@example.com"
+                                autoComplete="email"
+                                inputMode="email"
                                 required
                                 autoFocus
                             />
@@ -63,8 +65,9 @@ export default function AdminLogin() {
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
                                 dir="ltr"
-                                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100"
+                                className="admin-login-input w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left text-slate-900 outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100"
                                 placeholder="••••••••"
+                                autoComplete="current-password"
                                 required
                             />
                             <InputError message={errors.password} className="mt-2" />

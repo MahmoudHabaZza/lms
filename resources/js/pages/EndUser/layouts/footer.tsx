@@ -131,7 +131,19 @@ export default function Footer() {
             </div>
 
             <div className="footer-v4-bottom">
-                <p>{footerCopyright}</p>
+                <div className="footer-v4-bottom-content">
+                    <p>{footerCopyright}</p>
+                    <a
+                        href="https://www.facebook.com/7abazza"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="footer-v4-credit"
+                        aria-label="Developed by Mahmoud Habazza"
+                    >
+                        <span>Developed by</span>
+                        <span className="footer-v4-credit-name">Mahmoud Habazza</span>
+                    </a>
+                </div>
 
                 <div className="footer-v4-social">
                     {facebookUrl && (

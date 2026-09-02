@@ -3,6 +3,11 @@ import { generateStudentPassword } from '@/lib/password';
 import { Copy, RefreshCw } from 'lucide-react';
 import { useEffect, useState, type FormEvent } from 'react';
 
+export type StudentCourseLinkValue = {
+    drive_link: string;
+    telegram_link: string;
+};
+
 export type StudentFormData = {
     name: string;
     email: string;
@@ -15,6 +20,7 @@ export type StudentFormData = {
     password_action: 'keep' | 'manual' | 'auto';
     password: string;
     course_ids: number[];
+    course_links: Record<number, StudentCourseLinkValue>;
 };
 
 type CourseOption = {
@@ -36,6 +42,7 @@ type StudentFormProps = {
         (key: 'password_action', value: 'keep' | 'manual' | 'auto'): void;
         (key: 'password', value: string): void;
         (key: 'course_ids', value: number[]): void;
+        (key: 'course_links', value: Record<number, StudentCourseLinkValue>): void;
     };
     errors: Partial<Record<keyof StudentFormData, string>>;
     courses: CourseOption[];
@@ -74,6 +81,18 @@ export default function StudentForm({
             : [...data.course_ids, id];
 
         setData('course_ids', next);
+    };
+
+    const updateCourseLink = (courseId: number, field: keyof StudentCourseLinkValue, value: string) => {
+        const nextLinks = { ...data.course_links };
+        const current = nextLinks[courseId] ?? { drive_link: '', telegram_link: '' };
+
+        nextLinks[courseId] = {
+            ...current,
+            [field]: value,
+        };
+
+        setData('course_links', nextLinks);
     };
 
     const regeneratePassword = () => {
@@ -182,10 +201,38 @@ export default function StudentForm({
 
                     <div className="mt-5 grid gap-3">
                         {courses.map((course) => (
-                            <label key={course.id} className="flex items-center justify-between rounded-2xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
-                                <span>{course.title}</span>
-                                <input type="checkbox" checked={data.course_ids.includes(course.id)} onChange={() => toggleCourse(course.id)} className="h-4 w-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500" />
-                            </label>
+                            <div key={course.id} className="rounded-2xl border border-slate-200 p-3">
+                                <label className="flex items-center justify-between text-sm font-medium text-slate-700">
+                                    <span>{course.title}</span>
+                                    <input type="checkbox" checked={data.course_ids.includes(course.id)} onChange={() => toggleCourse(course.id)} className="h-4 w-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500" />
+                                </label>
+
+                                {data.course_ids.includes(course.id) && (
+                                    <div className="mt-3 grid gap-3 rounded-2xl bg-slate-50 p-3">
+                                        <div>
+                                            <label className="mb-2 block text-right text-xs font-semibold text-slate-700">رابط Google Drive للمستوى</label>
+                                            <input
+                                                type="url"
+                                                value={data.course_links[course.id]?.drive_link ?? ''}
+                                                onChange={(event) => updateCourseLink(course.id, 'drive_link', event.target.value)}
+                                                placeholder="https://drive.google.com/..."
+                                                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-left outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="mb-2 block text-right text-xs font-semibold text-slate-700">رابط التليجرام للمستوى</label>
+                                            <input
+                                                type="url"
+                                                value={data.course_links[course.id]?.telegram_link ?? ''}
+                                                onChange={(event) => updateCourseLink(course.id, 'telegram_link', event.target.value)}
+                                                placeholder="https://t.me/..."
+                                                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-left outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100"
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         ))}
                     </div>
                     <InputError message={errors.course_ids} className="mt-2" />

@@ -27,6 +27,9 @@ class StoreStudentRequest extends FormRequest
             'password' => ['nullable', 'string', Password::min(10), 'required_if:password_mode,manual'],
             'course_ids' => ['nullable', 'array'],
             'course_ids.*' => ['integer', 'exists:courses,id'],
+            'course_links' => ['nullable', 'array'],
+            'course_links.*.drive_link' => ['nullable', 'url', 'max:255'],
+            'course_links.*.telegram_link' => ['nullable', 'url', 'max:255'],
         ];
     }
 
@@ -43,6 +46,9 @@ class StoreStudentRequest extends FormRequest
             'password' => 'كلمة المرور',
             'course_ids' => 'الكورسات المخصصة',
             'course_ids.*' => 'الكورس المخصص',
+            'course_links' => 'روابط الكورسات',
+            'course_links.*.drive_link' => 'رابط Google Drive للمستوى',
+            'course_links.*.telegram_link' => 'رابط التليجرام للمستوى',
         ];
     }
 }

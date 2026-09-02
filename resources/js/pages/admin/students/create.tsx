@@ -22,6 +22,7 @@ export default function StudentCreate({ courses }: { courses: CourseOption[] }) 
         password_action: 'keep',
         password: '',
         course_ids: [],
+        course_links: {},
     });
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {

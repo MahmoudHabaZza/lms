@@ -20,6 +20,7 @@ type StudentDetails = {
     telegram_link: string | null;
     is_active: boolean;
     course_ids: number[] | null;
+    course_links?: Record<number, { drive_link: string; telegram_link: string }>;
 };
 
 export default function StudentEdit({ student, courses }: { student: StudentDetails; courses: CourseOption[] }) {
@@ -35,6 +36,7 @@ export default function StudentEdit({ student, courses }: { student: StudentDeta
         password_action: 'keep',
         password: '',
         course_ids: student.course_ids ?? [],
+        course_links: student.course_links ?? {},
     });
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {

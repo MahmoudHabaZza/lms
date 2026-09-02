@@ -113,6 +113,15 @@ class StudentController extends Controller
 
     private function studentPayload(User $student, bool $withSelection = false): array
     {
+        $courseLinks = $student->courseEnrollments
+            ->mapWithKeys(fn ($enrollment) => [
+                (string) $enrollment->course_id => [
+                    'drive_link' => $enrollment->drive_link,
+                    'telegram_link' => $enrollment->telegram_link,
+                ],
+            ])
+            ->all();
+
         return [
             'id' => $student->id,
             'name' => $student->name,
@@ -127,10 +136,13 @@ class StudentController extends Controller
             'assigned_courses' => $student->assignedCourses->map(fn ($course) => [
                 'id' => $course->id,
                 'title' => $course->title,
+                'drive_link' => $student->courseEnrollments->firstWhere('course_id', $course->id)?->drive_link,
+                'telegram_link' => $student->courseEnrollments->firstWhere('course_id', $course->id)?->telegram_link,
             ])->values(),
             'course_ids' => $withSelection
                 ? $student->assignedCourses->pluck('id')->map(fn ($id) => (int) $id)->values()
                 : null,
+            'course_links' => $withSelection ? $courseLinks : null,
         ];
     }
 }

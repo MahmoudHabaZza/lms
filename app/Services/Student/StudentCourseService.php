@@ -172,14 +172,21 @@ class StudentCourseService
         $reviewsCount = (int) ($reviewsStats?->aggregate_count ?? 0);
         $averageRating = round((float) ($reviewsStats?->aggregate_rating ?? 0), 1);
 
-        $hasExternalContent = filled($student->drive_link) || filled($student->telegram_link);
+        $enrollment = Enrollment::query()
+            ->where('student_id', $student->id)
+            ->where('course_id', $course->id)
+            ->first();
+
+        $driveLink = $enrollment?->drive_link ?? $student->drive_link;
+        $telegramLink = $enrollment?->telegram_link ?? $student->telegram_link;
+        $hasExternalContent = filled($driveLink) || filled($telegramLink);
 
         return [
             ...$this->courseSummaryPayload($student, $course, $isEnrolled),
             'content_mode' => $hasExternalContent ? 'links' : 'lessons',
             'course_links' => [
-                'drive_link' => $student->drive_link,
-                'telegram_link' => $student->telegram_link,
+                'drive_link' => $driveLink,
+                'telegram_link' => $telegramLink,
             ],
             'access_state' => [
                 'is_enrolled' => $isEnrolled,

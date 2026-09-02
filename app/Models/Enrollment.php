@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Enrollment extends Model
 {
-    protected $fillable = ['student_id', 'course_id', 'enrolled_at'];
+    protected $fillable = ['student_id', 'course_id', 'enrolled_at', 'drive_link', 'telegram_link'];
 
     protected $casts = [
         'enrolled_at' => 'datetime',

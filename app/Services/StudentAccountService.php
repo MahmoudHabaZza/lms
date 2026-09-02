@@ -16,6 +16,7 @@ class StudentAccountService
             : $this->resolveAutoPassword($payload['password'] ?? null);
 
         $courseIds = $payload['course_ids'] ?? [];
+        $courseLinks = $this->normalizeCourseLinks($payload['course_links'] ?? []);
 
         // Normalize the optional links
         if (empty($payload['drive_link'])) {
@@ -25,7 +26,7 @@ class StudentAccountService
             $payload['telegram_link'] = null;
         }
 
-        unset($payload['password_mode'], $payload['password'], $payload['course_ids']);
+        unset($payload['password_mode'], $payload['password'], $payload['course_ids'], $payload['course_links']);
 
         $payload['role'] = 'student';
         $payload['is_admin'] = false;
@@ -35,9 +36,9 @@ class StudentAccountService
         $payload['username'] = $this->generateUniqueUsername($payload['username'] ?? null, $payload['email'], $payload['name']);
         $payload['password'] = $plainPassword;
 
-        $student = DB::transaction(function () use ($payload, $courseIds) {
+        $student = DB::transaction(function () use ($payload, $courseIds, $courseLinks) {
             $student = User::create($payload);
-            $this->syncCourses($student, $courseIds);
+            $this->syncCourses($student, $courseIds, $courseLinks);
 
             return $student->load('assignedCourses:id,title');
         });
@@ -53,6 +54,7 @@ class StudentAccountService
         $passwordAction = $payload['password_action'] ?? 'keep';
         $plainPassword = null;
         $courseIds = $payload['course_ids'] ?? [];
+        $courseLinks = $this->normalizeCourseLinks($payload['course_links'] ?? []);
         $incomingPassword = $payload['password'] ?? null;
 
         // Normalize the optional links
@@ -63,7 +65,7 @@ class StudentAccountService
             $payload['telegram_link'] = null;
         }
 
-        unset($payload['password_action'], $payload['password'], $payload['course_ids']);
+        unset($payload['password_action'], $payload['password'], $payload['course_ids'], $payload['course_links']);
 
         $payload['role'] = 'student';
         $payload['is_active'] = (bool) ($payload['is_active'] ?? true);
@@ -79,9 +81,9 @@ class StudentAccountService
             $payload['password'] = $plainPassword;
         }
 
-        DB::transaction(function () use ($student, $payload, $courseIds) {
+        DB::transaction(function () use ($student, $payload, $courseIds, $courseLinks) {
             $student->update($payload);
-            $this->syncCourses($student, $courseIds);
+            $this->syncCourses($student, $courseIds, $courseLinks);
         });
 
         return [
@@ -139,7 +141,7 @@ class StudentAccountService
         return $username;
     }
 
-    private function syncCourses(User $student, array $courseIds): void
+    private function syncCourses(User $student, array $courseIds, array $courseLinks = []): void
     {
         $courseIds = collect($courseIds)
             ->filter(fn ($id) => filled($id))
@@ -149,23 +151,56 @@ class StudentAccountService
 
         if ($courseIds->isEmpty()) {
             $student->courseEnrollments()->delete();
-        } else {
-            $student->courseEnrollments()
-                ->whereNotIn('course_id', $courseIds->all())
-                ->delete();
+
+            return;
         }
 
-        $courseIds->each(function (int $courseId) use ($student): void {
-            Enrollment::query()->firstOrCreate(
+        $student->courseEnrollments()
+            ->whereNotIn('course_id', $courseIds->all())
+            ->delete();
+
+        $courseIds->each(function (int $courseId) use ($student, $courseLinks): void {
+            $links = $courseLinks[$courseId] ?? [];
+
+            Enrollment::query()->updateOrCreate(
                 [
                     'student_id' => $student->id,
                     'course_id' => $courseId,
                 ],
                 [
                     'enrolled_at' => now(),
+                    'drive_link' => $this->normalizeOptionalLink($links['drive_link'] ?? null),
+                    'telegram_link' => $this->normalizeOptionalLink($links['telegram_link'] ?? null),
                 ],
             );
         });
+    }
+
+    private function normalizeCourseLinks(array $courseLinks): array
+    {
+        $normalized = [];
+
+        foreach ($courseLinks as $courseId => $links) {
+            $courseId = (int) $courseId;
+
+            if ($courseId <= 0 || ! is_array($links)) {
+                continue;
+            }
+
+            $normalized[$courseId] = [
+                'drive_link' => $this->normalizeOptionalLink($links['drive_link'] ?? null),
+                'telegram_link' => $this->normalizeOptionalLink($links['telegram_link'] ?? null),
+            ];
+        }
+
+        return $normalized;
+    }
+
+    private function normalizeOptionalLink(mixed $value): ?string
+    {
+        $value = trim((string) $value);
+
+        return $value === '' ? null : $value;
     }
 
 }

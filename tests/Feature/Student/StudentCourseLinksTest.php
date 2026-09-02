@@ -60,4 +60,32 @@ class StudentCourseLinksTest extends TestCase
         $this->assertSame('https://drive.google.com/drive/folders/abc123', $payload['course_links']['drive_link']);
         $this->assertNull($payload['course_links']['telegram_link']);
     }
+
+    public function test_course_payload_prefers_enrollment_level_links_over_global_student_links(): void
+    {
+        $student = User::factory()->student()->create([
+            'drive_link' => 'https://drive.google.com/legacy/global',
+            'telegram_link' => 'https://t.me/legacy_global',
+        ]);
+        $course = Course::create([
+            'title' => 'Level course',
+            'description' => 'Level course description',
+            'status' => true,
+        ]);
+
+        Enrollment::create([
+            'student_id' => $student->id,
+            'course_id' => $course->id,
+            'drive_link' => 'https://drive.google.com/drive/folders/level-1',
+            'telegram_link' => 'https://t.me/level_one',
+            'enrolled_at' => now(),
+        ]);
+
+        $service = app(StudentCourseService::class);
+        $payload = $service->courseShowPayload($student, $course);
+
+        $this->assertSame('links', $payload['content_mode']);
+        $this->assertSame('https://drive.google.com/drive/folders/level-1', $payload['course_links']['drive_link']);
+        $this->assertSame('https://t.me/level_one', $payload['course_links']['telegram_link']);
+    }
 }
